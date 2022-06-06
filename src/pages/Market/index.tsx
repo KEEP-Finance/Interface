@@ -5,6 +5,7 @@ import { Row, Col, Skeleton, Tabs, Button, Table, Affix } from 'antd';
 import KpToken from '@/components/KpToken';
 import KpTotal from '@/components/KpTotal';
 import KpBuy from '@/components/KpBuy';
+import KpRpc from '@/components/KpRpc';
 
 import styles from './index.less';
 const { TabPane } = Tabs;
@@ -25,17 +26,12 @@ const Page = () => {
   const columns = [
     {
       title: 'Asset name',
-      dataIndex: 'name',
+      dataIndex: 'icon',
       // specify the condition of filtering result
       // here is that finding the name started with `value`
       sorter: (a, b) => a.name.length - b.name.length,
-      render: () => (
-        <KpToken
-          icon="https://solend.fi/assets/tokens/ust.png"
-          name="BTC"
-          price="$28903.2"
-          pool={pool}
-        />
+      render: (text, item) => (
+        <KpToken icon={text} name={item.name} price="$28903.2" pool={pool} />
       ),
     },
     {
@@ -74,80 +70,79 @@ const Page = () => {
   const data = [
     {
       key: '1',
-      name: 'John Brown',
+      name: 'BTC',
       age: 32,
+      icon: '/btc.svg',
       address: 'New York No. 1 Lake Park',
     },
     {
       key: '2',
-      name: 'Jim Green',
+      name: 'BNB',
       age: 42,
+      icon: '/bnb.svg',
       address: 'London No. 1 Lake Park',
     },
     {
       key: '3',
-      name: 'Joe Black',
+      name: 'DAI',
+      icon: '/dai.svg',
       age: 32,
       address: 'Sidney No. 1 Lake Park',
     },
     {
       key: '4',
-      name: 'Jim Red',
+      name: 'ETH',
+      icon: '/eth.svg',
       age: 32,
       address: 'London No. 2 Lake Park',
     },
     {
       key: '4',
-      name: 'Jim Red',
+      name: 'USDA',
+      icon: '/usda.svg',
       age: 32,
       address: 'London No. 2 Lake Park',
     },
     {
       key: '4',
-      name: 'Jim Red',
+      name: 'USDC',
+      icon: '/usdc.svg',
       age: 32,
       address: 'London No. 2 Lake Park',
     },
     {
       key: '4',
-      name: 'Jim Red',
+      name: 'USDH',
+      icon: '/usdh.svg',
       age: 32,
       address: 'London No. 2 Lake Park',
     },
     {
       key: '4',
-      name: 'Jim Red',
+      name: 'USDT',
       age: 32,
+      icon: '/usdt.svg',
       address: 'London No. 2 Lake Park',
     },
     {
       key: '4',
-      name: 'Jim Red',
+      name: 'FOX',
       age: 32,
+      icon: '/fox.svg',
       address: 'London No. 2 Lake Park',
     },
     {
       key: '4',
-      name: 'Jim Red',
+      name: 'BUSD',
       age: 32,
+      icon: '/busd.svg',
       address: 'London No. 2 Lake Park',
     },
     {
       key: '4',
-      name: 'Jim Red',
+      name: 'POLYGON',
       age: 32,
-      address: 'London No. 2 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'Jim Red',
-      age: 32,
-      address: 'London No. 2 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'Jim Red',
-      age: 32,
+      icon: '/polygon.svg',
       address: 'London No. 2 Lake Park',
     },
   ];
@@ -156,43 +151,59 @@ const Page = () => {
   }, []);
   return (
     <div className={styles.market}>
-      <Row gutter={16}>
-        <Col className="gutter-row" span={16}>
-          <div className={styles.nav}>
-            <span
-              style={{ fontWeight: (pool && 'bold') || 'unset' }}
-              onClick={() => setPool(true)}
+      <Row>
+        <Col className={styles.main} span={24}>
+          <KpRpc />
+
+          <Row>
+            <Col span={16}>
+              <div>
+                <Tabs
+                  defaultActiveKey="1"
+                  type="card"
+                  style={{
+                    width: '200px',
+                    border: '1px solid #1b1d23',
+                    borderBottom: '0',
+                    transform: 'translateY(1px)',
+                  }}
+                >
+                  <TabPane tab="Assets" key="1"></TabPane>
+                  <TabPane tab="Pools" key="2"></TabPane>
+                </Tabs>
+              </div>
+              <Table
+                style={{ border: '1px solid #1b1d23' }}
+                columns={columns}
+                dataSource={data}
+                pagination={false}
+              />
+            </Col>
+            <Col
+              className="gutter-row"
+              span={8}
+              style={{ paddingLeft: '25px' }}
             >
-              All pools
-            </span>
-            <span
-              style={{ fontWeight: (!pool && 'bold') || 'unset' }}
-              onClick={() => setPool(false)}
-            >
-              All assets
-            </span>
-          </div>
-          <Table columns={columns} dataSource={data} pagination={false} />
-        </Col>
-        <Col className="gutter-row" span={8} style={{ paddingTop: '62px' }}>
-          <Affix offsetTop={10}>
-            <div className={styles.action}>
-              <Tabs defaultActiveKey="1">
-                <TabPane tab="Supply" key="1">
-                  <KpBuy />
-                </TabPane>
-                <TabPane tab="Borrow" key="2">
-                  <KpBuy />
-                </TabPane>
-                <TabPane tab="Withdraw" key="3">
-                  <KpBuy />
-                </TabPane>
-                <TabPane tab="Repay" key="4">
-                  <KpBuy />
-                </TabPane>
-              </Tabs>
-            </div>
-          </Affix>
+              <Affix offsetTop={10}>
+                <div className={styles.action}>
+                  <Tabs defaultActiveKey="1" type="card">
+                    <TabPane tab="Supply" key="1">
+                      <KpBuy />
+                    </TabPane>
+                    <TabPane tab="Borrow" key="2">
+                      <KpBuy />
+                    </TabPane>
+                    <TabPane tab="Withdraw" key="3">
+                      <KpBuy />
+                    </TabPane>
+                    <TabPane tab="Repay" key="4">
+                      <KpBuy />
+                    </TabPane>
+                  </Tabs>
+                </div>
+              </Affix>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </div>
