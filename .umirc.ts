@@ -4,6 +4,23 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
+
+  theme: {
+    'primary-color': '#ffc000',
+    'table-header-bg': '#0e1118',
+    'table-header-color': '#ffffff',
+    'table-selected-row-bg': '#0e1118',
+    'table-header-sort-bg': '#0e1118',
+    'table-body-sort-bg': '#0e1118',
+    'table-row-hover-bg': '#1b1d23',
+    'table-border-color': 'rgba(0,0,0,0)',
+    'text-color': '#ffffff',
+    'body-background': '#0e1118',
+    'component-background': '#0e1118',
+    'layout-body-background': '#0e1118',
+    'layout-header-background': '#0e1118',
+    'menu-item-active-bg': 'rgba(0,0,0,0)',
+  },
   routes: [
     {
       path: '/',
@@ -11,13 +28,8 @@ export default defineConfig({
       routes: [
         {
           path: '/',
-          title: 'Keey',
-          component: '@/pages/Home/index',
-        },
-        {
-          path: '/home2',
-          title: 'Keey',
-          component: '@/pages/Home2/index',
+          title: 'Keep Finance',
+          component: '@/pages/Market',
         },
       ],
     },
