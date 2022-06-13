@@ -37,3 +37,31 @@ h6 {
   border-top: 2px solid #ffc000;
 }
 // tabs
+
+// table
+tr.ant-table-expanded-row > td {
+  padding: 0;
+  background-color: transparent;
+}
+tr.ant-table-expanded-row:hover > td {
+  background-color: unset;
+}
+.ant-table-tbody > tr > td > .ant-table-wrapper:only-child .ant-table {
+  margin: 0;
+}
+.ant-table-column-sorters {
+  justify-content: left;
+}
+.ant-table-column-title {
+  flex: unset;
+}
+.ant-table-thead > tr > th {
+  padding: 10px 16px;
+}
+.ant-table-row-expand-icon {
+  opacity: 0;
+}
+.ant-table-tbody > tr > td.ant-table-cell-row-hover .ant-table-row-expand-icon {
+  opacity: 1;
+}
+// table

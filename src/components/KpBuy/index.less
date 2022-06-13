@@ -8,8 +8,20 @@
   .seemore {
     text-align: center;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    fill: #ffffff;
+    svg {
+      width: 24px;
+    }
     &:hover {
       color: #ffc000;
+      fill: #ffc000;
+    }
+  }
+  .seeless {
+    svg {
+      transform: rotate(-180deg);
     }
   }
 }

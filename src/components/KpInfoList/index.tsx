@@ -10,8 +10,8 @@ const KpTotal = (props: any) => {
           dataSource.map((item) => (
             <Col span={24}>
               <Row justify="space-between">
-                <Col className={styles.small}>User deposit limit</Col>
-                <Col>500,000 SLND</Col>
+                <Col className={styles.small}>{item[0]}</Col>
+                <Col>{item[1]}</Col>
               </Row>
             </Col>
           ))}

@@ -29,12 +29,14 @@ const KpTotal = (props: any) => {
     <div className={styles.kt} {...rest}>
       <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
         <div className={styles.title}>
-          <img
-            style={{ width: '35px', verticalAlign: 'top', marginRight: '5px' }}
-            src="/btc.svg"
-          />
-          Ethereum{' '}
-          <DownOutlined style={{ fontSize: '20px', color: '#ffffff' }} />
+          <div>
+            <img
+              style={{ width: '35px', verticalAlign: 'top' }}
+              src="/btc.svg"
+            />
+            <span className={styles.rpc}>Ethereum</span>
+            <DownOutlined style={{ fontSize: '20px', color: '#ffffff' }} />
+          </div>
         </div>
       </Dropdown>
       <div className={styles.dashboard}>

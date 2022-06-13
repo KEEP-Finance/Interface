@@ -1,12 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
-import { Row, Col, Skeleton, Tabs, Button, Table, Affix } from 'antd';
-import KpToken from '@/components/KpToken';
-import KpTotal from '@/components/KpTotal';
+import { Row, Col, Skeleton, Tabs, Button, Table, Affix, Drawer } from 'antd';
 import KpBuy from '@/components/KpBuy';
 import KpRpc from '@/components/KpRpc';
-
+import KpChildTable from '@/components/KpChildTable';
+import {
+  columns,
+  childColumns,
+  data,
+  childData,
+  columnsPool,
+  dataPool,
+  childColumnsPool,
+  childDataPool,
+} from './data';
 import styles from './index.less';
 const { TabPane } = Tabs;
 
@@ -23,132 +31,27 @@ const Page = () => {
   const injected = new InjectedConnector({
     supportedChainIds: [56],
   });
-  const columns = [
-    {
-      title: 'Asset name',
-      dataIndex: 'icon',
-      // specify the condition of filtering result
-      // here is that finding the name started with `value`
-      sorter: (a, b) => a.name.length - b.name.length,
-      render: (text, item) => (
-        <KpToken icon={text} name={item.name} price="$28903.2" pool={pool} />
-      ),
-    },
-    {
-      title: 'LTV',
-      dataIndex: 'age',
-      defaultSortOrder: 'descend',
-      sorter: (a, b) => a.age - b.age,
-      render: (text) => `${text}%`,
-    },
-    {
-      title: 'Total supply',
-      dataIndex: 'address',
-      sorter: (a, b) => a.address.length - b.address.length,
-      render: () => <KpTotal number="1,234" name="BTC" price="$28903.2" />,
-    },
-    {
-      title: 'Supply APR',
-      dataIndex: 'age',
-      sorter: (a, b) => a.address.length - b.address.length,
-      render: (text) => `${text * 1 + 100}%`,
-    },
-    {
-      title: 'Total borrow',
-      dataIndex: 'address',
-      sorter: (a, b) => a.address.length - b.address.length,
-      render: () => <KpTotal number="1,234" name="BTC" price="$28903.2" />,
-    },
-    {
-      title: 'Borrow APR',
-      dataIndex: 'age',
-      sorter: (a, b) => a.address.length - b.address.length,
-      render: (text) => `${text * 1 + 100}%`,
-    },
-  ];
-
-  const data = [
-    {
-      key: '1',
-      name: 'BTC',
-      age: 32,
-      icon: '/btc.svg',
-      address: 'New York No. 1 Lake Park',
-    },
-    {
-      key: '2',
-      name: 'BNB',
-      age: 42,
-      icon: '/bnb.svg',
-      address: 'London No. 1 Lake Park',
-    },
-    {
-      key: '3',
-      name: 'DAI',
-      icon: '/dai.svg',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'ETH',
-      icon: '/eth.svg',
-      age: 32,
-      address: 'London No. 2 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'USDA',
-      icon: '/usda.svg',
-      age: 32,
-      address: 'London No. 2 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'USDC',
-      icon: '/usdc.svg',
-      age: 32,
-      address: 'London No. 2 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'USDH',
-      icon: '/usdh.svg',
-      age: 32,
-      address: 'London No. 2 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'USDT',
-      age: 32,
-      icon: '/usdt.svg',
-      address: 'London No. 2 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'FOX',
-      age: 32,
-      icon: '/fox.svg',
-      address: 'London No. 2 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'BUSD',
-      age: 32,
-      icon: '/busd.svg',
-      address: 'London No. 2 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'POLYGON',
-      age: 32,
-      icon: '/polygon.svg',
-      address: 'London No. 2 Lake Park',
-    },
-  ];
   useEffect(() => {
     activate(injected);
   }, []);
+  const [visible, setVisible] = useState(false);
+  const [key, setKey] = useState('1');
+
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+  };
+
+  const onSelectToken = () => {
+    setVisible(true);
+  };
+  const onSelectPool = () => {};
+  const onChange = (key: any) => {
+    setKey(key);
+  };
   return (
     <div className={styles.market}>
       <Row>
@@ -160,6 +63,7 @@ const Page = () => {
               <div>
                 <Tabs
                   defaultActiveKey="1"
+                  onChange={onChange}
                   type="card"
                   style={{
                     width: '200px',
@@ -172,12 +76,49 @@ const Page = () => {
                   <TabPane tab="Pools" key="2"></TabPane>
                 </Tabs>
               </div>
-              <Table
-                style={{ border: '1px solid #1b1d23' }}
-                columns={columns}
-                dataSource={data}
-                pagination={false}
-              />
+              {(key == '1' && (
+                <Table
+                  style={{ border: '1px solid #1b1d23' }}
+                  columns={columns}
+                  dataSource={data}
+                  expandable={{
+                    expandRowByClick: true,
+                    expandedRowRender: (record) => (
+                      <div style={{ background: '#1b1d23' }}>
+                        <KpChildTable
+                          style={{ margin: '0' }}
+                          columns={childColumns}
+                          showHeader={false}
+                          pagination={false}
+                          dataSource={childData}
+                        />
+                      </div>
+                    ),
+                  }}
+                  pagination={false}
+                />
+              )) || (
+                <Table
+                  style={{ border: '1px solid #1b1d23' }}
+                  columns={columnsPool}
+                  dataSource={dataPool}
+                  expandable={{
+                    expandRowByClick: true,
+                    expandedRowRender: (record) => (
+                      <div style={{ background: '#1b1d23' }}>
+                        <KpChildTable
+                          style={{ margin: '0' }}
+                          columns={childColumnsPool}
+                          showHeader={false}
+                          pagination={false}
+                          dataSource={childDataPool}
+                        />
+                      </div>
+                    ),
+                  }}
+                  pagination={false}
+                />
+              )}
             </Col>
             <Col
               className="gutter-row"
@@ -188,18 +129,80 @@ const Page = () => {
                 <div className={styles.action}>
                   <Tabs defaultActiveKey="1" type="card">
                     <TabPane tab="Supply" key="1">
-                      <KpBuy />
+                      <KpBuy
+                        onSelectPool={onSelectPool}
+                        onSelectToken={onSelectToken}
+                      />
                     </TabPane>
                     <TabPane tab="Borrow" key="2">
-                      <KpBuy />
+                      <KpBuy
+                        onSelectPool={onSelectPool}
+                        onSelectToken={onSelectToken}
+                      />
                     </TabPane>
                     <TabPane tab="Withdraw" key="3">
-                      <KpBuy />
+                      <KpBuy
+                        onSelectPool={onSelectPool}
+                        onSelectToken={onSelectToken}
+                      />
                     </TabPane>
                     <TabPane tab="Repay" key="4">
-                      <KpBuy />
+                      <KpBuy
+                        onSelectPool={onSelectPool}
+                        onSelectToken={onSelectToken}
+                      />
                     </TabPane>
                   </Tabs>
+                  <Drawer
+                    title="Select a Token"
+                    className={styles.h100}
+                    placement="bottom"
+                    onClose={onClose}
+                    visible={visible}
+                    getContainer={false}
+                    maskClosable={false}
+                    // closeIcon={false}
+                    style={{ position: 'absolute' }}
+                  >
+                    <div className={styles.title}>
+                      <div>
+                        <p>Token Name</p>
+                      </div>
+                      <div>
+                        <p>Balance</p>
+                      </div>
+                    </div>
+                    <hr />
+                    <div className={styles.tokenlist}>
+                      <div className={styles.item}>
+                        <div>
+                          <img src="/usdc.svg" />
+                          <p>USDC</p>
+                        </div>
+                        <div>
+                          <p>0</p>
+                        </div>
+                      </div>
+                      <div className={styles.item}>
+                        <div>
+                          <img src="/usdt.svg" />
+                          <p>USDT</p>
+                        </div>
+                        <div>
+                          <p>0</p>
+                        </div>
+                      </div>
+                      <div className={styles.item}>
+                        <div>
+                          <img src="/fox.svg" />
+                          <p>FOX</p>
+                        </div>
+                        <div>
+                          <p>0</p>
+                        </div>
+                      </div>
+                    </div>
+                  </Drawer>
                 </div>
               </Affix>
             </Col>
