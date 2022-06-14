@@ -8,7 +8,7 @@ const Select = (props: any) => {
       <div className={styles.inp}>
         {props.icon && (
           <div className={styles.tokenIcon}>
-            <img src="/bnb.svg" />
+            <img src={props.icon} />
           </div>
         )}
 
@@ -51,14 +51,24 @@ const KpBigInput = (props: any) => {
     <div className={styles.kpselect} {...rest}>
       <div className={`${styles.root} ${styles.left}`} onClick={selectToken}>
         <label>Token</label>
-        <Select name="USDT" icon={true} />
+        <Select
+          name={props.dataSource.r1.name || 'Select'}
+          icon={props.dataSource.r1.icon}
+        />
       </div>
       <div className={`${styles.root} ${styles.right}`} onClick={selectPool}>
         <label>Pool</label>
         <div style={{ height: '100%' }}>
           <Dropdown overlay={menu}>
             <div style={{ height: '100%' }}>
-              <Select name="01 MainPool" />
+              <Select
+                name={
+                  '#0' +
+                    props.dataSource.r2.key +
+                    ' ' +
+                    props.dataSource.r2.name || 'Select'
+                }
+              />
             </div>
           </Dropdown>
         </div>

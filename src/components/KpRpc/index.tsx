@@ -32,7 +32,7 @@ const KpTotal = (props: any) => {
           <div>
             <img
               style={{ width: '35px', verticalAlign: 'top' }}
-              src="/btc.svg"
+              src="/eth.svg"
             />
             <span className={styles.rpc}>Ethereum</span>
             <DownOutlined style={{ fontSize: '20px', color: '#ffffff' }} />

@@ -26,7 +26,9 @@ export const columns = [
     width: '16%',
     dataIndex: 'address',
     sorter: (a, b) => a.address.length - b.address.length,
-    render: () => <KpTotal number="1,234" name="BTC" price="$28903.2" />,
+    render: (text, item) => (
+      <KpTotal number="1,234" name={item.name} price="$28903.2" />
+    ),
   },
   {
     title: 'Supply APR',
@@ -40,7 +42,9 @@ export const columns = [
     width: '16%',
     dataIndex: 'address',
     sorter: (a, b) => a.address.length - b.address.length,
-    render: () => <KpTotal number="1,234" name="BTC" price="$28903.2" />,
+    render: (text, item) => (
+      <KpTotal number="1,234" name={item.name} price="$28903.2" />
+    ),
   },
   {
     width: '19%',
@@ -77,7 +81,7 @@ export const childColumns = [
     title: 'Total supply',
     width: '16%',
     dataIndex: 'address',
-    render: () => <KpTotal number="1,234" name="BTC" price="$28903.2" />,
+    render: (text, item) => <KpTotal number="1,234" price="$28903.2" />,
   },
   {
     title: 'Supply APR',
@@ -89,7 +93,7 @@ export const childColumns = [
     title: 'Total borrow',
     width: '16%',
     dataIndex: 'address',
-    render: () => <KpTotal number="1,234" name="BTC" price="$28903.2" />,
+    render: (text, item) => <KpTotal number="1,234" price="$28903.2" />,
   },
   {
     title: 'Borrow APR',

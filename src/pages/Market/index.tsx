@@ -1,7 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
-import { Row, Col, Skeleton, Tabs, Button, Table, Affix, Drawer } from 'antd';
+import {
+  Row,
+  Col,
+  Skeleton,
+  Tabs,
+  Button,
+  Table,
+  Affix,
+  Drawer,
+  Slider,
+} from 'antd';
 import KpBuy from '@/components/KpBuy';
 import KpRpc from '@/components/KpRpc';
 import KpTabs from '@/components/KpTabs';
@@ -107,6 +117,9 @@ const Page = () => {
     useWeb3React();
   const [more, setMore] = useState(false);
   const [pool, setPool] = useState(false);
+  const [lm, setLm] = useState(false);
+  const [r1, setR1] = useState({});
+  const [r2, setR2] = useState({});
   const injected = new InjectedConnector({
     supportedChainIds: [56],
   });
@@ -162,7 +175,7 @@ const Page = () => {
                   dataSource={data}
                   expandable={{
                     expandRowByClick: true,
-                    expandedRowRender: (record) => (
+                    expandedRowRender: (record1) => (
                       <div style={{ background: '#1b1d23' }}>
                         <KpChildTable
                           style={{ margin: '0' }}
@@ -170,6 +183,14 @@ const Page = () => {
                           showHeader={false}
                           pagination={false}
                           dataSource={childData}
+                          onRow={(record2) => {
+                            return {
+                              onClick: (event) => {
+                                setR1(record1);
+                                setR2(record2);
+                              }, // 点击行
+                            };
+                          }}
                         />
                       </div>
                     ),
@@ -232,10 +253,15 @@ const Page = () => {
                       />
                     </TabPane>
                   </Tabs> */}
-                  <KpTabs />
+                  <KpTabs onChange={(index) => setLm(index == 1)} />
                   <KpBuy
                     onSelectPool={onSelectPool}
                     onSelectToken={onSelectToken}
+                    visibleLm={lm}
+                    dataSource={{
+                      r1,
+                      r2,
+                    }}
                   />
                   <Drawer
                     title="Select a Token"

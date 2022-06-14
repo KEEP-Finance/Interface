@@ -1,4 +1,4 @@
-import { Row, Col, Button } from 'antd';
+import { Row, Col, Button, Slider, Checkbox } from 'antd';
 import { useEffect, useState } from 'react';
 import { ReactComponent as Expand } from '@/assets/expand.svg';
 import KpBigInput from '@/components/KpBigInput';
@@ -31,17 +31,56 @@ const infolistMore = [
 const KpTotal = (props: any) => {
   const { dataSource, onSelectPool, onSelectToken, ...rest } = props;
   const [more, setMore] = useState(false);
+  const [lm, setLm] = useState(true);
+  const [val, setVal] = useState(1);
   // 选择token
-  const onChoseToken = () => {};
+  const onChoseToken = (props: any) => {};
   return (
     <div className={styles.ki} {...rest}>
-      <div style={{ padding: '36px' }}>
+      <div style={{ padding: '36px 15px' }}>
         <KpTokenSelect
           onSelectPool={onSelectPool}
           onSelectToken={onSelectToken}
+          dataSource={props.dataSource}
         />
         <KpBigInput />
+        {props.visibleLm && (
+          <>
+            <div className={styles.lm}>
+              <div style={{ color: 'rgba(255,255,255,0.8)' }}>
+                Leverage Model
+              </div>
+              <div className={styles.inputArea}>
+                <div>
+                  <input
+                    value={
+                      (typeof val == 'number' && (val * 1).toFixed(1)) || val
+                    }
+                    onChange={(e) => setVal(e.target.value)}
+                  />
+                  <span>x</span>
+                </div>
+              </div>
+              <Checkbox
+                checked={lm}
+                onChange={(e) => setLm(e.target.checked)}
+              />
+            </div>
+            {lm && (
+              <Slider
+                onChange={(e) => setVal(e)}
+                marks={{ 1: '1x', 2: '2x', 3: '3x', 4: '4x', 5: '5x' }}
+                value={val}
+                step={0.1}
+                min={1}
+                max={5}
+              />
+            )}
+          </>
+        )}
+
         <KpInfoList dataSource={infolistMain} />
+
         <p
           className={`${styles.seemore} ${more && styles.seeless}`}
           onClick={() =>
