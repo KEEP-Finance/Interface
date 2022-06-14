@@ -33,7 +33,7 @@ export const columns = [
     width: '16%',
     dataIndex: 'age',
     sorter: (a, b) => a.address.length - b.address.length,
-    render: (text) => `${text * 1 + 100}%`,
+    render: (text) => `${text / 10}%`,
   },
   {
     title: 'Total Borrow',
@@ -43,11 +43,11 @@ export const columns = [
     render: () => <KpTotal number="1,234" name="BTC" price="$28903.2" />,
   },
   {
-    width: '16%',
+    width: '19%',
     title: 'Borrow APR',
     dataIndex: 'age',
     sorter: (a, b) => a.address.length - b.address.length,
-    render: (text) => `${text * 1 + 100}%`,
+    render: (text) => `${text / 10}%`,
   },
   Table.EXPAND_COLUMN,
 ];
@@ -83,7 +83,7 @@ export const childColumns = [
     title: 'Supply APR',
     width: '16%',
     dataIndex: 'age',
-    render: (text) => `${text * 1 + 100}%`,
+    render: (text) => `${text / 10}%`,
   },
   {
     title: 'Total borrow',
@@ -95,15 +95,22 @@ export const childColumns = [
     title: 'Borrow APR',
     width: '19%',
     dataIndex: 'age',
-    render: (text) => `${text * 1 + 100}%`,
+    render: (text) => `${text / 10}%`,
   },
   {
     title: <>&ngsp;&ngsp;&ngsp;&ngsp;</>,
     dataIndex: 'age',
-    width: '1%',
 
     // sorter: (a, b) => a.address.length - b.address.length,
-    render: (text) => ``,
+    render: (text) => (
+      <span style={{ opacity: 0 }}>
+        <button
+          type="button"
+          class="ant-table-row-expand-icon ant-table-row-expand-icon-expanded"
+          aria-label="Collapse row"
+        ></button>
+      </span>
+    ),
   },
 ];
 export const data = [
@@ -188,7 +195,7 @@ export const data = [
 export const childData = [
   {
     key: '1',
-    name: 'MianPool',
+    name: 'MainPool',
     age: 32,
     icon: '/btc.svg',
     address: 'New York No. 1 Lake Park',
@@ -243,7 +250,7 @@ export const columnsPool = [
     width: '16%',
     dataIndex: 'age',
     sorter: (a, b) => a.address.length - b.address.length,
-    render: (text) => `${text * 1 + 100}%`,
+    render: (text) => `${text / 10}%`,
   },
   {
     title: 'Total Borrow',
@@ -253,11 +260,11 @@ export const columnsPool = [
     render: () => <KpTotal number="1,234" name="BTC" price="$28903.2" />,
   },
   {
-    width: '16%',
+    width: '19%',
     title: 'Borrow APR',
     dataIndex: 'age',
     sorter: (a, b) => a.address.length - b.address.length,
-    render: (text) => `${text * 1 + 100}%`,
+    render: (text) => `${text / 10}%`,
   },
   Table.EXPAND_COLUMN,
 ];
@@ -311,7 +318,7 @@ export const childColumnsPool = [
     title: 'Supply APR',
     width: '16%',
     dataIndex: 'age',
-    render: (text) => `${text * 1 + 100}%`,
+    render: (text) => `${text / 10}%`,
   },
   {
     title: 'Total borrow',
@@ -323,21 +330,28 @@ export const childColumnsPool = [
     title: 'Borrow APR',
     width: '19%',
     dataIndex: 'age',
-    render: (text) => `${text * 1 + 100}%`,
+    render: (text) => `${text / 10}%`,
   },
   {
     title: <>&ngsp;&ngsp;&ngsp;&ngsp;</>,
     dataIndex: 'age',
-    width: '1%',
 
     // sorter: (a, b) => a.address.length - b.address.length,
-    render: (text) => ``,
+    render: (text) => (
+      <span style={{ opacity: 0 }}>
+        <button
+          type="button"
+          class="ant-table-row-expand-icon ant-table-row-expand-icon-expanded"
+          aria-label="Collapse row"
+        ></button>
+      </span>
+    ),
   },
 ];
 export const childDataPool = [
   {
     key: '1',
-    name: 'MianPool',
+    name: 'MainPool',
     age: 32,
     icon: '/btc.svg',
     address: 'New York No. 1 Lake Park',

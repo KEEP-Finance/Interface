@@ -1,23 +1,12 @@
 import styles from './index.less';
 const KpTabs = () => {
   return (
-    <nav className={styles.nav}>
-      <ul>
-        <li>
-          <a href="">First</a>
-        </li>
-        <li>
-          <a href="">Second</a>
-        </li>
-        <li>
-          <a href="">Third</a>
-        </li>
-      </ul>
-      <div
-        className={styles.line}
-        style={{ left: '210.359px', width: '59.8125px' }}
-      ></div>
-    </nav>
+    <div className={styles.tabs}>
+      <div className={styles.activity}>Supply</div>
+      <div>Borrow</div>
+      <div>Withdraw</div>
+      <div>Repay</div>
+    </div>
   );
 };
 export default KpTabs;

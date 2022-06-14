@@ -4,6 +4,7 @@ import { InjectedConnector } from '@web3-react/injected-connector';
 import { Row, Col, Skeleton, Tabs, Button, Table, Affix, Drawer } from 'antd';
 import KpBuy from '@/components/KpBuy';
 import KpRpc from '@/components/KpRpc';
+import KpTabs from '@/components/KpTabs';
 import KpChildTable from '@/components/KpChildTable';
 import {
   columns,
@@ -17,7 +18,85 @@ import {
 } from './data';
 import styles from './index.less';
 const { TabPane } = Tabs;
-
+const tokenList = [
+  {
+    key: '1',
+    name: 'BTC',
+    age: 32,
+    icon: '/btc.svg',
+    address: 'New York No. 1 Lake Park',
+  },
+  {
+    key: '2',
+    name: 'BNB',
+    age: 42,
+    icon: '/bnb.svg',
+    address: 'London No. 1 Lake Park',
+  },
+  {
+    key: '3',
+    name: 'DAI',
+    icon: '/dai.svg',
+    age: 32,
+    address: 'Sidney No. 1 Lake Park',
+  },
+  {
+    key: '4',
+    name: 'ETH',
+    icon: '/eth.svg',
+    age: 32,
+    address: 'London No. 2 Lake Park',
+  },
+  {
+    key: '5',
+    name: 'USDA',
+    icon: '/usda.svg',
+    age: 32,
+    address: 'London No. 2 Lake Park',
+  },
+  {
+    key: '6',
+    name: 'USDC',
+    icon: '/usdc.svg',
+    age: 32,
+    address: 'London No. 2 Lake Park',
+  },
+  {
+    key: '7',
+    name: 'USDH',
+    icon: '/usdh.svg',
+    age: 32,
+    address: 'London No. 2 Lake Park',
+  },
+  {
+    key: '8',
+    name: 'USDT',
+    age: 32,
+    icon: '/usdt.svg',
+    address: 'London No. 2 Lake Park',
+  },
+  {
+    key: '9',
+    name: 'FOX',
+    age: 32,
+    icon: '/fox.svg',
+    address: 'London No. 2 Lake Park',
+  },
+  {
+    key: '10',
+    name: 'BUSD',
+    age: 32,
+    icon: '/busd.svg',
+    address: 'London No. 2 Lake Park',
+  },
+  {
+    key: '11',
+    name: 'POLYGON',
+    age: 32,
+    icon: '/polygon.svg',
+    address: 'London No. 2 Lake Park',
+  },
+];
 const Page = () => {
   // library	当前连接的library
   // deactivate	断开连接的方法
@@ -127,7 +206,7 @@ const Page = () => {
             >
               <Affix offsetTop={10}>
                 <div className={styles.action}>
-                  <Tabs defaultActiveKey="1" type="card">
+                  {/* <Tabs defaultActiveKey="1" type="card">
                     <TabPane tab="Supply" key="1">
                       <KpBuy
                         onSelectPool={onSelectPool}
@@ -152,7 +231,12 @@ const Page = () => {
                         onSelectToken={onSelectToken}
                       />
                     </TabPane>
-                  </Tabs>
+                  </Tabs> */}
+                  <KpTabs />
+                  <KpBuy
+                    onSelectPool={onSelectPool}
+                    onSelectToken={onSelectToken}
+                  />
                   <Drawer
                     title="Select a Token"
                     className={styles.h100}
@@ -173,34 +257,19 @@ const Page = () => {
                       </div>
                     </div>
                     <hr />
+
                     <div className={styles.tokenlist}>
-                      <div className={styles.item}>
-                        <div>
-                          <img src="/usdc.svg" />
-                          <p>USDC</p>
+                      {tokenList.map((item) => (
+                        <div className={styles.item}>
+                          <div>
+                            <img src={item.icon} />
+                            <p>{item.name}</p>
+                          </div>
+                          <div>
+                            <p>0</p>
+                          </div>
                         </div>
-                        <div>
-                          <p>0</p>
-                        </div>
-                      </div>
-                      <div className={styles.item}>
-                        <div>
-                          <img src="/usdt.svg" />
-                          <p>USDT</p>
-                        </div>
-                        <div>
-                          <p>0</p>
-                        </div>
-                      </div>
-                      <div className={styles.item}>
-                        <div>
-                          <img src="/fox.svg" />
-                          <p>FOX</p>
-                        </div>
-                        <div>
-                          <p>0</p>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </Drawer>
                 </div>

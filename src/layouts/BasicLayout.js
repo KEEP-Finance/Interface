@@ -14,7 +14,7 @@ function getLibrary(provider) {
 const BasicLayout = (props) => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
-      <Layout>
+      <Layout style={{ minHeight: '100vh' }}>
         <Header />
         <Content className={styles.main} style={{ padding: '0 150px' }}>
           {props.children}

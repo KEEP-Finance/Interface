@@ -56,7 +56,7 @@ const KpTotal = (props: any) => {
             <div>
               <span>$5.69M</span>
               <br />
-              <span>Total market size</span>
+              <span>Total available</span>
             </div>
           </div>
         </div>
@@ -66,7 +66,7 @@ const KpTotal = (props: any) => {
             <div>
               <span>$5.69M</span>
               <br />
-              <span>Total market size</span>
+              <span>Total borrows</span>
             </div>
           </div>
         </div>
