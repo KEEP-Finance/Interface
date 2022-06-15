@@ -124,7 +124,7 @@ const Page = () => {
     supportedChainIds: [56],
   });
   useEffect(() => {
-    activate(injected);
+    // activate(injected);
   }, []);
   const [visible, setVisible] = useState(false);
   const [key, setKey] = useState('1');

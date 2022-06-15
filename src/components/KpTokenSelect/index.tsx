@@ -63,10 +63,9 @@ const KpBigInput = (props: any) => {
             <div style={{ height: '100%' }}>
               <Select
                 name={
-                  '#0' +
-                    props.dataSource.r2.key +
-                    ' ' +
-                    props.dataSource.r2.name || 'Select'
+                  '0' + props.dataSource.r2.key ||
+                  '' + ' ' + props.dataSource.r2.name ||
+                  'Select'
                 }
               />
             </div>
