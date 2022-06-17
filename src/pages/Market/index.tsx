@@ -140,7 +140,15 @@ const Page = () => {
   const onSelectToken = () => {
     setVisible(true);
   };
-  const onSelectPool = () => {};
+  const onSelectTokenCurrent = (item) => {
+    setR1(item);
+    setVisible(false);
+  };
+  const onSelectPool = (key, name) => {
+    setR2((data) => {
+      return { key, name };
+    });
+  };
   const onChange = (key: any) => {
     setKey(key);
   };
@@ -286,7 +294,10 @@ const Page = () => {
 
                     <div className={styles.tokenlist}>
                       {tokenList.map((item) => (
-                        <div className={styles.item}>
+                        <div
+                          className={styles.item}
+                          onClick={() => onSelectTokenCurrent(item)}
+                        >
                           <div>
                             <img src={item.icon} />
                             <p>{item.name}</p>

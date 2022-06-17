@@ -299,8 +299,6 @@ export const childColumnsPool = [
     render: (text, item) => (
       <>
         <img style={{ width: '36px' }} src="/bnb.svg" />
-        <img style={{ width: '36px', margin: '0 5px' }} src="/btc.svg" />
-        <img style={{ width: '36px' }} src="/dai.svg" />
       </>
     ),
   },

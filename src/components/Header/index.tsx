@@ -11,7 +11,7 @@ const IconFont = createFromIconfontCN({
   scriptUrl: iconjs,
 });
 const Header = () => {
-  const [visibleMetaMask, setVisibleMetaMask] = useState(true);
+  const [visibleMetaMask, setVisibleMetaMask] = useState(false);
   const onhandCancel = () => {
     setVisibleMetaMask((data) => !data);
   };
@@ -50,7 +50,7 @@ const Header = () => {
         bodyStyle={{
           padding: '21px',
           background: '#1b1d23',
-          borderRadius: ' 20px',
+          borderRadius: ' 5px',
         }}
       >
         <div className={styles.witem}>

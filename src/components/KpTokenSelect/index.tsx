@@ -25,28 +25,29 @@ const Select = (props: any) => {
     </div>
   );
 };
-const menu = (
-  <div className={styles.tokenlist}>
-    <div className={styles.item}>
-      <div>
-        <p>01 MainPool</p>
-      </div>
-    </div>
-    <div className={styles.item}>
-      <div>
-        <p>02 FoxPool</p>
-      </div>
-    </div>
-  </div>
-);
+
 const KpBigInput = (props: any) => {
   const { name, price, number, onSelectToken, onSelectPool, ...rest } = props;
   const selectToken = () => {
     onSelectToken();
   };
-  const selectPool = () => {
-    onSelectPool();
+  const selectPool = (key, name) => {
+    onSelectPool(key, name);
   };
+  const menu = (props) => (
+    <div className={styles.tokenlist}>
+      <div className={styles.item}>
+        <div onClick={() => selectPool('1', 'MainPool')}>
+          <p>01 MainPool</p>
+        </div>
+      </div>
+      <div className={styles.item}>
+        <div onClick={() => selectPool('2', 'FoxPool')}>
+          <p>02 FoxPool</p>
+        </div>
+      </div>
+    </div>
+  );
   return (
     <div className={styles.kpselect} {...rest}>
       <div className={`${styles.root} ${styles.left}`} onClick={selectToken}>
@@ -56,15 +57,18 @@ const KpBigInput = (props: any) => {
           icon={props.dataSource.r1.icon}
         />
       </div>
-      <div className={`${styles.root} ${styles.right}`} onClick={selectPool}>
+      <div className={`${styles.root} ${styles.right}`}>
         <label>Pool</label>
         <div style={{ height: '100%' }}>
           <Dropdown overlay={menu}>
             <div style={{ height: '100%' }}>
               <Select
                 name={
-                  '0' + props.dataSource.r2.key ||
-                  '' + ' ' + props.dataSource.r2.name ||
+                  (props.dataSource?.r2?.key &&
+                    '0' +
+                      props.dataSource?.r2?.key +
+                      ' ' +
+                      props.dataSource.r2.name) ||
                   'Select'
                 }
               />

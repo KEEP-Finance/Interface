@@ -84,7 +84,7 @@ const AcyModal = ({ children, sideComponent, ...rest }) => {
             padding: '21px',
             // background: rest.backgroundColor ? rest.backgroundColor : '#2e3032',
             backgroundColor: 'black',
-            borderRadius: ' 20px',
+            borderRadius: ' 5px',
             boxShadow: '0 0 14px #2d2d2d',
             border: '1px solid #333333',
           }}
