@@ -39009,11 +39009,6 @@
                             { tab: 'Monitor' },
                             '1',
                           ),
-                          Object(d['jsx'])(
-                            a['a'].TabPane,
-                            { tab: 'Order' },
-                            '3',
-                          ),
                         ],
                       }),
                     }),
@@ -39137,6 +39132,7 @@
                               }),
                             ],
                           }),
+                          Object(d['jsx'])('br', {}),
                           Object(d['jsx'])('hr', {}),
                           Object(d['jsxs'])('div', {
                             className: f.a.boxItem,
@@ -39156,7 +39152,9 @@
                             ],
                           }),
                           Object(d['jsxs'])('div', {
-                            className: f.a.boxItem,
+                            className: ''
+                              .concat(f.a.boxItem, ' ')
+                              .concat(f.a.light),
                             children: [
                               Object(d['jsx'])('div', {
                                 children: Object(d['jsx'])(l['a'], {
@@ -39169,11 +39167,11 @@
                                 children: [
                                   Object(d['jsx'])('p', {
                                     className: f.a.title,
-                                    children: '0.2 SOL',
+                                    children: '0.2 ETH',
                                   }),
                                   Object(d['jsx'])('p', {
                                     className: f.a.small,
-                                    children: '$6.31',
+                                    children: '$1226.31',
                                   }),
                                 ],
                               }),
@@ -39181,7 +39179,7 @@
                           }),
                           Object(d['jsx'])('hr', {}),
                           Object(d['jsxs'])('div', {
-                            className: f.a.boxItem,
+                            className: ''.concat(f.a.boxItem),
                             children: [
                               Object(d['jsx'])('div', {
                                 children: Object(d['jsx'])('p', {
@@ -39198,18 +39196,16 @@
                             ],
                           }),
                           Object(d['jsxs'])('div', {
-                            className: f.a.boxItem,
+                            className: ''
+                              .concat(f.a.boxItem, ' ')
+                              .concat(f.a.light),
                             children: [
-                              Object(d['jsxs'])('div', {
-                                children: [
-                                  Object(d['jsx'])('p', {
-                                    className: f.a.title,
-                                    children: 'USDC',
-                                  }),
-                                  Object(d['jsx'])('p', {
-                                    className: f.a.small,
-                                  }),
-                                ],
+                              Object(d['jsx'])('div', {
+                                children: Object(d['jsx'])(l['a'], {
+                                  icon: '/usdc.svg',
+                                  name: 'USDC',
+                                  price: '$9.98',
+                                }),
                               }),
                               Object(d['jsxs'])('div', {
                                 children: [
@@ -39226,28 +39222,26 @@
                             ],
                           }),
                           Object(d['jsxs'])('div', {
-                            className: f.a.boxItem,
+                            className: ''
+                              .concat(f.a.boxItem, ' ')
+                              .concat(f.a.light),
                             children: [
-                              Object(d['jsxs'])('div', {
-                                children: [
-                                  Object(d['jsx'])('p', {
-                                    className: f.a.title,
-                                    children: 'ETH',
-                                  }),
-                                  Object(d['jsx'])('p', {
-                                    className: f.a.small,
-                                  }),
-                                ],
+                              Object(d['jsx'])('div', {
+                                children: Object(d['jsx'])(l['a'], {
+                                  icon: '/btc.svg',
+                                  name: 'BTC',
+                                  price: '$1839.98',
+                                }),
                               }),
                               Object(d['jsxs'])('div', {
                                 children: [
                                   Object(d['jsx'])('p', {
                                     className: f.a.title,
-                                    children: '0.2 ETH',
+                                    children: '0.2 BTC',
                                   }),
                                   Object(d['jsx'])('p', {
                                     className: f.a.small,
-                                    children: '$131',
+                                    children: '$431',
                                   }),
                                 ],
                               }),
@@ -39258,7 +39252,6 @@
                     '2' == n &&
                       Object(d['jsxs'])('div', {
                         children: [
-                          Object(d['jsx'])('br', {}),
                           Object(d['jsx'])('h1', {
                             className: f.a.h1,
                             children:
