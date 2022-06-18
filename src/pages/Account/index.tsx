@@ -12,6 +12,8 @@ import {
   Drawer,
   Slider,
 } from 'antd';
+import KpToken from '@/components/KpToken';
+
 import styles from './index.less';
 const Page = () => {
   const [tabIndex, setTabIndex] = useState('2');
@@ -21,33 +23,33 @@ const Page = () => {
       dataIndex: 'timestamp',
     },
     {
-      title: 'Transaction type',
+      title: 'Transaction Type',
       dataIndex: 'type',
     },
     {
-      title: 'Balance changes',
+      title: 'Balance Changes',
       dataIndex: 'balance',
     },
     {
-      title: 'Txn details',
+      title: 'Txn Details',
       dataIndex: 'txn',
     },
   ];
   const data = [
     {
-      timestamp: 'today',
+      timestamp: '2022-12-12 00:01:01',
       type: 'Borrow',
       balance: '0.001ETH',
       txn: '',
     },
     {
-      timestamp: 'today',
+      timestamp: '2022-12-12 00:01:02',
       type: 'Borrow',
       balance: '0.2USDC',
       txn: '',
     },
     {
-      timestamp: 'today',
+      timestamp: '2022-12-12 00:01:03',
       type: 'Deposit',
       balance: '0.2BTC',
       txn: '',
@@ -73,7 +75,7 @@ const Page = () => {
                 >
                   <Tabs.TabPane tab="Balance" key="2"></Tabs.TabPane>
                   <Tabs.TabPane tab="Monitor" key="1"></Tabs.TabPane>
-                  <Tabs.TabPane tab="Activity" key="3"></Tabs.TabPane>
+                  <Tabs.TabPane tab="Order" key="3"></Tabs.TabPane>
                 </Tabs>
               </div>
               {tabIndex == '1' && (
@@ -140,10 +142,7 @@ const Page = () => {
                   </div>
                   <div className={styles.boxItem}>
                     <div>
-                      <p className={styles.title}>SOL</p>
-                      <p className={styles.small}>
-                        <input />
-                      </p>
+                      <KpToken icon="/eth.svg" name="ETH" price="$1839.98" />
                     </div>
                     <div>
                       <p className={styles.title}>0.2 SOL</p>
@@ -162,9 +161,7 @@ const Page = () => {
                   <div className={styles.boxItem}>
                     <div>
                       <p className={styles.title}>USDC</p>
-                      <p className={styles.small}>
-                        <input />
-                      </p>
+                      <p className={styles.small}></p>
                     </div>
                     <div>
                       <p className={styles.title}>0.2 USDC</p>
@@ -174,9 +171,7 @@ const Page = () => {
                   <div className={styles.boxItem}>
                     <div>
                       <p className={styles.title}>ETH</p>
-                      <p className={styles.small}>
-                        <input />
-                      </p>
+                      <p className={styles.small}></p>
                     </div>
                     <div>
                       <p className={styles.title}>0.2 ETH</p>
@@ -187,6 +182,7 @@ const Page = () => {
               )}
               {tabIndex == '2' && (
                 <div>
+                  <br />
                   <h1 className={styles.h1}>
                     Amounts below are based on current market price for the
                     lifetime interest/rewards accrued
@@ -206,23 +202,57 @@ const Page = () => {
                         <p className={styles.title}>$5.04</p>
                       </div>
                       <div>
-                        <p className={styles.small}>Total bBorrow Interest</p>
+                        <p className={styles.small}>Total Borrow Interest</p>
                         <p className={styles.title}>$5.04</p>
                       </div>
                     </div>
                   </div>
+                  <br />
                   <hr />
                   <div className={styles.boxItem}>
                     <div>
                       <p className={styles.small}>Assets Supplied</p>
-                      <p className={styles.title}>SOL</p>
+                    </div>
+                    <div>
+                      <p className={styles.small}>APR</p>
                     </div>
                     <div>
                       <p className={styles.small}>Lifetime Interest</p>
-                      <p className={styles.title}>0</p>
                     </div>
+
                     <div>
                       <p className={styles.small}>Rewards Earned</p>
+                    </div>
+                  </div>
+                  <div className={`${styles.boxItem} ${styles.light}`}>
+                    <div>
+                      <p className={styles.title}>
+                        <KpToken icon="/eth.svg" name="ETH" price="$1839.98" />
+                      </p>
+                    </div>
+                    <div>
+                      <p className={styles.title}>13.99%</p>
+                    </div>
+                    <div>
+                      <p className={styles.title}>+0.001 ETH</p>
+                    </div>
+                    <div>
+                      <p className={styles.title}>0</p>
+                    </div>
+                  </div>
+                  <div className={`${styles.boxItem} ${styles.light}`}>
+                    <div>
+                      <p className={styles.title}>
+                        <KpToken icon="/btc.svg" name="BTC" price="$21839" />
+                      </p>
+                    </div>
+                    <div>
+                      <p className={styles.title}>10.11%</p>
+                    </div>
+                    <div>
+                      <p className={styles.title}>+0.001 BTC</p>
+                    </div>
+                    <div>
                       <p className={styles.title}>0</p>
                     </div>
                   </div>
@@ -230,6 +260,9 @@ const Page = () => {
                   <div className={`${styles.boxItem}`}>
                     <div>
                       <p className={styles.small}>Assets Borrowed</p>
+                    </div>
+                    <div>
+                      <p className={styles.small}>APR</p>
                     </div>
                     <div>
                       <p className={styles.small}>Lifetime Interest</p>
@@ -240,7 +273,17 @@ const Page = () => {
                   </div>
                   <div className={`${styles.boxItem} ${styles.light}`}>
                     <div>
-                      <p className={styles.title}>USDC</p>
+                      <p className={styles.title}>
+                        <KpToken
+                          icon="/usdc.svg"
+                          name="USDC"
+                          price="$0.9889"
+                          lev="1x"
+                        />
+                      </p>
+                    </div>
+                    <div>
+                      <p className={styles.title}>3.01%</p>
                     </div>
                     <div>
                       <p className={styles.title}>-0.0002 USDC</p>
@@ -251,10 +294,20 @@ const Page = () => {
                   </div>
                   <div className={`${styles.boxItem} ${styles.light}`}>
                     <div>
-                      <p className={styles.title}>ETH</p>
+                      <p className={styles.title}>
+                        <KpToken
+                          icon="/btc.svg"
+                          name="BTC"
+                          price="$18039"
+                          lev="2x"
+                        />
+                      </p>
                     </div>
                     <div>
-                      <p className={styles.title}>+0.001 ETH</p>
+                      <p className={styles.title}>1.89%</p>
+                    </div>
+                    <div>
+                      <p className={styles.title}>-0.001 BTC</p>
                     </div>
                     <div>
                       <p className={styles.title}>0</p>

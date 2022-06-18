@@ -1,6 +1,7 @@
 @bgColor: #373536;
 .kt {
   display: inline-block;
+  position: relative;
   .wrap {
     display: flex;
     justify-content: space-between;
@@ -15,6 +16,19 @@
         color: var(--secondary);
         font-size: 12px;
       }
+    }
+    .lev {
+      background: #1b1d23;
+      border: 1px solid #373536;
+      border-radius: 5px;
+      padding: 2px 5px;
+      font-size: 12px;
+      display: inline-block;
+      min-width: unset;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      transform: translateX(140%);
     }
   }
 }

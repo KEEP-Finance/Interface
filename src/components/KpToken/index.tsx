@@ -1,7 +1,7 @@
 import styles from './index.less';
 
 const KpToken = (props: any) => {
-  const { icon, name, price, pool, ...rest } = props;
+  const { icon, name, price, pool, lev, ...rest } = props;
   return (
     <div className={styles.kt} {...rest}>
       <div className={styles.wrap}>
@@ -23,6 +23,8 @@ const KpToken = (props: any) => {
             </div>
           </>
         )}
+        {/* lev */}
+        {lev && <div className={styles.lev}>{lev}</div>}
       </div>
     </div>
   );

@@ -19,7 +19,12 @@
     }
   }
 }
-
+:global {
+  .ant-table-thead > tr > th {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+}
 .small {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.4);
@@ -48,15 +53,16 @@ hr {
 .boxItem {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 10px;
   p {
     margin: 0;
   }
 
-  div {
-    min-width: 100px;
-    &:last-child {
-      text-align: right;
+  & > div {
+    width: 25%;
+    &:first-child {
+      width: 30%;
     }
   }
 }
