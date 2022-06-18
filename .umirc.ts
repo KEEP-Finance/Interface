@@ -34,6 +34,11 @@ export default defineConfig({
           title: 'Keep Finance',
           component: '@/pages/Market',
         },
+        {
+          path: '/account',
+          title: 'Keep Finance',
+          component: '@/pages/Account',
+        },
       ],
     },
   ],

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { history } from 'umi';
 import { Layout, Menu, Row, Col } from 'antd';
 import { createFromIconfontCN } from '@ant-design/icons';
 import KpModal from '@/components/KpModal';
@@ -32,8 +33,12 @@ const Header = () => {
               transform: 'translateY(-1px)',
             }}
           >
-            <Menu.Item key="1">Market</Menu.Item>
-            <Menu.Item key="2">Account</Menu.Item>
+            <Menu.Item key="1" onClick={() => history.push('/')}>
+              Market
+            </Menu.Item>
+            <Menu.Item key="2" onClick={() => history.push('/account')}>
+              Account
+            </Menu.Item>
           </Menu>
         </Col>
         <div

@@ -44,7 +44,7 @@ const KpTotal = (props: any) => {
           dataSource={props.dataSource}
         />
         <KpBigInput />
-        {props.visibleLm && (
+        {/* {props.visibleLm && (
           <>
             <div className={styles.lm}>
               <div style={{ color: 'rgba(255,255,255,0.8)' }}>
@@ -77,7 +77,7 @@ const KpTotal = (props: any) => {
               />
             )}
           </>
-        )}
+        )} */}
 
         <KpInfoList dataSource={infolistMain} />
 
