@@ -75,7 +75,7 @@ const Page = () => {
                 >
                   <Tabs.TabPane tab="Balance" key="2"></Tabs.TabPane>
                   <Tabs.TabPane tab="Monitor" key="1"></Tabs.TabPane>
-                  <Tabs.TabPane tab="Order" key="3"></Tabs.TabPane>
+                  {/* <Tabs.TabPane tab="Order" key="3"></Tabs.TabPane> */}
                 </Tabs>
               </div>
               {tabIndex == '1' && (
@@ -130,7 +130,7 @@ const Page = () => {
                       </div>
                     </div>
                   </div>
-
+                  <br />
                   <hr />
                   <div className={styles.boxItem}>
                     <div>
@@ -140,17 +140,17 @@ const Page = () => {
                       <p className={styles.small}>Blanace</p>
                     </div>
                   </div>
-                  <div className={styles.boxItem}>
+                  <div className={`${styles.boxItem} ${styles.light}`}>
                     <div>
                       <KpToken icon="/eth.svg" name="ETH" price="$1839.98" />
                     </div>
                     <div>
-                      <p className={styles.title}>0.2 SOL</p>
-                      <p className={styles.small}>$6.31</p>
+                      <p className={styles.title}>0.2 ETH</p>
+                      <p className={styles.small}>$1226.31</p>
                     </div>
                   </div>
                   <hr />
-                  <div className={styles.boxItem}>
+                  <div className={`${styles.boxItem}`}>
                     <div>
                       <p className={styles.small}>Assets Borrowed</p>
                     </div>
@@ -158,31 +158,28 @@ const Page = () => {
                       <p className={styles.small}>Blanace</p>
                     </div>
                   </div>
-                  <div className={styles.boxItem}>
+                  <div className={`${styles.boxItem} ${styles.light}`}>
                     <div>
-                      <p className={styles.title}>USDC</p>
-                      <p className={styles.small}></p>
+                      <KpToken icon="/usdc.svg" name="USDC" price="$9.98" />
                     </div>
                     <div>
                       <p className={styles.title}>0.2 USDC</p>
                       <p className={styles.small}>$1.01</p>
                     </div>
                   </div>
-                  <div className={styles.boxItem}>
+                  <div className={`${styles.boxItem} ${styles.light}`}>
                     <div>
-                      <p className={styles.title}>ETH</p>
-                      <p className={styles.small}></p>
+                      <KpToken icon="/btc.svg" name="BTC" price="$1839.98" />
                     </div>
                     <div>
-                      <p className={styles.title}>0.2 ETH</p>
-                      <p className={styles.small}>$131</p>
+                      <p className={styles.title}>0.2 BTC</p>
+                      <p className={styles.small}>$431</p>
                     </div>
                   </div>
                 </div>
               )}
               {tabIndex == '2' && (
                 <div>
-                  <br />
                   <h1 className={styles.h1}>
                     Amounts below are based on current market price for the
                     lifetime interest/rewards accrued
