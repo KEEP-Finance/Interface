@@ -9,6 +9,7 @@ export const columns = [
     // specify the condition of filtering result
     // here is that finding the name started with `value`
     sorter: (a, b) => a.name.length - b.name.length,
+    showSorterTooltip: false,
     render: (text, item) => (
       <KpToken icon={text} name={item.name} price="$28903.2" />
     ),
@@ -19,6 +20,7 @@ export const columns = [
     dataIndex: 'age',
     defaultSortOrder: 'descend',
     sorter: (a, b) => a.age - b.age,
+    showSorterTooltip: false,
     render: (text) => `${text}%`,
   },
   {
@@ -26,6 +28,7 @@ export const columns = [
     width: '16%',
     dataIndex: 'address',
     sorter: (a, b) => a.address.length - b.address.length,
+    showSorterTooltip: false,
     render: (text, item) => (
       <KpTotal number="1,234" name={item.name} price="$28903.2" />
     ),
@@ -35,6 +38,7 @@ export const columns = [
     width: '16%',
     dataIndex: 'age',
     sorter: (a, b) => a.address.length - b.address.length,
+    showSorterTooltip: false,
     render: (text) => `${text / 10}%`,
   },
   {
@@ -42,6 +46,7 @@ export const columns = [
     width: '16%',
     dataIndex: 'address',
     sorter: (a, b) => a.address.length - b.address.length,
+    showSorterTooltip: false,
     render: (text, item) => (
       <KpTotal number="1,234" name={item.name} price="$28903.2" />
     ),
@@ -51,6 +56,7 @@ export const columns = [
     title: 'Borrow APR',
     dataIndex: 'age',
     sorter: (a, b) => a.address.length - b.address.length,
+    showSorterTooltip: false,
     render: (text) => `${text / 10}%`,
   },
   Table.EXPAND_COLUMN,
@@ -228,6 +234,7 @@ export const columnsPool = [
     // specify the condition of filtering result
     // here is that finding the name started with `value`
     sorter: (a, b) => a.key - b.key,
+    showSorterTooltip: false,
     render: (text, item) => (
       <span>
         #{item.key} {item.name}
@@ -240,6 +247,7 @@ export const columnsPool = [
     dataIndex: 'age',
     defaultSortOrder: 'descend',
     sorter: (a, b) => a.age - b.age,
+    showSorterTooltip: false,
     render: (text) => `${text}%`,
   },
   {
@@ -247,6 +255,7 @@ export const columnsPool = [
     width: '16%',
     dataIndex: 'address',
     sorter: (a, b) => a.address.length - b.address.length,
+    showSorterTooltip: false,
     render: () => <KpTotal number="1,234" name="BTC" price="$28903.2" />,
   },
   {
@@ -254,6 +263,7 @@ export const columnsPool = [
     width: '16%',
     dataIndex: 'age',
     sorter: (a, b) => a.address.length - b.address.length,
+    showSorterTooltip: false,
     render: (text) => `${text / 10}%`,
   },
   {
@@ -261,6 +271,7 @@ export const columnsPool = [
     width: '16%',
     dataIndex: 'address',
     sorter: (a, b) => a.address.length - b.address.length,
+    showSorterTooltip: false,
     render: () => <KpTotal number="1,234" name="BTC" price="$28903.2" />,
   },
   {
@@ -268,6 +279,7 @@ export const columnsPool = [
     title: 'Borrow APR',
     dataIndex: 'age',
     sorter: (a, b) => a.address.length - b.address.length,
+    showSorterTooltip: false,
     render: (text) => `${text / 10}%`,
   },
   Table.EXPAND_COLUMN,

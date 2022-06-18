@@ -24,7 +24,7 @@
 }
 .witem {
   .title {
-    font-size: 12;
+    font-size: 12px;
     color: #b5b5b6;
     display: flex;
     align-items: center;
@@ -49,6 +49,20 @@
     img {
       width: 20px;
       margin-right: 10px;
+    }
+    .checked {
+      display: none;
+      position: absolute;
+      right: 1px;
+      bottom: 1px;
+    }
+  }
+  .tokenChecked {
+    border: 1px solid #ffc000;
+    color: #ffffff;
+    .checked {
+      color: #ffc000;
+      display: block;
     }
   }
 }

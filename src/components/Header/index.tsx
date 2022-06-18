@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { history } from 'umi';
 import { Layout, Menu, Row, Col } from 'antd';
-import { createFromIconfontCN } from '@ant-design/icons';
+import { createFromIconfontCN, CheckCircleOutlined } from '@ant-design/icons';
 import KpModal from '@/components/KpModal';
 import { ReactComponent as Logo } from '@/assets/logo.svg';
 import { ReactComponent as Opera } from './Opera.svg';
@@ -11,11 +11,34 @@ import styles from './index.less';
 const IconFont = createFromIconfontCN({
   scriptUrl: iconjs,
 });
+const network = [
+  {
+    name: 'BNB Chain',
+    img: '/bnb.svg',
+    checked: false,
+  },
+  {
+    name: 'Polygon',
+    img: '/polygon.svg',
+    checked: false,
+  },
+  {
+    name: 'Ethereum',
+    img: '/eth.svg',
+    checked: false,
+  },
+  {
+    name: 'Fox',
+    img: '/fox.svg',
+    checked: false,
+  },
+];
 const Header = () => {
   const [visibleMetaMask, setVisibleMetaMask] = useState(false);
   const onhandCancel = () => {
     setVisibleMetaMask((data) => !data);
   };
+  const [networkList, setNetworkList] = useState(network);
   return (
     <Layout.Header className={styles.header}>
       <Row justify="space-between" align="middle">
@@ -63,36 +86,37 @@ const Header = () => {
         }}
       >
         <div className={styles.witem}>
-          <div className={styles.title}>Select a Network</div>
+          <div className={styles.title}>1. Select a Network</div>
           <Row>
-            <Col span={12}>
-              <div className={styles.tokenBox}>
-                <img src="/bnb.svg" />
-                BNB Chain
-              </div>
-            </Col>
-            <Col span={12}>
-              <div className={styles.tokenBox}>
-                <img src="/polygon.svg" />
-                Polygon
-              </div>
-            </Col>
-            <Col span={12}>
-              <div className={styles.tokenBox}>
-                <img src="/eth.svg" />
-                Ethereum
-              </div>
-            </Col>
-            <Col span={12}>
-              <div className={styles.tokenBox}>
-                <img src="/fox.svg" />
-                Fox
-              </div>
-            </Col>
+            {networkList.map((item, index) => {
+              return (
+                <Col span={12}>
+                  <div
+                    onClick={() => {
+                      setNetworkList((data) => {
+                        let newData = data.map((item) => {
+                          item.checked = false;
+                          return item;
+                        });
+                        newData[index].checked = true;
+                        return newData;
+                      });
+                    }}
+                    className={`${styles.tokenBox} ${
+                      item.checked && styles.tokenChecked
+                    }`}
+                  >
+                    <img src={item.img} />
+                    {item.name}
+                    <CheckCircleOutlined className={styles.checked} />
+                  </div>
+                </Col>
+              );
+            })}
           </Row>
         </div>
         <div className={styles.witem} style={{ marginTop: '20px' }}>
-          <div className={styles.title}>Select a Wallet</div>
+          <div className={styles.title}>2. Select a Wallet</div>
           <Row>
             <Col span={12}>
               <div className={styles.tokenBox}>
