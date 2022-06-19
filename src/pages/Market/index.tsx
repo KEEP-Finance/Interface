@@ -220,6 +220,14 @@ const Page = () => {
                           showHeader={false}
                           pagination={false}
                           dataSource={record.childData}
+                          onRow={(record2) => {
+                            return {
+                              onClick: (event) => {
+                                setR1(record2);
+                                setR2(record);
+                              }, // 点击行
+                            };
+                          }}
                         />
                       </div>
                     ),

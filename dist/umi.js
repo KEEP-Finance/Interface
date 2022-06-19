@@ -57856,7 +57856,7 @@
           sorter: (e, t) => e.key - t.key,
           showSorterTooltip: !1,
           render: (e, t) =>
-            Object(Ae['jsxs'])('span', { children: ['#', t.key, ' ', t.name] }),
+            Object(Ae['jsxs'])('span', { children: ['0', t.key, ' ', t.name] }),
         },
         {
           title: 'LTV',
@@ -58338,6 +58338,11 @@
                                     showHeader: !1,
                                     pagination: !1,
                                     dataSource: e.childData,
+                                    onRow: (t) => ({
+                                      onClick: (n) => {
+                                        h(t), g(e);
+                                      },
+                                    }),
                                   }),
                                 }),
                             },

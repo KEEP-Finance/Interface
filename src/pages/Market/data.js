@@ -237,7 +237,7 @@ export const columnsPool = [
     showSorterTooltip: false,
     render: (text, item) => (
       <span>
-        #{item.key} {item.name}
+        0{item.key} {item.name}
       </span>
     ),
   },
