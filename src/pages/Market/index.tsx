@@ -219,7 +219,7 @@ const Page = () => {
                           columns={childColumnsPool}
                           showHeader={false}
                           pagination={false}
-                          dataSource={childDataPool}
+                          dataSource={record.childData}
                         />
                       </div>
                     ),
