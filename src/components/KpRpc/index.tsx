@@ -1,46 +1,50 @@
 import { DownOutlined, SmileOutlined } from '@ant-design/icons';
 import { Dropdown, Menu, Space } from 'antd';
+import { useWeb3React } from '@web3-react/core';
 import styles from './index.less';
-const menu = (
-  <div className={styles.marker}>
-    <ul>
-      <div className={styles.title}>
-        <p>Select Market</p>
-        <hr></hr>
-      </div>
-      <li>
-        <div className={styles.icon}>
-          <img src="/bnb.svg" />
+import { getNetworks, getDefaultNetwork } from '@/constants';
+import millify from 'millify';
+const menu = (chainId: Number) => {
+  const networks = getNetworks();
+  const otherNetworks = networks.filter((network) => network.id != chainId);
+  return (
+    <div className={styles.marker}>
+      <ul>
+        <div className={styles.title}>
+          <p>Select Market</p>
+          <hr></hr>
         </div>
-        <div>BNB Chain</div>
-      </li>
-      <li>
-        <div className={styles.icon}>
-          <img src="/polygon.svg" />
-        </div>
-        <div>POLYGON</div>
-      </li>
-    </ul>
-  </div>
-);
+        {otherNetworks.map((network) => (
+          <li>
+            <div className={styles.icon}>
+              <img src={network.img} />
+            </div>
+            <div>{network.name}</div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 const KpTotal = (props: any) => {
   const { name, price, number, ...rest } = props;
+  let { chainId } = useWeb3React();
+  const defaultNetwork = getDefaultNetwork();
+  chainId = chainId || defaultNetwork.id;
+  const currentNetwork = getNetworks().find((net) => net.id == chainId);
   return (
     <div className={styles.kt} {...rest}>
-      <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
-        <div className={styles.title}>
-          <div>
-            <img
-              style={{ width: '35px', verticalAlign: 'top' }}
-              src="/eth.svg"
-            />
-            <span className={styles.rpc}>Ethereum</span>
-            <DownOutlined style={{ fontSize: '20px', color: '#ffffff' }} />
-          </div>
+      <div className={styles.title}>
+        <div>
+          <img
+            style={{ width: '35px', verticalAlign: 'top' }}
+            src={currentNetwork.img}
+          />
+          <span className={styles.rpc}>{currentNetwork.name}</span>
         </div>
-      </Dropdown>
+      </div>
       <div className={styles.dashboard}>
-        <div className={styles.item}>
+        {/* <div className={styles.item}>
           <div>
             <div></div>
             <div>
@@ -49,14 +53,14 @@ const KpTotal = (props: any) => {
               <span>Total market size</span>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className={styles.item}>
           <div>
             <div></div>
             <div>
-              <span>$5.69M</span>
+              <span>${millify(props.totalSupply)}</span>
               <br />
-              <span>Total available</span>
+              <span>Total supply</span>
             </div>
           </div>
         </div>
@@ -64,7 +68,7 @@ const KpTotal = (props: any) => {
           <div>
             <div></div>
             <div>
-              <span>$5.69M</span>
+              <span>${millify(props.totalBorrows)}</span>
               <br />
               <span>Total borrows</span>
             </div>

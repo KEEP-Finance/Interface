@@ -1,12 +1,19 @@
 import { Row, Col, Button, Slider, Checkbox } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ReactComponent as Expand } from '@/assets/expand.svg';
 import KpBigInput from '@/components/KpBigInput';
 import KpInfoList from '@/components/KpInfoList';
 import KpTokenInput from '@/components/KpTokenInput';
-import KpTokenSelect from '@/components/KpTokenSelect';
+import KpTokenNPoolSelect from '@/components/KpTokenNPoolSelect';
+import { ethers } from 'ethers';
 
 import styles from './index.less';
+import { useWeb3React } from '@web3-react/core';
+import { approve, checkAllowance, performTx, withConfirmation } from '@/apis';
+import { getPoolAddr, getToken } from '@/constants';
+import useSWR from 'swr';
+import LendingPool from '@/abis/LendingPool.json';
+import { parseUnits } from '@ethersproject/units';
 const infolistMain = [
   ['User borrow limit', '$0.00'],
   ['Utilization', '0%'],
@@ -28,72 +35,154 @@ const infolistMore = [
   ['Switchboard oracle address', 'Bgxf...Mpmw '],
 ];
 
+const checkApprove = () => {};
+
 const KpTotal = (props: any) => {
-  const { dataSource, onSelectPool, onSelectToken, ...rest } = props;
-  const [more, setMore] = useState(false);
-  const [lm, setLm] = useState(true);
-  const [val, setVal] = useState(1);
-  // 选择token
-  const onChoseToken = (props: any) => {};
+  const { dataSource, onSelectPool, onSelectToken, selectedTab, ...rest } =
+    props;
+  const { active, account, chainId, library } = useWeb3React();
+  const [inputVal, setInputVal] = useState();
+  const [step, setStep] = useState('approve');
+
+  const TabRef = useRef();
+  TabRef.current = selectedTab;
+  // useEffect(() => {
+
+  // }, [])
+
+  console.log('kpbuy, r1, r2', dataSource);
+
+  const onButtonClicked = (selectedTab) => {
+    console.log('executingTX');
+    if (step == 'approve') {
+      const poolName = dataSource.r2.name;
+      const poolAddr = getPoolAddr(poolName);
+      console.log('kpbuy, r2 name: ', poolAddr, chainId);
+      approve(chainId, library, account, dataSource.r1.name, poolAddr);
+    } else {
+      const token = getToken(chainId, dataSource.r1.name);
+      const parsedAmount = parseUnits(
+        inputVal || `0`,
+        token.decimals,
+      ).toString();
+      if (TabRef.current == 'Supply') {
+        const poolName = dataSource.r2.name;
+        const poolAddr = getPoolAddr(poolName);
+        console.log(LendingPool);
+        withConfirmation(
+          performTx(library, LendingPool.abi, account, poolAddr, 'deposit', [
+            token.address,
+            parsedAmount,
+            account,
+          ]),
+        ).then(() => {
+          console.log('Transaction done');
+        });
+      } else if (TabRef.current == 'Borrow') {
+        const poolName = dataSource.r2.name;
+        const poolAddr = getPoolAddr(poolName);
+        console.log(LendingPool);
+        withConfirmation(
+          performTx(library, LendingPool.abi, account, poolAddr, 'borrow', [
+            token.address,
+            parsedAmount,
+            2,
+            account,
+          ]),
+        ).then(() => {
+          console.log('Transaction done');
+        });
+      } else if (TabRef.current == 'Withdraw') {
+        const poolName = dataSource.r2.name;
+        const poolAddr = getPoolAddr(poolName);
+        console.log(LendingPool);
+        // const parsedAmount = parseUnits(`${inputVal}`,decimals).toString();
+        withConfirmation(
+          performTx(library, LendingPool.abi, account, poolAddr, 'withdraw', [
+            token.address,
+            parsedAmount,
+            account,
+          ]),
+        ).then(() => {
+          console.log('Transaction done');
+        });
+      } else if (TabRef.current == 'Repay') {
+        const poolName = dataSource.r2.name;
+        const poolAddr = getPoolAddr(poolName);
+        console.log(LendingPool);
+        // const parsedAmount = parseUnits(`${inputVal}`,decimals).toString();
+        withConfirmation(
+          performTx(library, LendingPool.abi, account, poolAddr, 'repay', [
+            token.address,
+            parsedAmount,
+            2,
+            account,
+          ]),
+        ).then(() => {
+          console.log('Transaction done');
+        });
+      }
+    }
+  };
+
+  const token = dataSource.r1.name || 'ETH';
+  const poolAddr = dataSource.r2?.name
+    ? getPoolAddr(dataSource.r2.name)
+    : 'Main Pool';
+  console.log('kpbuy, mainpool', poolAddr);
+
+  const { data: allowance, mutate: updateAllowance } = useSWR(
+    [chainId, library, account, token, poolAddr],
+    checkAllowance,
+  );
+
+  useEffect(() => {
+    console.log('kpbuy, update step', inputVal, allowance);
+    if (!inputVal || !allowance) return;
+    const inputBN = ethers.BigNumber.from(`${inputVal}`);
+    if (inputBN.gt(allowance)) {
+      setStep('approve');
+    } else {
+      setStep('tx');
+    }
+  }, [allowance, inputVal]);
+
+  useEffect(() => {
+    if (!library) return;
+    library.on('block', () => {
+      console.log('kpbuy, updated block');
+      updateAllowance();
+    });
+    return () => {
+      library.removeAllListeners('block');
+    };
+  }, [library]);
+
+  const printArgs = () => {
+    console.log('kpbuy, args: ', dataSource.r1, dataSource.r2, inputVal);
+  };
+
   return (
     <div className={styles.ki} {...rest}>
       <div style={{ padding: '36px 15px' }}>
-        <KpTokenSelect
+        <KpTokenNPoolSelect
+          pool
           onSelectPool={onSelectPool}
           onSelectToken={onSelectToken}
           dataSource={props.dataSource}
         />
-        <KpBigInput />
-        {/* {props.visibleLm && (
-          <>
-            <div className={styles.lm}>
-              <div style={{ color: 'rgba(255,255,255,0.8)' }}>
-                Leverage Model
-              </div>
-              <div className={styles.inputArea}>
-                <div>
-                  <input
-                    value={
-                      (typeof val == 'number' && (val * 1).toFixed(1)) || val
-                    }
-                    onChange={(e) => setVal(e.target.value)}
-                  />
-                  <span>x</span>
-                </div>
-              </div>
-              <Checkbox
-                checked={lm}
-                onChange={(e) => setLm(e.target.checked)}
-              />
-            </div>
-            {lm && (
-              <Slider
-                onChange={(e) => setVal(e)}
-                marks={{ 1: '1x', 2: '2x', 3: '3x', 4: '4x', 5: '5x' }}
-                value={val}
-                step={0.1}
-                min={1}
-                max={5}
-              />
-            )}
-          </>
-        )} */}
+        <KpBigInput
+          placeholder="Amount"
+          inputVal={inputVal}
+          setInputVal={setInputVal}
+        />
 
         <KpInfoList dataSource={infolistMain} />
 
-        <p
-          className={`${styles.seemore} ${more && styles.seeless}`}
-          onClick={() =>
-            setMore((data) => {
-              return !data;
-            })
-          }
-        >
-          See {(!more && 'More') || 'Less'} <Expand />
-        </p>
-        {more && <KpInfoList dataSource={infolistMore} />}
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <Button onClick={props.open}>Connect Wallet</Button>
+          <Button disabled={!active} onClick={onButtonClicked}>
+            {step == 'approve' ? 'Approve' : selectedTab}
+          </Button>
         </div>
       </div>
     </div>

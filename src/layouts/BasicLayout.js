@@ -1,3 +1,4 @@
+import { useState, cloneElement } from 'react';
 import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { Layout } from 'antd';
@@ -12,12 +13,15 @@ function getLibrary(provider) {
   return library;
 }
 const BasicLayout = (props) => {
+  const { pathname } = props.location;
+
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <Layout style={{ minHeight: '100vh' }}>
         <Header />
         <Content className={styles.main} style={{ padding: '0 150px' }}>
           {props.children}
+          {/* {cloneElement(props.children, {setVisibleMetaMask: setVisibleMetaMask})} */}
         </Content>
         <Footer />
       </Layout>
