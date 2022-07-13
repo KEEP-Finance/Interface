@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
+import { useEffect, useState, useMemo } from 'react';
+import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import {
   Row,
@@ -12,6 +13,12 @@ import {
   Drawer,
   Slider,
 } from 'antd';
+import { getDefaultNetwork, getTokenList } from '@/constants';
+import usePriceFeed from '@/components/Covalent';
+import { readState } from '@/apis';
+import { getContractAddr } from '@/constants/addresses';
+import DataProvider from '@/abis/DataProvider.json';
+import { toFloat } from '@/utils';
 import KpBuy from '@/components/KpBuy';
 import KpRpc from '@/components/KpRpc';
 import KpTabs from '@/components/KpTabs';
@@ -26,100 +33,203 @@ import {
   childColumnsPool,
   childDataPool,
 } from './data';
+
 import styles from './index.less';
 const { TabPane } = Tabs;
-const tokenList = [
-  {
-    key: '1',
-    name: 'BTC',
-    age: 32,
-    icon: '/btc.svg',
-    address: 'New York No. 1 Lake Park',
-  },
-  {
-    key: '2',
-    name: 'BNB',
-    age: 42,
-    icon: '/bnb.svg',
-    address: 'London No. 1 Lake Park',
-  },
-  {
-    key: '3',
-    name: 'DAI',
-    icon: '/dai.svg',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-  },
-  {
-    key: '4',
-    name: 'ETH',
-    icon: '/eth.svg',
-    age: 32,
-    address: 'London No. 2 Lake Park',
-  },
-  {
-    key: '5',
-    name: 'USDA',
-    icon: '/usda.svg',
-    age: 32,
-    address: 'London No. 2 Lake Park',
-  },
-  {
-    key: '6',
-    name: 'USDC',
-    icon: '/usdc.svg',
-    age: 32,
-    address: 'London No. 2 Lake Park',
-  },
-  {
-    key: '7',
-    name: 'USDH',
-    icon: '/usdh.svg',
-    age: 32,
-    address: 'London No. 2 Lake Park',
-  },
-  {
-    key: '8',
-    name: 'USDT',
-    age: 32,
-    icon: '/usdt.svg',
-    address: 'London No. 2 Lake Park',
-  },
-  {
-    key: '9',
-    name: 'FOX',
-    age: 32,
-    icon: '/fox.svg',
-    address: 'London No. 2 Lake Park',
-  },
-  {
-    key: '10',
-    name: 'BUSD',
-    age: 32,
-    icon: '/busd.svg',
-    address: 'London No. 2 Lake Park',
-  },
-  {
-    key: '11',
-    name: 'POLYGON',
-    age: 32,
-    icon: '/polygon.svg',
-    address: 'London No. 2 Lake Park',
-  },
-];
+// const tokenList = [
+//   {
+//     key: '1',
+//     name: 'BTC',
+//     age: 32,
+//     icon: '/btc.svg',
+//     address: 'New York No. 1 Lake Park',
+//   },
+//   {
+//     key: '2',
+//     name: 'BNB',
+//     age: 42,
+//     icon: '/bnb.svg',
+//     address: 'London No. 1 Lake Park',
+//   },
+//   {
+//     key: '3',
+//     name: 'DAI',
+//     icon: '/dai.svg',
+//     age: 32,
+//     address: 'Sidney No. 1 Lake Park',
+//   },
+//   {
+//     key: '4',
+//     name: 'ETH',
+//     icon: '/eth.svg',
+//     age: 32,
+//     address: 'London No. 2 Lake Park',
+//   },
+//   {
+//     key: '5',
+//     name: 'USDA',
+//     icon: '/usda.svg',
+//     age: 32,
+//     address: 'London No. 2 Lake Park',
+//   },
+//   {
+//     key: '6',
+//     name: 'USDC',
+//     icon: '/usdc.svg',
+//     age: 32,
+//     address: 'London No. 2 Lake Park',
+//   },
+//   {
+//     key: '7',
+//     name: 'USDH',
+//     icon: '/usdh.svg',
+//     age: 32,
+//     address: 'London No. 2 Lake Park',
+//   },
+//   {
+//     key: '8',
+//     name: 'USDT',
+//     age: 32,
+//     icon: '/usdt.svg',
+//     address: 'London No. 2 Lake Park',
+//   },
+//   {
+//     key: '9',
+//     name: 'FOX',
+//     age: 32,
+//     icon: '/fox.svg',
+//     address: 'London No. 2 Lake Park',
+//   },
+//   {
+//     key: '10',
+//     name: 'BUSD',
+//     age: 32,
+//     icon: '/busd.svg',
+//     address: 'London No. 2 Lake Park',
+//   },
+//   {
+//     key: '11',
+//     name: 'POLYGON',
+//     age: 32,
+//     icon: '/polygon.svg',
+//     address: 'London No. 2 Lake Park',
+//   },
+// ];
+
 const Page = () => {
   // library	当前连接的library
   // deactivate	断开连接的方法
   // chainId	当前连接的链id
   // account	当前连接的钱包账户地址
   // active	当前连接的状态，是否连接
-  const { library, deactivate, chainId, account, active, activate, error } =
+  let { library, deactivate, chainId, account, active, activate, error } =
     useWeb3React();
+
+  chainId = getDefaultNetwork().id;
+
+  const tokenList = [
+    {
+      key: '0',
+      name: 'POLYGON',
+      icon: '/polygon.svg',
+      address: '0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44',
+      pools: ['Main Pool', 'MATIC Pool'],
+    },
+    {
+      key: '1',
+      name: 'BTC',
+      age: 32,
+      icon: '/btc.svg',
+      address: 'New York No. 1 Lake Park',
+      pools: ['Main Pool'],
+    },
+    {
+      key: '2',
+      name: 'ETH',
+      icon: '/eth.svg',
+      age: 32,
+      address: '0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44',
+      pools: ['Main Pool', 'MATIC Pool'],
+    },
+    {
+      key: '3',
+      name: 'USDC',
+      icon: '/usdc.svg',
+      age: 32,
+      address: '0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1',
+      pools: ['Main Pool'],
+    },
+    //random inputs
+    {
+      key: '4',
+      name: 'BNB',
+      age: 42,
+      icon: '/bnb.svg',
+      address: 'London No. 1 Lake Park',
+      pools: ['Main Pool'],
+    },
+    {
+      key: '5',
+      name: 'DAI',
+      icon: '/dai.svg',
+      age: 32,
+      address: 'Sidney No. 1 Lake Park',
+      pools: ['Main Pool'],
+    },
+    {
+      key: '6',
+      name: 'USDA',
+      icon: '/usda.svg',
+      age: 32,
+      address: 'London No. 2 Lake Park',
+      pools: ['Main Pool'],
+    },
+    {
+      key: '7',
+      name: 'USDH',
+      icon: '/usdh.svg',
+      age: 32,
+      address: 'London No. 2 Lake Park',
+      pools: ['Main Pool'],
+    },
+    {
+      key: '8',
+      name: 'USDT',
+      age: 32,
+      icon: '/usdt.svg',
+      address: 'London No. 2 Lake Park',
+      pools: ['Main Pool'],
+    },
+    {
+      key: '9',
+      name: 'FOX',
+      age: 32,
+      icon: '/fox.svg',
+      address: 'London No. 2 Lake Park',
+      pools: ['Main Pool'],
+    },
+    {
+      key: '10',
+      name: 'BUSD',
+      age: 32,
+      icon: '/busd.svg',
+      address: 'London No. 2 Lake Park',
+      pools: ['Main Pool'],
+    },
+  ];
+
+  // const tokenList = getTokenList(chainId);
+
+  const [selectedTab, setSelectedTab] = useState('Supply');
   const [more, setMore] = useState(false);
   const [pool, setPool] = useState(false);
   const [lm, setLm] = useState(false);
   const [r1, setR1] = useState({});
   const [r2, setR2] = useState({});
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+  const [poolData, setPoolData] = useState([]);
+  const [dashboardData, setDashboardData] = useState({});
+
   const injected = new InjectedConnector({
     supportedChainIds: [56],
   });
@@ -152,6 +262,117 @@ const Page = () => {
   const onChange = (key: any) => {
     setKey(key);
   };
+  const latestPrices = usePriceFeed();
+
+  // fetch asset, ltv, totalSupply, supplyApr, totalBorrow, borrowApr for all token, all pools
+  // dashboard data fetching
+  const fetchDashboardData = async () => {
+    // const tokenList = getTokenList(chainId);
+    const newDashboardData = {};
+    for (let i = 0; i < tokenList.length; i++) {
+      console.log('hjhjhj fetchdashboard data tokenList', tokenList);
+      const token = tokenList[i];
+      const res = await readState(
+        library,
+        DataProvider.abi,
+        getContractAddr('dataProvider'),
+        'getReserveData',
+        [0, token.address],
+      );
+      if (!res) {
+        console.warn('market, failed to fetch data from DataProvider');
+        break;
+      }
+      console.log('hjhjhj fetchdashboard data res', res);
+
+      const data = {
+        ltv: toFloat(res[0][0], 2),
+        totalSupply: toFloat(res[1], 27),
+        totalBorrow: toFloat(res[2], 27),
+        supplyApr: toFloat(res[3], 27),
+        borrowApr: toFloat(res[4], 27),
+      };
+      // console.log("market, table data: ", data);
+      newDashboardData[`${token.name}-Main Pool`] = data;
+    }
+    console.log('market, table data: ', newDashboardData);
+    setDashboardData(newDashboardData);
+  };
+
+  useEffect(() => {
+    console.log('hjhjhj library', library);
+    if (!library) return;
+    library.on('block', async () => {
+      console.log('hjhjhj library  before');
+
+      await fetchDashboardData();
+      console.log('hjhjhj library afterx');
+    });
+  }, [library]);
+
+  const marketData = useMemo(() => {
+    let marketData = tokenList.map((token, idx) => {
+      const pools = token.pools.map((poolName) => {
+        const key = `${token.name}-${poolName}`;
+        const temp = {
+          key: idx,
+          token: token.name,
+          name: poolName,
+          ltv: dashboardData[key]?.ltv || 0,
+          totalSupply: dashboardData[key]?.totalSupply || 0,
+          totalBorrow: dashboardData[key]?.totalBorrow || 0,
+          supplyApr: dashboardData[key]?.supplyApr || 0,
+          borrowApr: dashboardData[key]?.borrowApr || 0,
+        };
+        return temp;
+      });
+
+      const stats = {
+        ltv: pools.reduce((prev, pool) => prev + pool.ltv, 0) / pools.length,
+        totalBorrow: pools.reduce((prev, pool) => prev + pool.totalBorrow, 0),
+        totalSupply: pools.reduce((prev, pool) => prev + pool.totalSupply, 0),
+        borrowApr:
+          pools.reduce((prev, pool) => prev + pool.borrowApr, 0) / pools.length,
+        supplyApr:
+          pools.reduce((prev, pool) => prev + pool.supplyApr, 0) / pools.length,
+      };
+      return {
+        key: idx,
+        icon: token.icon,
+        name: token.name,
+        pools,
+        ...stats,
+      };
+    });
+
+    // console.log('debug, marketData: ', marketData);
+    return marketData;
+  }, [tokenList, latestPrices]);
+
+  useEffect(() => {
+    let newPoolData = [];
+    if (marketData) {
+      // console.log('debug, poolData expanded: ', expandedRowKeys);
+      newPoolData = marketData[expandedRowKeys]?.pools;
+      console.log(
+        // 'debug, poolData: ',
+        marketData,
+        expandedRowKeys,
+        newPoolData,
+      );
+    }
+    setPoolData(newPoolData);
+  }, [marketData, expandedRowKeys]);
+
+  // only expand one row at a time: https://stackoverflow.com/questions/67295603/react-and-expandedrow-render-in-ant-design
+  const onTableRowExpand = (expanded, record) => {
+    const keys = [];
+    if (expanded) {
+      keys.push(record.key); // I have set my record.id as row key. Check the documentation for more details.
+    }
+    setExpandedRowKeys(keys);
+  };
+
   return (
     <div className={styles.market}>
       <Row>
@@ -180,7 +401,9 @@ const Page = () => {
                 <Table
                   style={{ border: '1px solid #1b1d23' }}
                   columns={columns}
-                  dataSource={data}
+                  dataSource={marketData}
+                  expandedRowKeys={expandedRowKeys}
+                  onExpand={onTableRowExpand}
                   expandable={{
                     expandRowByClick: true,
                     expandedRowRender: (record1) => (
@@ -190,7 +413,7 @@ const Page = () => {
                           columns={childColumns}
                           showHeader={false}
                           pagination={false}
-                          dataSource={childData}
+                          dataSource={record1.pools}
                           onRow={(record2) => {
                             return {
                               onClick: (event) => {
