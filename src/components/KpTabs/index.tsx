@@ -29,12 +29,28 @@ const marginTabs = [
     name: 'Short',
     checked: false,
   },
+  {
+    name: 'Advanced',
+    checked: false,
+  },
+];
+
+const priceChartTabs = [
+  {
+    name: 'Long Token',
+    checked: true,
+  },
+  {
+    name: 'Short Token',
+    checked: false,
+  },
 ];
 
 const tabsSelector = (tabType) =>
   ({
     margin: marginTabs,
     market: marketTabs,
+    priceChart: priceChartTabs,
   }[tabType]);
 
 const KpTabs = (props) => {

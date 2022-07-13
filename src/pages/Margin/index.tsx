@@ -24,12 +24,15 @@ const Page = () => {
   const [more, setMore] = useState(false);
   const [pool, setPool] = useState(false);
   const [selectedTab, setSelectedTab] = useState('Long');
+  const [chartType, setChartType] = useState('Long Token');
   const [lm, setLm] = useState(false);
   const [r1, setR1] = useState({});
   const [r2, setR2] = useState({});
   const [tokenUpdated, setTokenUpdated] = useState('Collateral');
   const [collateralToken, setCollateralToken] = useState();
   const [futureToken, setFutureToken] = useState();
+  const [longToken, setLongToken] = useState();
+  const [shortToken, setShortToken] = useState();
   const injected = new InjectedConnector({
     supportedChainIds: [56],
   });
@@ -66,7 +69,22 @@ const Page = () => {
         <Col className={styles.main} span={24}>
           <Row>
             <Col span={16}>
-              <KpPriceChart token={futureToken?.name || 'BTC'} />
+              {selectedTab == 'Advanced' ? (
+                <>
+                  <KpTabs
+                    tabType="priceChart"
+                    setSelectedTab={setChartType}
+                    onChange={() => {}}
+                  />
+                  {chartType == 'Long Token' ? (
+                    <KpPriceChart token={longToken?.name || 'BTC'} />
+                  ) : (
+                    <KpPriceChart token={shortToken?.name || 'BTC'} />
+                  )}
+                </>
+              ) : (
+                <KpPriceChart token={futureToken?.name || 'BTC'} />
+              )}
               <KpMarginDashboard />
             </Col>
             <Col
@@ -85,6 +103,10 @@ const Page = () => {
                   setCollateralToken={setCollateralToken}
                   futureToken={futureToken}
                   setFutureToken={setFutureToken}
+                  longToken={longToken}
+                  setLongToken={setLongToken}
+                  shortToken={shortToken}
+                  setShortToken={setShortToken}
                   onSelectPool={() => {}}
                   selectedTab={selectedTab}
                   selectedToken={r1}

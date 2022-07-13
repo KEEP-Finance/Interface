@@ -6,6 +6,8 @@ import KpInfoList from '@/components/KpInfoList';
 import { useWeb3React } from '@web3-react/core';
 import KpTokenInput from '@/components/KpTokenInput';
 import KpTokenSelect from '@/components/KpTokenSelect';
+import KpInputSection from '@/components/KpInputSection';
+import usePriceFeed from '@/components/Covalent';
 import useSWR from 'swr';
 import { checkAllowance, approve, performTx, withConfirmation } from '@/apis';
 import { ethers } from 'ethers';
@@ -23,6 +25,10 @@ const KpLongShort = (props: any) => {
     setCollateralToken,
     futureToken,
     setFutureToken,
+    longToken,
+    setLongToken,
+    shortToken,
+    setShortToken,
     onSelectPool,
     onSelectToken,
     selectedTab,
@@ -34,10 +40,13 @@ const KpLongShort = (props: any) => {
   const [lm, setLm] = useState(true);
   const { library, chainId, active, account, activate, deactivate } =
     useWeb3React();
-  const [slider, setSlider] = useState(1.1);
+  const [slider, setSlider] = useState(1.5);
   const [inputVal, setInputVal] = useState();
+  const [inputFutureVal, setInputFutureVal] = useState();
   const [step, setStep] = useState('approve');
   const [buttonText, setButtonText] = useState('Approvee');
+
+  const latestPrices = usePriceFeed();
 
   // TODO: calculate info
   const [infolistMain, setInfolistMain] = useState([]);
@@ -61,11 +70,23 @@ const KpLongShort = (props: any) => {
     setTokenUpdated('future');
     onSelectToken();
   };
+  const onSelectLongToken = () => {
+    setTokenUpdated('long');
+    onSelectToken();
+  };
+  const onSelectShortToken = () => {
+    setTokenUpdated('short');
+    onSelectToken();
+  };
   useEffect(() => {
     if (tokenUpdated == 'collateral') {
       setCollateralToken(selectedToken);
-    } else {
+    } else if (tokenUpdated == 'future') {
       setFutureToken(selectedToken);
+    } else if (tokenUpdated == 'long') {
+      setLongToken(selectedToken);
+    } else if (tokenUpdated == 'short') {
+      setShortToken(selectedToken);
     }
   }, [selectedToken]);
   console.log('collateral / future: ', collateralToken, futureToken);
@@ -120,9 +141,46 @@ const KpLongShort = (props: any) => {
     };
   }, [library]);
 
+  const onChangeLeverage = (e) => {
+    setSlider(e);
+    if (collateralToken && inputVal && (futureToken || longToken)) {
+      const collateralPrice = inputVal * latestPrices[collateralToken.name];
+      const futurePrice =
+        selectedTab == 'Advanced'
+          ? latestPrices[longToken.name]
+          : latestPrices[futureToken.name];
+      if (selectedTab == 'Short') {
+        setInputFutureVal(collateralPrice / (futurePrice * e));
+      } else {
+        setInputFutureVal((collateralPrice * e) / futurePrice);
+      }
+    }
+  };
+
+  const onChangeFutureVal = (input) => {
+    if (collateralToken && inputVal && (futureToken || longToken)) {
+      const collateralPrice = inputVal * latestPrices[collateralToken.name];
+      const futurePrice =
+        selectedTab == 'Advanced'
+          ? input * latestPrices[longToken.name]
+          : input * latestPrices[futureToken.name];
+      const sliderVal =
+        selectedTab == 'Short'
+          ? collateralPrice / futurePrice
+          : futurePrice / collateralPrice;
+      if (1.5 <= sliderVal && sliderVal <= 20) {
+        setSlider(sliderVal);
+      } else if (sliderVal < 1.5) {
+        setSlider(1.5);
+      } else {
+        setSlider(20);
+      }
+    }
+  };
+
   // button click action
   const onButtonClicked = () => {
-    console.log('executingTX');
+    console.log('executingTX', chainId);
     const poolAddr = getPoolAddr('Main Pool');
     if (step == 'approve') {
       approve(chainId, library, account, collateralToken.name, poolAddr);
@@ -142,8 +200,8 @@ const KpLongShort = (props: any) => {
             'openPosition',
             [
               collateralToken.address,
-              futureToken.address,
               collateralToken.address,
+              futureToken.address,
               parsedAmount,
               parsedLeverage,
             ],
@@ -160,9 +218,28 @@ const KpLongShort = (props: any) => {
             poolAddr,
             'openPosition',
             [
-              futureToken.address,
               collateralToken.address,
               futureToken.address,
+              collateralToken.address,
+              parsedAmount,
+              parsedLeverage,
+            ],
+          ),
+        ).then(() => {
+          console.log('Transaction done');
+        });
+      } else if (selectedTab == 'Advanced') {
+        withConfirmation(
+          performTx(
+            library,
+            LendingPool.abi,
+            account,
+            poolAddr,
+            'openPosition',
+            [
+              collateralToken.address,
+              shortToken.address,
+              longToken.address,
               parsedAmount,
               parsedLeverage,
             ],
@@ -181,27 +258,68 @@ const KpLongShort = (props: any) => {
           <span style={{ display: 'flex', color: 'rgba(255, 255, 255, 0.4)' }}>
             Collateral
           </span>
-          <KpTokenSelect
+          <KpInputSection
+            placeholder="Collateral Amount"
+            inputVal={inputVal}
+            setInputVal={setInputVal}
             onSelectToken={onSelectCollateralToken}
             name={collateralToken?.name}
             icon={collateralToken?.icon}
           />
         </div>
-        <div style={{ padding: '5px 0' }}>
-          <span style={{ display: 'flex', color: 'rgba(255, 255, 255, 0.4)' }}>
-            Future
-          </span>
-          <KpTokenSelect
-            onSelectToken={onSelectFutureToken}
-            name={futureToken?.name}
-            icon={futureToken?.icon}
-          />
-        </div>
-        <KpBigInput
-          placeholder="Collateral Amount"
-          inputVal={inputVal}
-          setInputVal={setInputVal}
-        />
+
+        {selectedTab == 'Advanced' ? (
+          <>
+            <div style={{ padding: '5px 0' }}>
+              <span
+                style={{ display: 'flex', color: 'rgba(255, 255, 255, 0.4)' }}
+              >
+                Long
+              </span>
+              <KpInputSection
+                placeholder="Long Amount"
+                inputVal={inputFutureVal}
+                setInputVal={setInputFutureVal}
+                onSelectToken={onSelectLongToken}
+                name={longToken?.name}
+                icon={longToken?.icon}
+                onChangeFutureVal={onChangeFutureVal}
+              />
+            </div>
+            <div style={{ padding: '5px 0' }}>
+              <span
+                style={{ display: 'flex', color: 'rgba(255, 255, 255, 0.4)' }}
+              >
+                Short
+              </span>
+              <KpTokenSelect
+                onSelectToken={onSelectShortToken}
+                name={shortToken?.name}
+                icon={shortToken?.icon}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div style={{ padding: '5px 0' }}>
+              <span
+                style={{ display: 'flex', color: 'rgba(255, 255, 255, 0.4)' }}
+              >
+                Target
+              </span>
+              <KpInputSection
+                placeholder="Target Amount"
+                inputVal={inputFutureVal}
+                setInputVal={setInputFutureVal}
+                onSelectToken={onSelectFutureToken}
+                name={futureToken?.name}
+                icon={futureToken?.icon}
+                onChangeFutureVal={onChangeFutureVal}
+              />
+            </div>
+          </>
+        )}
+
         <>
           <div className={styles.lm}>
             <div style={{ color: 'rgba(255,255,255,0.8)' }}>Leverage Model</div>
@@ -212,7 +330,7 @@ const KpLongShort = (props: any) => {
                     (typeof slider == 'number' && (slider * 1).toFixed(1)) ||
                     slider
                   }
-                  onChange={(e) => setSlider(e.target.value)}
+                  onChange={(e) => onChangeLeverage(e.target.value)}
                 />
                 <span>x</span>
               </div>
@@ -221,11 +339,11 @@ const KpLongShort = (props: any) => {
           </div>
           {lm && (
             <Slider
-              onChange={(e) => setSlider(e)}
-              marks={{ 1.1: '1.1x', 5: '5x', 10: '10x', 15: '15x', 20: '20x' }}
+              onChange={onChangeLeverage}
+              marks={{ 1.5: '1.5x', 5: '5x', 10: '10x', 15: '15x', 20: '20x' }}
               value={slider}
               step={0.1}
-              min={1.1}
+              min={1.5}
               max={20}
             />
           )}
