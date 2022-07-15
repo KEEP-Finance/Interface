@@ -2,6 +2,7 @@ import { Row, Col, Dropdown, Menu } from 'antd';
 import { SwapOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import { getStatusClassNames } from 'antd/lib/_util/statusUtils';
+import { pools } from '@/constants';
 const Select = (props: any) => {
   return (
     <div className={styles.select}>
@@ -34,26 +35,44 @@ const KpBigInput = (props: any) => {
   const selectPool = (key, name) => {
     onSelectPool(key, name);
   };
+
   const menu = (props) => (
     <div className={styles.tokenlist}>
-      <div className={styles.item}>
-        <div onClick={() => selectPool('1', 'MainPool')}>
-          <p>01 MainPool</p>
+      {Object.keys(pools).map((pool, idx) => (
+        <div className={styles.item}>
+          <div onClick={() => selectPool(pools[pool].id, pool)}>
+            <p>{pool}</p>
+          </div>
         </div>
-      </div>
-      <div className={styles.item}>
-        <div onClick={() => selectPool('2', 'FoxPool')}>
-          <p>02 FoxPool</p>
-        </div>
-      </div>
+      ))}
     </div>
   );
   return (
     <div className={styles.kpselect} {...rest}>
       <div className={`${styles.root} ${styles.left}`} onClick={selectToken}>
         <label>Token</label>
-        <Select name={props.name || 'Select'} icon={props.icon} />
+        <Select
+          name={props.dataSource.r1.name || 'Select'}
+          icon={props.dataSource.r1.icon}
+        />
       </div>
+      {props.pool && (
+        <div className={`${styles.root} ${styles.right}`}>
+          <label>Pool</label>
+          <div style={{ height: '100%' }}>
+            <Dropdown overlay={menu}>
+              <div style={{ height: '100%' }}>
+                <Select
+                  name={
+                    (props.dataSource?.r2?.key && props.dataSource.r2.name) ||
+                    'Select'
+                  }
+                />
+              </div>
+            </Dropdown>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

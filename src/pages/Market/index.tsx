@@ -13,7 +13,7 @@ import {
   Drawer,
   Slider,
 } from 'antd';
-import { getDefaultNetwork, getTokenList } from '@/constants';
+import { getNetworks, getTokenList } from '@/constants';
 import usePriceFeed from '@/components/Covalent';
 import { readState } from '@/apis';
 import { getContractAddr } from '@/constants/addresses';
@@ -26,7 +26,6 @@ import KpChildTable from '@/components/KpChildTable';
 import {
   columns,
   childColumns,
-  data,
   childData,
   columnsPool,
   dataPool,
@@ -35,6 +34,8 @@ import {
 } from './data';
 
 import styles from './index.less';
+import MarketDashboard from '@/components/KpMarketDashboard';
+
 const { TabPane } = Tabs;
 // const tokenList = [
 //   {
@@ -116,7 +117,7 @@ const { TabPane } = Tabs;
 //   },
 // ];
 
-const Page = () => {
+const Page = (props) => {
   // library	当前连接的library
   // deactivate	断开连接的方法
   // chainId	当前连接的链id
@@ -124,101 +125,99 @@ const Page = () => {
   // active	当前连接的状态，是否连接
   let { library, deactivate, chainId, account, active, activate, error } =
     useWeb3React();
+  chainId = getNetworks()[2].id;
+  // const tokenList = [
+  //   {
+  //     key: '0',
+  //     name: 'POLYGON',
+  //     icon: '/polygon.svg',
+  //     address: '0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44',
+  //     pools: ['Main Pool', 'MATIC Pool'],
+  //   },
+  //   {
+  //     key: '1',
+  //     name: 'BTC',
+  //     age: 32,
+  //     icon: '/btc.svg',
+  //     address: 'New York No. 1 Lake Park',
+  //     pools: ['Main Pool'],
+  //   },
+  //   {
+  //     key: '2',
+  //     name: 'ETH',
+  //     icon: '/eth.svg',
+  //     age: 32,
+  //     address: '0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44',
+  //     pools: ['Main Pool', 'MATIC Pool'],
+  //   },
+  //   {
+  //     key: '3',
+  //     name: 'USDC',
+  //     icon: '/usdc.svg',
+  //     age: 32,
+  //     address: '0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1',
+  //     pools: ['Main Pool'],
+  //   },
+  //   //random inputs
+  //   {
+  //     key: '4',
+  //     name: 'BNB',
+  //     age: 42,
+  //     icon: '/bnb.svg',
+  //     address: 'London No. 1 Lake Park',
+  //     pools: ['Main Pool'],
+  //   },
+  //   {
+  //     key: '5',
+  //     name: 'DAI',
+  //     icon: '/dai.svg',
+  //     age: 32,
+  //     address: 'Sidney No. 1 Lake Park',
+  //     pools: ['Main Pool'],
+  //   },
+  //   {
+  //     key: '6',
+  //     name: 'USDA',
+  //     icon: '/usda.svg',
+  //     age: 32,
+  //     address: 'London No. 2 Lake Park',
+  //     pools: ['Main Pool'],
+  //   },
+  //   {
+  //     key: '7',
+  //     name: 'USDH',
+  //     icon: '/usdh.svg',
+  //     age: 32,
+  //     address: 'London No. 2 Lake Park',
+  //     pools: ['Main Pool'],
+  //   },
+  //   {
+  //     key: '8',
+  //     name: 'USDT',
+  //     age: 32,
+  //     icon: '/usdt.svg',
+  //     address: 'London No. 2 Lake Park',
+  //     pools: ['Main Pool'],
+  //   },
+  //   {
+  //     key: '9',
+  //     name: 'FOX',
+  //     age: 32,
+  //     icon: '/fox.svg',
+  //     address: 'London No. 2 Lake Park',
+  //     pools: ['Main Pool'],
+  //   },
+  //   {
+  //     key: '10',
+  //     name: 'BUSD',
+  //     age: 32,
+  //     icon: '/busd.svg',
+  //     address: 'London No. 2 Lake Park',
+  //     pools: ['Main Pool'],
+  //   },
+  // ];
 
-  chainId = getDefaultNetwork().id;
-
-  const tokenList = [
-    {
-      key: '0',
-      name: 'POLYGON',
-      icon: '/polygon.svg',
-      address: '0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44',
-      pools: ['Main Pool', 'MATIC Pool'],
-    },
-    {
-      key: '1',
-      name: 'BTC',
-      age: 32,
-      icon: '/btc.svg',
-      address: 'New York No. 1 Lake Park',
-      pools: ['Main Pool'],
-    },
-    {
-      key: '2',
-      name: 'ETH',
-      icon: '/eth.svg',
-      age: 32,
-      address: '0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44',
-      pools: ['Main Pool', 'MATIC Pool'],
-    },
-    {
-      key: '3',
-      name: 'USDC',
-      icon: '/usdc.svg',
-      age: 32,
-      address: '0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1',
-      pools: ['Main Pool'],
-    },
-    //random inputs
-    {
-      key: '4',
-      name: 'BNB',
-      age: 42,
-      icon: '/bnb.svg',
-      address: 'London No. 1 Lake Park',
-      pools: ['Main Pool'],
-    },
-    {
-      key: '5',
-      name: 'DAI',
-      icon: '/dai.svg',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      pools: ['Main Pool'],
-    },
-    {
-      key: '6',
-      name: 'USDA',
-      icon: '/usda.svg',
-      age: 32,
-      address: 'London No. 2 Lake Park',
-      pools: ['Main Pool'],
-    },
-    {
-      key: '7',
-      name: 'USDH',
-      icon: '/usdh.svg',
-      age: 32,
-      address: 'London No. 2 Lake Park',
-      pools: ['Main Pool'],
-    },
-    {
-      key: '8',
-      name: 'USDT',
-      age: 32,
-      icon: '/usdt.svg',
-      address: 'London No. 2 Lake Park',
-      pools: ['Main Pool'],
-    },
-    {
-      key: '9',
-      name: 'FOX',
-      age: 32,
-      icon: '/fox.svg',
-      address: 'London No. 2 Lake Park',
-      pools: ['Main Pool'],
-    },
-    {
-      key: '10',
-      name: 'BUSD',
-      age: 32,
-      icon: '/busd.svg',
-      address: 'London No. 2 Lake Park',
-      pools: ['Main Pool'],
-    },
-  ];
-
-  // const tokenList = getTokenList(chainId);
+  const tokenList = getTokenList(chainId);
 
   const [selectedTab, setSelectedTab] = useState('Supply');
   const [more, setMore] = useState(false);
@@ -262,15 +261,33 @@ const Page = () => {
   const onChange = (key: any) => {
     setKey(key);
   };
+  // const tokenList = getTokenList(chainId);
+  // const parentTable = tokenList.map(token => ({
+  //   icon: token.icon,
+  //   name: token.name,
+  //   price: token.price,
+  //   lev: token.lev,
+
+  //   ltv: 5,
+  //   totalSupply: 123,
+  //   totalBorrow: 123,
+  //   supplyApr: 5,
+  //   borrowApr: 8,
+  // }))
+
+  //
+
+  // Covalent price feed
   const latestPrices = usePriceFeed();
 
   // fetch asset, ltv, totalSupply, supplyApr, totalBorrow, borrowApr for all token, all pools
   // dashboard data fetching
   const fetchDashboardData = async () => {
-    // const tokenList = getTokenList(chainId);
+    const tokenList = getTokenList(chainId);
     const newDashboardData = {};
+    console.log('hjhjhj tokenlist', tokenList);
     for (let i = 0; i < tokenList.length; i++) {
-      console.log('hjhjhj fetchdashboard data tokenList', tokenList);
+      console.log('hjhjhj tokenlist in for', tokenList[i]);
       const token = tokenList[i];
       const res = await readState(
         library,
@@ -279,11 +296,12 @@ const Page = () => {
         'getReserveData',
         [0, token.address],
       );
+      console.warn('hjhjhj fetch dashboard');
+
       if (!res) {
         console.warn('market, failed to fetch data from DataProvider');
         break;
       }
-      console.log('hjhjhj fetchdashboard data res', res);
 
       const data = {
         ltv: toFloat(res[0][0], 2),
@@ -300,13 +318,11 @@ const Page = () => {
   };
 
   useEffect(() => {
-    console.log('hjhjhj library', library);
     if (!library) return;
     library.on('block', async () => {
-      console.log('hjhjhj library  before');
-
+      console.log('hjhjhj before fetch');
       await fetchDashboardData();
-      console.log('hjhjhj library afterx');
+      console.log('hjhjhj after fetch');
     });
   }, [library]);
 
@@ -344,6 +360,7 @@ const Page = () => {
         ...stats,
       };
     });
+    console.log('debug check:', tokenList, ' :', latestPrices);
 
     // console.log('debug, marketData: ', marketData);
     return marketData;
@@ -352,10 +369,10 @@ const Page = () => {
   useEffect(() => {
     let newPoolData = [];
     if (marketData) {
-      // console.log('debug, poolData expanded: ', expandedRowKeys);
+      console.log('debug, poolData expanded: ', expandedRowKeys);
       newPoolData = marketData[expandedRowKeys]?.pools;
       console.log(
-        // 'debug, poolData: ',
+        'debug, poolData: ',
         marketData,
         expandedRowKeys,
         newPoolData,
@@ -373,12 +390,32 @@ const Page = () => {
     setExpandedRowKeys(keys);
   };
 
+  const totalSupply = useMemo(() => {
+    if (marketData) {
+      return marketData.reduce(
+        (prev, token) =>
+          prev + token.totalSupply * (latestPrices[token.name] || 0),
+        0,
+      );
+    }
+    return 0;
+  }, [marketData]);
+  const totalBorrows = useMemo(() => {
+    if (marketData) {
+      return marketData.reduce(
+        (prev, token) =>
+          prev + token.totalBorrow * (latestPrices[token.name] || 0),
+        0,
+      );
+    }
+    return 0;
+  }, [marketData]);
+
   return (
     <div className={styles.market}>
       <Row>
         <Col className={styles.main} span={24}>
-          <KpRpc />
-
+          <KpRpc totalSupply={totalSupply} totalBorrows={totalBorrows} />
           <Row>
             <Col span={16}>
               <div>
@@ -394,40 +431,43 @@ const Page = () => {
                   }}
                 >
                   <TabPane tab="Assets" key="1"></TabPane>
-                  <TabPane tab="Pools" key="2"></TabPane>
+                  {/* <TabPane tab="Pools" key="2"></TabPane> */}
                 </Tabs>
               </div>
               {(key == '1' && (
-                <Table
-                  style={{ border: '1px solid #1b1d23' }}
-                  columns={columns}
-                  dataSource={marketData}
-                  expandedRowKeys={expandedRowKeys}
-                  onExpand={onTableRowExpand}
-                  expandable={{
-                    expandRowByClick: true,
-                    expandedRowRender: (record1) => (
-                      <div style={{ background: '#1b1d23' }}>
-                        <KpChildTable
-                          style={{ margin: '0' }}
-                          columns={childColumns}
-                          showHeader={false}
-                          pagination={false}
-                          dataSource={record1.pools}
-                          onRow={(record2) => {
-                            return {
-                              onClick: (event) => {
-                                setR1(record1);
-                                setR2(record2);
-                              }, // 点击行
-                            };
-                          }}
-                        />
-                      </div>
-                    ),
-                  }}
-                  pagination={false}
-                />
+                <>
+                  <Table
+                    style={{ border: '1px solid #1b1d23' }}
+                    columns={columns}
+                    dataSource={marketData}
+                    expandedRowKeys={expandedRowKeys}
+                    onExpand={onTableRowExpand}
+                    expandable={{
+                      expandRowByClick: true,
+                      expandedRowRender: (record1) => (
+                        <div style={{ background: '#1b1d23' }}>
+                          <KpChildTable
+                            style={{ margin: '0' }}
+                            columns={childColumns}
+                            showHeader={false}
+                            pagination={false}
+                            dataSource={record1.pools}
+                            onRow={(record2) => {
+                              return {
+                                onClick: (event) => {
+                                  setR1(record1);
+                                  setR2(record2);
+                                }, // 点击行
+                              };
+                            }}
+                          />
+                        </div>
+                      ),
+                    }}
+                    pagination={false}
+                  />
+                  <MarketDashboard />
+                </>
               )) || (
                 <Table
                   style={{ border: '1px solid #1b1d23' }}
@@ -466,41 +506,20 @@ const Page = () => {
             >
               <Affix offsetTop={10}>
                 <div className={styles.action}>
-                  {/* <Tabs defaultActiveKey="1" type="card">
-                    <TabPane tab="Supply" key="1">
-                      <KpBuy
-                        onSelectPool={onSelectPool}
-                        onSelectToken={onSelectToken}
-                      />
-                    </TabPane>
-                    <TabPane tab="Borrow" key="2">
-                      <KpBuy
-                        onSelectPool={onSelectPool}
-                        onSelectToken={onSelectToken}
-                      />
-                    </TabPane>
-                    <TabPane tab="Withdraw" key="3">
-                      <KpBuy
-                        onSelectPool={onSelectPool}
-                        onSelectToken={onSelectToken}
-                      />
-                    </TabPane>
-                    <TabPane tab="Repay" key="4">
-                      <KpBuy
-                        onSelectPool={onSelectPool}
-                        onSelectToken={onSelectToken}
-                      />
-                    </TabPane>
-                  </Tabs> */}
-                  <KpTabs onChange={(index) => setLm(index == 1)} />
+                  <KpTabs
+                    tabType="market"
+                    setSelectedTab={setSelectedTab}
+                    onChange={() => {}}
+                  />
                   <KpBuy
                     onSelectPool={onSelectPool}
                     onSelectToken={onSelectToken}
-                    visibleLm={lm}
+                    selectedTab={selectedTab}
                     dataSource={{
                       r1,
                       r2,
                     }}
+                    open={() => props.setVisibleMetaMask(true)}
                   />
                   <Drawer
                     title="Select a Token"
@@ -524,7 +543,7 @@ const Page = () => {
                     <hr />
 
                     <div className={styles.tokenlist}>
-                      {tokenList.map((item) => (
+                      {getTokenList(chainId).map((item) => (
                         <div
                           className={styles.item}
                           onClick={() => onSelectTokenCurrent(item)}
