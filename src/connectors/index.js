@@ -21,7 +21,7 @@ const RPC_URLS = {
 
   69: 'https://kovan.optimism.io/',
   80001: 'https://rpc-mumbai.maticvigil.com/',
-  1337: 'http://localhost:8545/',
+  1337: 'http://localhost:7545/',
   31337: 'http://localhost:8545/',
 };
 const POLLING_INTERVAL = 12000;

@@ -18,6 +18,12 @@ const networks = [
     id: 31337,
     checked: false,
   },
+  {
+    name: 'Ganache',
+    img: '/polygon.svg',
+    id: 1337,
+    checked: false,
+  },
 ];
 
 const defaultChainId = 80001;
@@ -30,11 +36,11 @@ export const getDefaultNetwork = () =>
 export const pools = {
   'Main Pool': {
     id: 1,
-    address: '0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e',
+    address: '0xf5d71A8E2ED90bB924b8E966BAe08B7Cf65517c6',
   },
   'MATIC Pool': {
     id: 2,
-    address: '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0',
+    address: '0xCC16E0Ab978cecB711506699E76afa174368f120',
   },
 };
 
@@ -74,6 +80,40 @@ export const tokenListPolygon = [
   },
 ];
 
+// tokenlist
+export const tokenListGanache = [
+  // {
+  //   key: '1',
+  //   name: 'BTC',
+  //   pools: [1],
+  //   icon: '/btc.svg',
+  // },
+  {
+    key: '2',
+    name: 'MATIC',
+    address: '0xC3708839f1E46F64178C05370a4735E9861c5d2b',
+    decimals: 18,
+    pools: ['Main Pool', 'MATIC Pool'],
+    icon: '/matic.svg',
+  },
+  {
+    key: '3',
+    name: 'ETH',
+    address: '0x713d4F6baEb75B9Cc6E5CB923481BACEF4F7029F',
+    decimals: 18,
+    icon: '/eth.svg',
+    pools: ['Main Pool', 'MATIC Pool'],
+  },
+  {
+    key: '4',
+    name: 'USDC',
+    address: '0xE478C855925b849cd10DDDBC6DBcE15F0142e0AA',
+    decimals: 6,
+    icon: '/usdc.svg',
+    pools: ['Main Pool'],
+  },
+];
+
 export const tokenListOp = [
   // {
   //   key: '1',
@@ -106,6 +146,7 @@ export const getTokenList = (chainId: Number | undefined) =>
     69: tokenListOp,
     80001: tokenListPolygon,
     31337: tokenListPolygon,
+    1337: tokenListGanache,
   }[chainId || defaultChainId]);
 
 export const getToken = (chainId, symbol) => {

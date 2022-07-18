@@ -62,7 +62,13 @@ const KpTotal = (props: any) => {
     if (step == 'approve') {
       const poolName = dataSource.r2.name;
       const poolAddr = getPoolAddr(poolName);
-      console.log('kpbuy, r2 name: ', poolAddr, chainId);
+      console.log('kpbuy, onbuttonclicked 1: ', poolName, poolAddr, chainId);
+      console.log(
+        'kpbuy, onbuttonclicked 2: ',
+        dataSource.r1.name,
+        poolAddr,
+        chainId,
+      );
       approve(chainId, library, account, dataSource.r1.name, poolAddr);
     } else {
       const token = getToken(chainId, dataSource.r1.name);
@@ -91,7 +97,7 @@ const KpTotal = (props: any) => {
           performTx(library, LendingPool.abi, account, poolAddr, 'borrow', [
             token.address,
             parsedAmount,
-            2,
+            1,
             account,
           ]),
         ).then(() => {
@@ -120,7 +126,7 @@ const KpTotal = (props: any) => {
           performTx(library, LendingPool.abi, account, poolAddr, 'repay', [
             token.address,
             parsedAmount,
-            2,
+            1,
             account,
           ]),
         ).then(() => {

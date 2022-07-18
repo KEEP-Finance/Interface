@@ -10,6 +10,7 @@ import { getPoolAddr, getTokenList } from '@/constants';
 import { getContractAddr } from '@/constants/addresses';
 import { withConfirmation, getContract } from '@/apis';
 import { toFloat } from '@/utils';
+import { ConsoleSqlOutlined } from '@ant-design/icons';
 
 const MarketDashboard = () => {
   const latestPrices = usePriceFeed();
@@ -30,6 +31,7 @@ const MarketDashboard = () => {
     // let reader = getContract(getPoolAddr("Main Pool"), LendingPool.abi, library, account)
     // let res = await reader["getTraderPositions"]();
     const tokenList = getTokenList(chainId);
+    console.log('KpMarketDashboard tokenList', tokenList);
     const userTokenData = [];
     for (let i = 0; i < tokenList.length; i++) {
       const token = tokenList[i];
@@ -41,6 +43,7 @@ const MarketDashboard = () => {
         'getUserReserveData',
         [0, token.address, account],
       );
+      console.log('KpMarketDashboard getUserReserveData', res);
       if (!res) {
         console.warn(
           'kpMarketDashboard, failed to fetch data from DataProvider',
