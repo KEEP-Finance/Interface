@@ -71,7 +71,7 @@ const Page = () => {
             <Col span={16}>
               {selectedTab == 'Advanced' ? (
                 <>
-                  <KpTabs
+                  {/* <KpTabs
                     tabType="priceChart"
                     setSelectedTab={setChartType}
                     onChange={() => {}}
@@ -80,7 +80,9 @@ const Page = () => {
                     <KpPriceChart token={longToken?.name || 'BTC'} />
                   ) : (
                     <KpPriceChart token={shortToken?.name || 'BTC'} />
-                  )}
+                  )} */}
+                  <KpPriceChart token={longToken?.name || 'BTC'} />
+                  <KpPriceChart token={shortToken?.name || 'BTC'} />
                 </>
               ) : (
                 <KpPriceChart token={futureToken?.name || 'BTC'} />

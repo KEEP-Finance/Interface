@@ -30,7 +30,7 @@ export const getDefaultNetwork = () =>
 export const pools = {
   'Main Pool': {
     id: 1,
-    address: '0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e',
+    address: '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0',
   },
   'MATIC Pool': {
     id: 2,
@@ -111,4 +111,9 @@ export const getTokenList = (chainId: Number | undefined) =>
 export const getToken = (chainId, symbol) => {
   const tokenList = getTokenList(chainId);
   return tokenList.find((token) => token.name == symbol);
+};
+
+export const getTokenByAddress = (chainId, address) => {
+  const tokenList = getTokenList(chainId);
+  return tokenList.find((token) => token.address == address);
 };

@@ -143,31 +143,14 @@ const KpLongShort = (props: any) => {
 
   const onChangeLeverage = (e) => {
     setSlider(e);
-    if (collateralToken && inputVal && (futureToken || longToken)) {
-      const collateralPrice = inputVal * latestPrices[collateralToken.name];
-      const futurePrice =
-        selectedTab == 'Advanced'
-          ? latestPrices[longToken.name]
-          : latestPrices[futureToken.name];
-      if (selectedTab == 'Short') {
-        setInputFutureVal(collateralPrice / (futurePrice * e));
-      } else {
-        setInputFutureVal((collateralPrice * e) / futurePrice);
-      }
+    if (collateralToken && inputVal && (futureToken || shortToken)) {
+      setInputFutureVal(inputVal * e);
     }
   };
 
   const onChangeFutureVal = (input) => {
-    if (collateralToken && inputVal && (futureToken || longToken)) {
-      const collateralPrice = inputVal * latestPrices[collateralToken.name];
-      const futurePrice =
-        selectedTab == 'Advanced'
-          ? input * latestPrices[longToken.name]
-          : input * latestPrices[futureToken.name];
-      const sliderVal =
-        selectedTab == 'Short'
-          ? collateralPrice / futurePrice
-          : futurePrice / collateralPrice;
+    if (collateralToken && inputVal && (futureToken || shortToken)) {
+      const sliderVal = input / inputVal;
       if (1.5 <= sliderVal && sliderVal <= 20) {
         setSlider(sliderVal);
       } else if (sliderVal < 1.5) {
@@ -274,15 +257,20 @@ const KpLongShort = (props: any) => {
               <span
                 style={{ display: 'flex', color: 'rgba(255, 255, 255, 0.4)' }}
               >
-                Long
+                Short
               </span>
+              {/* <KpTokenSelect
+                onSelectToken={onSelectShortToken}
+                name={shortToken?.name}
+                icon={shortToken?.icon}
+              /> */}
               <KpInputSection
-                placeholder="Long Amount"
+                placeholder="Short Amount"
                 inputVal={inputFutureVal}
                 setInputVal={setInputFutureVal}
-                onSelectToken={onSelectLongToken}
-                name={longToken?.name}
-                icon={longToken?.icon}
+                onSelectToken={onSelectShortToken}
+                name={shortToken?.name}
+                icon={shortToken?.icon}
                 onChangeFutureVal={onChangeFutureVal}
               />
             </div>
@@ -290,12 +278,12 @@ const KpLongShort = (props: any) => {
               <span
                 style={{ display: 'flex', color: 'rgba(255, 255, 255, 0.4)' }}
               >
-                Short
+                Long
               </span>
               <KpTokenSelect
-                onSelectToken={onSelectShortToken}
-                name={shortToken?.name}
-                icon={shortToken?.icon}
+                onSelectToken={onSelectLongToken}
+                name={longToken?.name}
+                icon={longToken?.icon}
               />
             </div>
           </>
@@ -307,6 +295,11 @@ const KpLongShort = (props: any) => {
               >
                 Target
               </span>
+              {/* <KpTokenSelect
+                onSelectToken={onSelectFutureToken}
+                name={futureToken?.name}
+                icon={futureToken?.icon}
+              /> */}
               <KpInputSection
                 placeholder="Target Amount"
                 inputVal={inputFutureVal}
