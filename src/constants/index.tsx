@@ -36,11 +36,11 @@ export const getDefaultNetwork = () =>
 export const pools = {
   'Main Pool': {
     id: 1,
-    address: '0xf5d71A8E2ED90bB924b8E966BAe08B7Cf65517c6',
+    address: '0x8e819AaCF85b27826021E79A24dad796307F4eC5',
   },
   'MATIC Pool': {
     id: 2,
-    address: '0xCC16E0Ab978cecB711506699E76afa174368f120',
+    address: '0x764ad1021d05c0dD8C54aa003d65abDA42Ac10Fd',
   },
 };
 
@@ -91,7 +91,7 @@ export const tokenListGanache = [
   {
     key: '2',
     name: 'MATIC',
-    address: '0xC3708839f1E46F64178C05370a4735E9861c5d2b',
+    address: '0x6D3F4889172494efB776d4bA6f0b8Ae1389be9DC',
     decimals: 18,
     pools: ['Main Pool', 'MATIC Pool'],
     icon: '/matic.svg',
@@ -99,7 +99,7 @@ export const tokenListGanache = [
   {
     key: '3',
     name: 'ETH',
-    address: '0x713d4F6baEb75B9Cc6E5CB923481BACEF4F7029F',
+    address: '0x95D617942D55E2435c0528b6Bf822b2353F89De0',
     decimals: 18,
     icon: '/eth.svg',
     pools: ['Main Pool', 'MATIC Pool'],
@@ -107,7 +107,7 @@ export const tokenListGanache = [
   {
     key: '4',
     name: 'USDC',
-    address: '0xE478C855925b849cd10DDDBC6DBcE15F0142e0AA',
+    address: '0xd310Ae215b2daE0a1C39c95a003FcD0c7aF2c71C',
     decimals: 6,
     icon: '/usdc.svg',
     pools: ['Main Pool'],
