@@ -61,6 +61,7 @@ const KpTotal = (props: any) => {
     console.log('executingTX');
     if (step == 'approve') {
       const poolName = dataSource.r2.name;
+      console.log('hjhjhj market getPoolAddr', poolName);
       const poolAddr = getPoolAddr(poolName);
       console.log('kpbuy, onbuttonclicked 1: ', poolName, poolAddr, chainId);
       console.log(
@@ -139,7 +140,7 @@ const KpTotal = (props: any) => {
   const token = dataSource.r1.name || 'ETH';
   const poolAddr = dataSource.r2?.name
     ? getPoolAddr(dataSource.r2.name)
-    : 'Main Pool';
+    : 'main pool';
   console.log('debug check kpbuy, mainpool', poolAddr);
 
   const { data: allowance, mutate: updateAllowance } = useSWR(

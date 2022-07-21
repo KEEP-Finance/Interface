@@ -34,11 +34,11 @@ export const getDefaultNetwork = () =>
 
 // lending pools
 export const pools = {
-  'Main Pool': {
+  'main pool': {
     id: 1,
     address: '0x8e819AaCF85b27826021E79A24dad796307F4eC5',
   },
-  'MATIC Pool': {
+  'eth-usdc pool': {
     id: 2,
     address: '0x764ad1021d05c0dD8C54aa003d65abDA42Ac10Fd',
   },

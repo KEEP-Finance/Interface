@@ -103,7 +103,7 @@ const KpLongShort = (props: any) => {
   };
 
   // const token = collateralToken ? getToken(chainId, collateralToken) || 'ETH';
-  const poolAddr = getPoolAddr('Main Pool');
+  const poolAddr = getPoolAddr('main pool');
 
   // allowance check
   const { data: allowance, mutate: updateAllowance } = useSWR(
@@ -181,7 +181,7 @@ const KpLongShort = (props: any) => {
   // button click action
   const onButtonClicked = () => {
     console.log('executingTX', chainId);
-    const poolAddr = getPoolAddr('Main Pool');
+    const poolAddr = getPoolAddr('main pool');
     if (step == 'approve') {
       approve(chainId, library, account, collateralToken.name, poolAddr);
     } else {

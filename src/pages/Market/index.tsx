@@ -12,6 +12,7 @@ import {
   Affix,
   Drawer,
   Slider,
+  TimePicker,
 } from 'antd';
 import { getNetworks, getTokenList, pools } from '@/constants';
 import usePriceFeed from '@/components/Covalent';
@@ -228,7 +229,7 @@ const Page = (props) => {
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
   const [tokenListData, setTokenListData] = useState({});
   const [poolListData, setPoolListData] = useState({});
-  const [poolboardData, setPoolboardData] = useState({});
+  // const [poolData, setPoolData] = useState({});
   const [dashboardData, setDashboardData] = useState({});
   const [assetData, setAssetData] = useState({});
   const [tokenTMP, setTokenTMP] = useState({});
@@ -301,7 +302,6 @@ const Page = (props) => {
     if (!poolListFetched) {
       console.warn('market, failed to fetch pool list from DataProvider');
     }
-    console.log('hjhjhj see pool list fetched', poolListFetched);
 
     let newTokenList = {};
     for (let i = 0; i < poolListFetched.length; i++) {
@@ -313,8 +313,7 @@ const Page = (props) => {
         'getAllReservesTokens',
         [i],
       );
-      console.warn('hjhjhj fetch tokenlist');
-      console.log('hjhjhj see tokenListFetched', tokenListFetched);
+      console.warn('warning while fetch tokenlist');
 
       if (!tokenListFetched) {
         console.warn(
@@ -332,9 +331,8 @@ const Page = (props) => {
         };
       }
       newTokenList[`${pool.name} pool`] = data;
-      console.log('hjhjhj see tokenListFetched', data);
     }
-    console.log('hjhjhj see newtokenlist', newTokenList);
+    console.log('hjhjhj icon newtokenlist', newTokenList);
     setPoolListData(newTokenList);
   };
   // fetch asset, ltv, totalSupply, supplyApr, totalBorrow, borrowApr for all token, all pools
@@ -356,7 +354,6 @@ const Page = (props) => {
 
       for (let j = 0; j < poolTokenDataKeys.length; j++) {
         let poolToken = poolTokenData[poolTokenDataKeys[j]];
-        console.log('hjhjhj see dashboard each token', poolToken);
         const res = await readState(
           library,
           DataProvider.abi,
@@ -364,7 +361,7 @@ const Page = (props) => {
           'getReserveData',
           [0, poolToken.address],
         );
-        console.warn('hjhjhj see dashboard fetch has warning');
+        console.warn('dashboard fetch has warning');
         if (!res) {
           console.warn('market, failed to fetch board data from DataProvider');
           break;
@@ -395,12 +392,9 @@ const Page = (props) => {
         };
         newDashboardData[`${poolListDataKeys[i]}`][`${poolToken.name}`] = data;
       }
-      console.log('hjhjhj see if poolTokenDataKeys', poolTokenDataKeys);
 
       tmp[poolListDataKeys[i]] = poolTokenDataKeys;
     }
-    console.log('hjhjhj see dashboard new data', newDashboardData);
-    console.log('hjhjhj see if tmp', tmp);
     setTokenTMP(tmp);
     setDashboardData(newDashboardData);
   };
@@ -410,7 +404,6 @@ const Page = (props) => {
       return;
     }
     let poolKeys = Object.keys(tokenTMP);
-    console.log('hjhjhj see if tokentmp see tokenTMP', tokenTMP);
     let newTokenList = {};
     for (let i = 0; i < poolKeys.length; i++) {
       let poolKey = poolKeys[i];
@@ -424,7 +417,6 @@ const Page = (props) => {
       }
     }
     setTokenListData(newTokenList);
-    console.log('hjhjhj see if tokentmp see newTokenList', newTokenList);
   };
 
   useEffect(() => {
@@ -444,19 +436,31 @@ const Page = (props) => {
   }, [dashboardData]);
 
   const marketData = useMemo(() => {
-    let marketData = tokenList.map((token, idx) => {
-      const pools = token.pools.map((poolName) => {
-        const key = `${token.name}-${poolName}`;
+    let tokens = Object.keys(tokenListData);
+    let marketData = tokens.map((token, idx) => {
+      let pools = Object.keys(tokenListData[token]).map((pool) => {
+        // const key = `${token.name}-${pool}`;
         const temp = {
-          key: idx,
-          token: token.name,
-          name: poolName,
-          ltv: assetData[key]?.ltv || 0,
-          totalSupply: assetData[key]?.totalSupply || 0,
-          totalBorrow: assetData[key]?.totalBorrow || 0,
-          supplyApr: assetData[key]?.supplyApr || 0,
-          borrowApr: assetData[key]?.borrowApr || 0,
+          key: token,
+          token: token,
+          name: pool,
+          icon: '',
+          ltv: parseInt(tokenListData[token][pool].ltv) || 0,
+          totalSupply: parseInt(tokenListData[token][pool].totalSupply),
+          totalBorrow: parseInt(tokenListData[token][pool].totalBorrow) || 0,
+          supplyApr: parseInt(tokenListData[token][pool].supplyApr) || 0,
+          borrowApr: parseInt(tokenListData[token][pool].borrowApr) || 0,
         };
+        if (temp.key == 'ETH') {
+          temp.icon = '/eth.svg';
+        }
+        if (temp.key == 'USDC') {
+          temp.icon = '/usdc.svg';
+        }
+        if (temp.key == 'MATIC') {
+          temp.icon = '/matic.svg';
+        }
+        console.log('hjhjhj icon temp', temp);
         return temp;
       });
 
@@ -469,10 +473,12 @@ const Page = (props) => {
         supplyApr:
           pools.reduce((prev, pool) => prev + pool.supplyApr, 0) / pools.length,
       };
+      console.log('hjhjhj icon token before return', pools[0].icon);
+
       return {
-        key: idx,
-        icon: token.icon,
-        name: token.name,
+        key: token,
+        icon: pools[0].icon,
+        name: token,
         pools,
         ...stats,
       };
@@ -481,47 +487,56 @@ const Page = (props) => {
 
     // console.log('debug, marketData: ', marketData);
     return marketData;
-  }, [tokenList, latestPrices]);
+  }, [tokenListData, latestPrices]);
 
-  // const poolData = useMemo(() => {
-  //   let poolData = tokenList.map((token, idx) => {
-  //     const pools = token.pools.map((poolName) => {
-  //       const key = `${token.name}-${poolName}`;
-  //       const temp = {
-  //         key: idx,
-  //         token: token.name,
-  //         name: poolName,
-  //         ltv: poolboardData[key]?.ltv || 0,
-  //         totalSupply: poolboardData[key]?.totalSupply || 0,
-  //         totalBorrow: poolboardData[key]?.totalBorrow || 0,
-  //         supplyApr: poolboardData[key]?.supplyApr || 0,
-  //         borrowApr: poolboardData[key]?.borrowApr || 0,
-  //       };
-  //       return temp;
-  //     });
+  const poolData = useMemo(() => {
+    let pools = Object.keys(dashboardData);
+    let poolData = pools.map((pool, idx) => {
+      let tokens = Object.keys(dashboardData[pool]).map((token) => {
+        const temp = {
+          key: pool,
+          token: pool,
+          name: token,
+          ltv: parseInt(dashboardData[pool][token].ltv) || 0,
+          totalSupply: parseInt(dashboardData[pool][token].totalSupply),
+          totalBorrow: parseInt(dashboardData[pool][token].totalBorrow) || 0,
+          supplyApr: parseInt(dashboardData[pool][token].supplyApr) || 0,
+          borrowApr: parseInt(dashboardData[pool][token].borrowApr) || 0,
+        };
+        return temp;
+      });
 
-  //     const stats = {
-  //       ltv: pools.reduce((prev, pool) => prev + pool.ltv, 0) / pools.length,
-  //       totalBorrow: pools.reduce((prev, pool) => prev + pool.totalBorrow, 0),
-  //       totalSupply: pools.reduce((prev, pool) => prev + pool.totalSupply, 0),
-  //       borrowApr:x
-  //         pools.reduce((prev, pool) => prev + pool.borrowApr, 0) / pools.length,
-  //       supplyApr:
-  //         pools.reduce((prev, pool) => prev + pool.supplyApr, 0) / pools.length,
-  //     };
-  //     return {
-  //       key: idx,
-  //       icon: token.icon,
-  //       name: token.name,
-  //       pools,
-  //       ...stats,
-  //     };
-  //   });
-  //   console.log('debug check:', tokenList, ' :', latestPrices);
+      const stats = {
+        ltv:
+          tokens.reduce((prev, token) => prev + token.ltv, 0) / tokens.length,
+        totalBorrow: tokens.reduce(
+          (prev, token) => prev + token.totalBorrow,
+          0,
+        ),
+        totalSupply: tokens.reduce(
+          (prev, token) => prev + token.totalSupply,
+          0,
+        ),
+        borrowApr:
+          tokens.reduce((prev, token) => prev + token.borrowApr, 0) /
+          tokens.length,
+        supplyApr:
+          tokens.reduce((prev, token) => prev + token.supplyApr, 0) /
+          tokens.length,
+      };
+      return {
+        key: pool,
+        icon: pool.icon,
+        name: pool,
+        tokens,
+        ...stats,
+      };
+    });
+    console.log('debug check:', tokenList, ' :', latestPrices);
 
-  //   // console.log('debug, marketData: ', marketData);
-  //   return poolData;
-  // }, [tokenList, latestPrices]);
+    // setPoolData(poolDataTmp)
+    return poolData;
+  }, [dashboardData, latestPrices]);
 
   useEffect(() => {
     let newPoolData = [];
@@ -535,7 +550,7 @@ const Page = (props) => {
         newPoolData,
       );
     }
-    setPoolboardData(newPoolData);
+    // setPoolData(newPoolData);
   }, [marketData, expandedRowKeys]);
 
   // only expand one row at a time: https://stackoverflow.com/questions/67295603/react-and-expandedrow-render-in-ant-design
@@ -628,7 +643,7 @@ const Page = (props) => {
               )) || (
                 <Table
                   style={{ border: '1px solid #1b1d23' }}
-                  columns={columnsPool}
+                  columns={columns}
                   dataSource={poolData}
                   expandable={{
                     expandRowByClick: true,
@@ -636,10 +651,10 @@ const Page = (props) => {
                       <div style={{ background: '#1b1d23' }}>
                         <KpChildTable
                           style={{ margin: '0' }}
-                          columns={childColumnsPool}
+                          columns={childColumns}
                           showHeader={false}
                           pagination={false}
-                          dataSource={record.childData}
+                          dataSource={record.tokens}
                           onRow={(record2) => {
                             return {
                               onClick: (event) => {
