@@ -153,3 +153,8 @@ export const getToken = (chainId, symbol) => {
   const tokenList = getTokenList(chainId);
   return tokenList.find((token) => token.name == symbol);
 };
+
+export const getTokenByAddress = (chainId, address) => {
+  const tokenList = getTokenList(chainId);
+  return tokenList.find((token) => token.address == address);
+};

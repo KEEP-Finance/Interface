@@ -3,28 +3,95 @@ import KpToken from '@/components/KpToken';
 import { useWeb3React } from '@web3-react/core';
 import usePriceFeed from '../Covalent';
 import styles from './index.less';
+import LendingPool from '@/abis/LendingPool.json';
 import DataProvider from '@/abis/DataProvider.json';
-import { getPoolAddr, getTokenList } from '@/constants';
+import { getPoolAddr, getTokenByAddress, getTokenList } from '@/constants';
 import { getContractAddr } from '@/constants/addresses';
+import { toFloat } from '@/utils';
+import { SetStateAction, useEffect, useState } from 'react';
 
 const MarginDashboard = () => {
   const latestPrices = usePriceFeed();
   const { chainId, library, account } = useWeb3React();
+  const [positions, setPositions] = useState([]);
 
-  const positions = [
-    {
-      token: 'ETH',
-      side: 'Long',
-      size: '1000',
-      pnl: '100',
-      entryPrice: '1000',
-      leverage: '5',
-      liquidationPrice: '900',
-    },
-  ];
-  positions.forEach(
-    (position) => (position.markPrice = latestPrices[position.token] || 0),
-  );
+  const updatePositionTable = async () => {
+    if (!library) return;
+    const res = await readState(
+      library,
+      DataProvider.abi,
+      getContractAddr('dataProvider'),
+      'getTraderPositions',
+      [0, account],
+    );
+    if (!res) {
+      console.warn('kpMarginDashboard, failed to fetch data from DataProvider');
+    } else {
+      const data = [];
+      res.forEach((item) => {
+        const collateral = getTokenByAddress(
+          chainId,
+          item.collateralTokenAddress,
+        );
+        const collateralAmount = toFloat(
+          item.collateralAmount,
+          collateral.decimals,
+        );
+        const collateralPrice = latestPrices[collateral.name];
+        const long = getTokenByAddress(chainId, item.longTokenAddress);
+        const longAmount = toFloat(item.longAmount, long.decimals);
+        const longPrice = latestPrices[long.name];
+        const short = getTokenByAddress(chainId, item.shortTokenAddress);
+        const shortAmount = toFloat(item.shortAmount, short.decimals);
+        const shortPrice = latestPrices[short.name];
+        const token = collateral == short ? long : short;
+        const pnl = longAmount * longPrice - shortAmount * shortPrice;
+        data.push({
+          token: token.name,
+          side:
+            collateral == short
+              ? 'Long'
+              : collateral == long
+              ? 'Short'
+              : 'Advanced',
+          size: collateral == short ? shortAmount : longAmount,
+          pnl: pnl,
+          entryPrice:
+            collateral == short
+              ? collateral.name == 'USDC'
+                ? longAmount / shortAmount
+                : shortAmount / longAmount
+              : collateral.name == 'USDC'
+              ? shortAmount / longAmount
+              : longAmount / shortAmount,
+          leverage:
+            collateral == short
+              ? shortAmount / collateralAmount
+              : longAmount / collateralAmount,
+          liquidationPrice:
+            (collateralAmount * collateralPrice + pnl) /
+            (collateralAmount * collateralPrice),
+          markPrice: latestPrices[token.name] || 0,
+        });
+      });
+      setPositions(data);
+    }
+  };
+
+  useEffect(() => {
+    updatePositionTable();
+  }, [library]);
+
+  useEffect(() => {
+    if (!library) return;
+    library.on('block', () => {
+      updatePositionTable();
+    });
+
+    return () => {
+      library.removeAllListeners('block');
+    };
+  }, [library]);
 
   return (
     <>

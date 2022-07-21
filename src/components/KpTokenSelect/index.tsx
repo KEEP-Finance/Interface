@@ -51,7 +51,7 @@ const KpBigInput = (props: any) => {
   return (
     <div className={styles.kpselect} {...rest}>
       <div className={`${styles.root} ${styles.left}`} onClick={selectToken}>
-        <label>Token</label>
+        {/* <label>Token</label> */}
         <Select name={props.name || 'Select'} icon={props.icon} />
       </div>
     </div>
