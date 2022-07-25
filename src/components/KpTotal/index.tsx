@@ -1,7 +1,7 @@
 import styles from './index.less';
 
 const KpTotal = (props: any) => {
-  const { name, price, number, ...rest } = props;
+  const { icon, name, price, number, ...rest } = props;
   return (
     <div className={styles.kt} {...rest}>
       <div className={styles.wrap}>

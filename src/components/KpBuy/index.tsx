@@ -1,4 +1,4 @@
-import { Row, Col, Button, Slider, Checkbox } from 'antd';
+import { Row, Col, Button, Slider, Checkbox, Switch } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { ReactComponent as Expand } from '@/assets/expand.svg';
 import KpBigInput from '@/components/KpBigInput';
@@ -43,8 +43,14 @@ const infolistMore = [
 const checkApprove = () => {};
 
 const KpTotal = (props: any) => {
-  const { dataSource, onSelectPool, onSelectToken, selectedTab, ...rest } =
-    props;
+  const {
+    KpTokenList,
+    dataSource,
+    onSelectPool,
+    onSelectToken,
+    selectedTab,
+    ...rest
+  } = props;
   const { active, account, chainId, library } = useWeb3React();
   const [inputVal, setInputVal] = useState();
   const [step, setStep] = useState('approve');
@@ -55,13 +61,16 @@ const KpTotal = (props: any) => {
 
   // }, [])
 
-  console.log('debug check kpbuy, r1, r2', dataSource);
-
   const onButtonClicked = (selectedTab) => {
     console.log('executingTX');
     if (step == 'approve') {
       const poolName = dataSource.r2.name;
-      console.log('hjhjhj market getPoolAddr', poolName);
+      console.log(
+        'kpbuy, onbuttonclicked 0: ',
+        selectedTab,
+        dataSource,
+        poolName,
+      );
       const poolAddr = getPoolAddr(poolName);
       console.log('kpbuy, onbuttonclicked 1: ', poolName, poolAddr, chainId);
       console.log(
@@ -71,6 +80,7 @@ const KpTotal = (props: any) => {
         chainId,
       );
       approve(chainId, library, account, dataSource.r1.name, poolAddr);
+      console.log('api debug check approve');
     } else {
       const token = getToken(chainId, dataSource.r1.name);
       const parsedAmount = parseUnits(
@@ -154,8 +164,10 @@ const KpTotal = (props: any) => {
     const inputBN = ethers.BigNumber.from(`${inputVal}`);
     if (inputBN.gt(allowance)) {
       setStep('approve');
+      console.log('api debug: setstep approve');
     } else {
       setStep('tx');
+      console.log('api debug: setstep tx');
     }
     setInputVal(inputVal);
   }, [allowance, inputVal]);
@@ -188,6 +200,9 @@ const KpTotal = (props: any) => {
           placeholder="Amount"
           inputVal={inputVal}
           setInputVal={setInputVal}
+          KpTokenList={KpTokenList}
+          tokenName={props.dataSource.r1.name}
+          // poolName={props.dataSource.r2.name}
         />
 
         <KpInfoList dataSource={infolistMain} />

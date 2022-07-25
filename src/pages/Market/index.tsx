@@ -15,7 +15,8 @@ import {
   TimePicker,
 } from 'antd';
 import { getNetworks, getTokenList, pools } from '@/constants';
-import usePriceFeed from '@/components/Covalent';
+// import usePriceFeed from '@/components/Covalent';
+import usePriceFeed from '@/components/Binance';
 import { readState } from '@/apis';
 import { getContractAddr } from '@/constants/addresses';
 import DataProvider from '@/abis/DataProvider.json';
@@ -25,8 +26,10 @@ import KpRpc from '@/components/KpRpc';
 import KpTabs from '@/components/KpTabs';
 import KpChildTable from '@/components/KpChildTable';
 import {
-  columns,
-  childColumns,
+  assetColumnsTemplate,
+  poolColumnsTemplate,
+  childAssetColumns,
+  childPoolColumns,
   childData,
   columnsPool,
   dataPool,
@@ -38,85 +41,6 @@ import styles from './index.less';
 import MarketDashboard from '@/components/KpMarketDashboard';
 
 const { TabPane } = Tabs;
-// const tokenList = [
-//   {
-//     key: '1',
-//     name: 'BTC',
-//     age: 32,
-//     icon: '/btc.svg',
-//     address: 'New York No. 1 Lake Park',
-//   },
-//   {
-//     key: '2',
-//     name: 'BNB',
-//     age: 42,
-//     icon: '/bnb.svg',
-//     address: 'London No. 1 Lake Park',
-//   },
-//   {
-//     key: '3',
-//     name: 'DAI',
-//     icon: '/dai.svg',
-//     age: 32,
-//     address: 'Sidney No. 1 Lake Park',
-//   },
-//   {
-//     key: '4',
-//     name: 'ETH',
-//     icon: '/eth.svg',
-//     age: 32,
-//     address: 'London No. 2 Lake Park',
-//   },
-//   {
-//     key: '5',
-//     name: 'USDA',
-//     icon: '/usda.svg',
-//     age: 32,
-//     address: 'London No. 2 Lake Park',
-//   },
-//   {
-//     key: '6',
-//     name: 'USDC',
-//     icon: '/usdc.svg',
-//     age: 32,
-//     address: 'London No. 2 Lake Park',
-//   },
-//   {
-//     key: '7',
-//     name: 'USDH',
-//     icon: '/usdh.svg',
-//     age: 32,
-//     address: 'London No. 2 Lake Park',
-//   },
-//   {
-//     key: '8',
-//     name: 'USDT',
-//     age: 32,
-//     icon: '/usdt.svg',
-//     address: 'London No. 2 Lake Park',
-//   },
-//   {
-//     key: '9',
-//     name: 'FOX',
-//     age: 32,
-//     icon: '/fox.svg',
-//     address: 'London No. 2 Lake Park',
-//   },
-//   {
-//     key: '10',
-//     name: 'BUSD',
-//     age: 32,
-//     icon: '/busd.svg',
-//     address: 'London No. 2 Lake Park',
-//   },
-//   {
-//     key: '11',
-//     name: 'POLYGON',
-//     age: 32,
-//     icon: '/polygon.svg',
-//     address: 'London No. 2 Lake Park',
-//   },
-// ];
 
 const Page = (props) => {
   // library	当前连接的library
@@ -127,96 +51,6 @@ const Page = (props) => {
   let { library, deactivate, chainId, account, active, activate, error } =
     useWeb3React();
   chainId = getNetworks()[3].id;
-  // const tokenList = [
-  //   {
-  //     key: '0',
-  //     name: 'POLYGON',
-  //     icon: '/polygon.svg',
-  //     address: '0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44',
-  //     pools: ['Main Pool', 'MATIC Pool'],
-  //   },
-  //   {
-  //     key: '1',
-  //     name: 'BTC',
-  //     age: 32,
-  //     icon: '/btc.svg',
-  //     address: 'New York No. 1 Lake Park',
-  //     pools: ['Main Pool'],
-  //   },
-  //   {
-  //     key: '2',
-  //     name: 'ETH',
-  //     icon: '/eth.svg',
-  //     age: 32,
-  //     address: '0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44',
-  //     pools: ['Main Pool', 'MATIC Pool'],
-  //   },
-  //   {
-  //     key: '3',
-  //     name: 'USDC',
-  //     icon: '/usdc.svg',
-  //     age: 32,
-  //     address: '0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1',
-  //     pools: ['Main Pool'],
-  //   },
-  //   //random inputs
-  //   {
-  //     key: '4',
-  //     name: 'BNB',
-  //     age: 42,
-  //     icon: '/bnb.svg',
-  //     address: 'London No. 1 Lake Park',
-  //     pools: ['Main Pool'],
-  //   },
-  //   {
-  //     key: '5',
-  //     name: 'DAI',
-  //     icon: '/dai.svg',
-  //     age: 32,
-  //     address: 'Sidney No. 1 Lake Park',
-  //     pools: ['Main Pool'],
-  //   },
-  //   {
-  //     key: '6',
-  //     name: 'USDA',
-  //     icon: '/usda.svg',
-  //     age: 32,
-  //     address: 'London No. 2 Lake Park',
-  //     pools: ['Main Pool'],
-  //   },
-  //   {
-  //     key: '7',
-  //     name: 'USDH',
-  //     icon: '/usdh.svg',
-  //     age: 32,
-  //     address: 'London No. 2 Lake Park',
-  //     pools: ['Main Pool'],
-  //   },
-  //   {
-  //     key: '8',
-  //     name: 'USDT',
-  //     age: 32,
-  //     icon: '/usdt.svg',
-  //     address: 'London No. 2 Lake Park',
-  //     pools: ['Main Pool'],
-  //   },
-  //   {
-  //     key: '9',
-  //     name: 'FOX',
-  //     age: 32,
-  //     icon: '/fox.svg',
-  //     address: 'London No. 2 Lake Park',
-  //     pools: ['Main Pool'],
-  //   },
-  //   {
-  //     key: '10',
-  //     name: 'BUSD',
-  //     age: 32,
-  //     icon: '/busd.svg',
-  //     address: 'London No. 2 Lake Park',
-  //     pools: ['Main Pool'],
-  //   },
-  // ];
 
   const tokenList = getTokenList(chainId);
 
@@ -231,9 +65,11 @@ const Page = (props) => {
   const [poolListData, setPoolListData] = useState({});
   // const [poolData, setPoolData] = useState({});
   const [dashboardData, setDashboardData] = useState({});
-  const [assetData, setAssetData] = useState({});
+  // const [assetData, setAssetData] = useState({});
   const [tokenTMP, setTokenTMP] = useState({});
-  const [tmpPools, setTmpPools] = useState({});
+  const [KpTokenList, setKpTokenList] = useState({});
+  // const [tmpPools, setTmpPools] = useState({});
+  const [testData, setTestData] = useState({});
 
   const injected = new InjectedConnector({
     supportedChainIds: [56],
@@ -284,7 +120,7 @@ const Page = (props) => {
   //
 
   // Covalent price feed
-  const latestPrices = usePriceFeed();
+  let latestPrices = usePriceFeed();
   let poolListDataKeys = [];
   let poolTokenDataKeys = [];
   // let tokenTMP = {}
@@ -302,8 +138,8 @@ const Page = (props) => {
     if (!poolListFetched) {
       console.warn('market, failed to fetch pool list from DataProvider');
     }
-
     let newTokenList = {};
+    let tmpKp = {};
     for (let i = 0; i < poolListFetched.length; i++) {
       let pool = poolListFetched[i];
       const tokenListFetched = await readState(
@@ -331,21 +167,28 @@ const Page = (props) => {
         };
       }
       newTokenList[`${pool.name} pool`] = data;
+      tmpKp[i] = data;
+
+      let j = i - 1;
+      if (!tmpKp[j]) {
+        setKpTokenList(data);
+      }
+      if (tmpKp[j]) {
+        if (Object.keys(tmpKp[j]).length < Object.keys(tmpKp[i]).length) {
+          setKpTokenList(data);
+        }
+      }
     }
-    console.log('hjhjhj icon newtokenlist', newTokenList);
     setPoolListData(newTokenList);
   };
   // fetch asset, ltv, totalSupply, supplyApr, totalBorrow, borrowApr for all token, all pools
   // dashboard data fetching
   const fetchDashboardData = async () => {
-    // const tokenList = getTokenList(chainId);
     const newDashboardData = {};
-
-    // const data = {};
     poolListDataKeys = Object.keys(poolListData);
     let tmp = {};
     let tmpPool = {};
-    setTmpPools(poolListDataKeys);
+    // setTmpPools(poolListDataKeys);
     for (let i = 0; i < poolListDataKeys.length; i++) {
       tmp[poolListDataKeys[i]] = {};
       newDashboardData[poolListDataKeys[i]] = {};
@@ -377,9 +220,9 @@ const Page = (props) => {
           toFloat(res[1], 27),
           'totalBorrow:',
           toFloat(res[2], 27),
-          'supplyAPR',
+          'supplyApr',
           toFloat(res[3], 27),
-          'borrowAPR',
+          'borrowApr',
           toFloat(res[4], 27),
         );
         // data[([i][j]).toString()] = {
@@ -399,6 +242,29 @@ const Page = (props) => {
     setDashboardData(newDashboardData);
   };
 
+  const fetchTestContract = async () => {
+    poolListDataKeys = Object.keys(poolListData);
+    for (let i = 0; i < poolListDataKeys.length; i++) {
+      let poolTokenData = poolListData[poolListDataKeys[i]];
+      // let poolToken = poolTokenData[poolTokenDataKeys[j]];
+      for (let j = 0; j < poolTokenDataKeys.length; j++) {
+        let poolToken = poolTokenData[poolTokenDataKeys[j]];
+        const reserveConfigData = await readState(
+          library,
+          DataProvider.abi,
+          getContractAddr('dataProvider'),
+          'getReserveConfigurationData',
+          [0, poolToken.address],
+        );
+        if (!reserveConfigData) {
+          console.warn(
+            'market, failed to fetch reserveConfigData from DataProvider',
+          );
+        }
+        console.log('hjhjhj test contract res', reserveConfigData);
+      }
+    }
+  };
   const getAssetData = () => {
     if (tokenTMP == {}) {
       return;
@@ -429,6 +295,7 @@ const Page = (props) => {
   useEffect(async () => {
     await fetchDashboardData();
     // getAssetData()
+    // await fetchTestContract();
   }, [poolListData]);
 
   useEffect(() => {
@@ -445,12 +312,19 @@ const Page = (props) => {
           token: token,
           name: pool,
           icon: '',
-          ltv: parseInt(tokenListData[token][pool].ltv) || 0,
-          totalSupply: parseInt(tokenListData[token][pool].totalSupply),
-          totalBorrow: parseInt(tokenListData[token][pool].totalBorrow) || 0,
-          supplyApr: parseInt(tokenListData[token][pool].supplyApr) || 0,
-          borrowApr: parseInt(tokenListData[token][pool].borrowApr) || 0,
+          ltv: parseFloat(tokenListData[token][pool].ltv) || 0,
+          totalSupply:
+            Math.round(
+              parseFloat(tokenListData[token][pool]?.totalSupply) * 1000,
+            ) / 1000,
+          totalBorrow:
+            Math.round(
+              parseFloat(tokenListData[token][pool]?.totalBorrow) * 1000,
+            ) / 1000,
+          supplyApr: parseFloat(tokenListData[token][pool].supplyApr) || 0,
+          borrowApr: parseFloat(tokenListData[token][pool].borrowApr) || 0,
         };
+
         if (temp.key == 'ETH') {
           temp.icon = '/eth.svg';
         }
@@ -460,7 +334,6 @@ const Page = (props) => {
         if (temp.key == 'MATIC') {
           temp.icon = '/matic.svg';
         }
-        console.log('hjhjhj icon temp', temp);
         return temp;
       });
 
@@ -473,8 +346,6 @@ const Page = (props) => {
         supplyApr:
           pools.reduce((prev, pool) => prev + pool.supplyApr, 0) / pools.length,
       };
-      console.log('hjhjhj icon token before return', pools[0].icon);
-
       return {
         key: token,
         icon: pools[0].icon,
@@ -485,7 +356,6 @@ const Page = (props) => {
     });
     console.log('debug check:', tokenList, ' :', latestPrices);
 
-    // console.log('debug, marketData: ', marketData);
     return marketData;
   }, [tokenListData, latestPrices]);
 
@@ -497,11 +367,17 @@ const Page = (props) => {
           key: pool,
           token: pool,
           name: token,
-          ltv: parseInt(dashboardData[pool][token].ltv) || 0,
-          totalSupply: parseInt(dashboardData[pool][token].totalSupply),
-          totalBorrow: parseInt(dashboardData[pool][token].totalBorrow) || 0,
-          supplyApr: parseInt(dashboardData[pool][token].supplyApr) || 0,
-          borrowApr: parseInt(dashboardData[pool][token].borrowApr) || 0,
+          ltv: parseFloat(dashboardData[pool][token].ltv) || 0,
+          totalSupply:
+            Math.round(
+              parseFloat(dashboardData[pool][token]?.totalSupply) * 1000,
+            ) / 1000,
+          totalBorrow:
+            Math.round(
+              parseFloat(dashboardData[pool][token]?.totalBorrow) * 1000,
+            ) / 1000,
+          supplyApr: parseFloat(dashboardData[pool][token].supplyApr) || 0,
+          borrowApr: parseFloat(dashboardData[pool][token].borrowApr) || 0,
         };
         return temp;
       });
@@ -581,7 +457,7 @@ const Page = (props) => {
       );
     }
     return 0;
-  }, [marketData]);
+  }, [marketData, latestPrices]);
 
   return (
     <div className={styles.market}>
@@ -610,7 +486,7 @@ const Page = (props) => {
                 <>
                   <Table
                     style={{ border: '1px solid #1b1d23' }}
-                    columns={columns}
+                    columns={assetColumnsTemplate}
                     dataSource={marketData}
                     expandedRowKeys={expandedRowKeys}
                     onExpand={onTableRowExpand}
@@ -620,7 +496,7 @@ const Page = (props) => {
                         <div style={{ background: '#1b1d23' }}>
                           <KpChildTable
                             style={{ margin: '0' }}
-                            columns={childColumns}
+                            columns={childAssetColumns}
                             showHeader={false}
                             pagination={false}
                             dataSource={record1.pools}
@@ -638,37 +514,43 @@ const Page = (props) => {
                     }}
                     pagination={false}
                   />
-                  <MarketDashboard />
+                  <MarketDashboard KpTokenList={KpTokenList} />
                 </>
               )) || (
-                <Table
-                  style={{ border: '1px solid #1b1d23' }}
-                  columns={columns}
-                  dataSource={poolData}
-                  expandable={{
-                    expandRowByClick: true,
-                    expandedRowRender: (record) => (
-                      <div style={{ background: '#1b1d23' }}>
-                        <KpChildTable
-                          style={{ margin: '0' }}
-                          columns={childColumns}
-                          showHeader={false}
-                          pagination={false}
-                          dataSource={record.tokens}
-                          onRow={(record2) => {
-                            return {
-                              onClick: (event) => {
-                                setR1(record2);
-                                setR2(record);
-                              }, // 点击行
-                            };
-                          }}
-                        />
-                      </div>
-                    ),
-                  }}
-                  pagination={false}
-                />
+                <>
+                  <Table
+                    style={{
+                      border: '1px solid #1b1d23',
+                      whiteSpace: 'nowrap',
+                    }}
+                    columns={poolColumnsTemplate}
+                    dataSource={poolData}
+                    expandable={{
+                      expandRowByClick: true,
+                      expandedRowRender: (record) => (
+                        <div style={{ background: '#1b1d23' }}>
+                          <KpChildTable
+                            style={{ margin: '0' }}
+                            columns={childPoolColumns}
+                            showHeader={false}
+                            pagination={false}
+                            dataSource={record.tokens}
+                            onRow={(record2) => {
+                              return {
+                                onClick: (event) => {
+                                  setR1(record2);
+                                  setR2(record);
+                                }, // 点击行
+                              };
+                            }}
+                          />
+                        </div>
+                      ),
+                    }}
+                    pagination={false}
+                  />
+                  {/* <MarketDashboard /> */}
+                </>
               )}
             </Col>
             <Col
@@ -687,6 +569,7 @@ const Page = (props) => {
                     onSelectPool={onSelectPool}
                     onSelectToken={onSelectToken}
                     selectedTab={selectedTab}
+                    KpTokenList={KpTokenList}
                     dataSource={{
                       r1,
                       r2,

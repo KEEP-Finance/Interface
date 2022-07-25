@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 
 // Set your API key here
-const APIKEY = 'ckey_9b64aafb1353438694743f2ef52';
+// const APIKEY = 'ckey_9b64aafb1353438694743f2ef52';
+const APIKEY = 'ckey_5b3464c6cb8541309d9d1b5c114';
 
 // Set your crypto tickers here
 const tickers = ['ETH', 'USDC', 'MATIC'];
@@ -12,6 +13,7 @@ const APIEndpoint = '/pricing/tickers';
 
 // Covalent API request setup
 const url = new URL(`${covalentAPI}${APIEndpoint}/`);
+console.log('hjhjhj api url', url);
 url.search = new URLSearchParams({
   key: APIKEY,
   tickers: tickers,
@@ -25,6 +27,7 @@ const usePriceFeed = () => {
     const res = await fetch(url)
       .then((resp) => resp.json())
       .then(function (data) {
+        console.log('hjhjhj api check res', data);
         let tokens = data.data.items;
         const priceDict = {};
         tokens.forEach((token) => {

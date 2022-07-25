@@ -22,7 +22,16 @@ export const approve = async (
   spenderAddr,
 ) => {
   const token = getToken(chainId, tokenName);
-  console.log('api debug: ', chainId, account, token.address, spenderAddr);
+  console.log(
+    'api debug: chainId',
+    chainId,
+    'account',
+    account,
+    'token addr',
+    token.address,
+    'spender addr',
+    spenderAddr,
+  );
   return performTx(library, ERC20.abi, account, token.address, 'approve', [
     spenderAddr,
     MAX_UINT256,
@@ -52,10 +61,24 @@ export const checkAllowance = async (
   spenderAddr,
 ) => {
   const token = getToken(chainId, tokenName);
-  return readState(library, ERC20.abi, token.address, 'allowance', [
+
+  let state = await readState(library, ERC20.abi, token.address, 'allowance', [
     account,
     spenderAddr,
   ]);
+  console.log(
+    'api debug cehck allowance: chainId',
+    chainId,
+    'account',
+    account,
+    'token addr',
+    token.address,
+    'spender addr',
+    spenderAddr,
+    'result ',
+    state,
+  );
+  return state;
 };
 
 // tx

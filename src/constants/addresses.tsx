@@ -1,5 +1,5 @@
 export const contractAddrs = {
-  dataProvider: '0xE550C7E191250323cdEFD6C61dE86d094136E113',
+  dataProvider: '0xA95a521ce0F3E0D695dcb775b0392ebd1760f62D',
 };
 
 export const getContractAddr = (contractName) => contractAddrs[contractName];

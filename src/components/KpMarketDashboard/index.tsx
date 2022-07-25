@@ -12,8 +12,9 @@ import { withConfirmation, getContract } from '@/apis';
 import { toFloat } from '@/utils';
 import { ConsoleSqlOutlined } from '@ant-design/icons';
 
-const MarketDashboard = () => {
+const MarketDashboard = (props) => {
   const latestPrices = usePriceFeed();
+  const { KpTokenList } = props;
 
   // const positions = [
   //   {
@@ -31,10 +32,12 @@ const MarketDashboard = () => {
     // let reader = getContract(getPoolAddr("Main Pool"), LendingPool.abi, library, account)
     // let res = await reader["getTraderPositions"]();
     const tokenList = getTokenList(chainId);
-    console.log('KpMarketDashboard tokenList', tokenList);
+    console.log('hjhjhj get price KpMarketDashboard tokenList 1', KpTokenList);
+    console.log('hjhjhj get price tokenlsit tokenList', tokenList);
+
     const userTokenData = [];
-    for (let i = 0; i < tokenList.length; i++) {
-      const token = tokenList[i];
+    for (let i = 0; i < KpTokenList.length; i++) {
+      const token = KpTokenList[i];
       const decimals = token.decimals;
       const res = await readState(
         library,
@@ -44,6 +47,7 @@ const MarketDashboard = () => {
         [0, token.address, account],
       );
       console.log('KpMarketDashboard getUserReserveData', res);
+
       if (!res) {
         console.warn(
           'kpMarketDashboard, failed to fetch data from DataProvider',
@@ -52,6 +56,8 @@ const MarketDashboard = () => {
       }
       const supply = toFloat(res[0], decimals);
       const borrow = toFloat(res[1], decimals);
+      const balance = toFloat(res.currentKTokenBalance, decimals);
+      console.log('KpMarketDashboard getUserReserveData see balance', balance);
       if (supply != '0.0') {
         const data = {
           token: token.name,
@@ -76,7 +82,7 @@ const MarketDashboard = () => {
   };
   useEffect(() => {
     updatePositionTable();
-  }, [library]);
+  }, [library, KpTokenList]);
 
   useEffect(() => {
     if (!library) return;
