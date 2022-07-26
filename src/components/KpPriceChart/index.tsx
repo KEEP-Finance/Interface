@@ -5,10 +5,17 @@ import { createChart, CrosshairMode } from 'lightweight-charts';
 const client = Binance();
 
 export default function KpPriceChart(props) {
-  const [pairName, setPairName] = useState('BTCUSDT');
+  const [pairName, setPairName] = useState('BTC/USDT');
   const [latestPrice, setLatestPrice] = useState(0);
+
   useEffect(() => {
-    if (props.token) setPairName(`${props.token}USDT`);
+    if (props.longToken && props.shortToken) {
+      setPairName(`${props.longToken}/${props.shortToken}`);
+    }
+  }, [props.longToken, props.shortToken]);
+
+  useEffect(() => {
+    if (props.token) setPairName(`${props.token}/USDT`);
   }, [props.token]);
 
   // chart creation
@@ -106,7 +113,7 @@ export default function KpPriceChart(props) {
     }
 
     // subscribe to websocket for the future price update
-    const clean = client.ws.candles(pairName, '1m', (res) => {
+    const clean = client.ws.candles(pairName.replace('/', ''), '1m', (res) => {
       console.log('res: ', res);
       const candleData = {
         time: res.startTime,
@@ -129,7 +136,7 @@ export default function KpPriceChart(props) {
       // REACT BUG?
       const now = Date.now();
       let prevData = await client.candles({
-        symbol: pairName,
+        symbol: pairName.replace('/', ''),
         interval: '1m',
         limit: 1000,
         endTime: now,
@@ -144,7 +151,8 @@ export default function KpPriceChart(props) {
 
   return (
     <div className="App">
-      <div>{pairName.substring(0, pairName.length - 4)}/USDT</div>
+      {/* <div>{pairName.substring(0, pairName.length - 4)}/USDT</div> */}
+      <div>{pairName}</div>
       <h2>{Number.parseFloat(latestPrice).toFixed(3)}</h2>
       <div ref={chartContainerRef} style={{ width: '100%', height: '300px' }} />
     </div>

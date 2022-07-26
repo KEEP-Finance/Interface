@@ -69,20 +69,12 @@ const Page = () => {
         <Col className={styles.main} span={24}>
           <Row>
             <Col span={16}>
-              {selectedTab == 'Advanced' ? (
+              {selectedTab == 'Hedge' ? (
                 <>
-                  {/* <KpTabs
-                    tabType="priceChart"
-                    setSelectedTab={setChartType}
-                    onChange={() => {}}
+                  <KpPriceChart
+                    longToken={longToken?.name || 'BTC'}
+                    shortToken={shortToken?.name || 'USDT'}
                   />
-                  {chartType == 'Long Token' ? (
-                    <KpPriceChart token={longToken?.name || 'BTC'} />
-                  ) : (
-                    <KpPriceChart token={shortToken?.name || 'BTC'} />
-                  )} */}
-                  <KpPriceChart token={longToken?.name || 'BTC'} />
-                  <KpPriceChart token={shortToken?.name || 'BTC'} />
                 </>
               ) : (
                 <KpPriceChart token={futureToken?.name || 'BTC'} />

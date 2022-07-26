@@ -40,7 +40,7 @@ const KpLongShort = (props: any) => {
   const [lm, setLm] = useState(true);
   const { library, chainId, active, account, activate, deactivate } =
     useWeb3React();
-  const [slider, setSlider] = useState(1.5);
+  const [slider, setSlider] = useState(1.1);
   const [inputVal, setInputVal] = useState();
   const [inputFutureVal, setInputFutureVal] = useState();
   const [step, setStep] = useState('approve');
@@ -151,10 +151,10 @@ const KpLongShort = (props: any) => {
   const onChangeFutureVal = (input) => {
     if (collateralToken && inputVal && (futureToken || shortToken)) {
       const sliderVal = input / inputVal;
-      if (1.5 <= sliderVal && sliderVal <= 20) {
+      if (1.1 <= sliderVal && sliderVal <= 20) {
         setSlider(sliderVal);
-      } else if (sliderVal < 1.5) {
-        setSlider(1.5);
+      } else if (sliderVal < 1.1) {
+        setSlider(1.1);
       } else {
         setSlider(20);
       }
@@ -187,6 +187,8 @@ const KpLongShort = (props: any) => {
               futureToken.address,
               parsedAmount,
               parsedLeverage,
+              0, // minLongAmountOut
+              account, // onBehalfOf
             ],
           ),
         ).then(() => {
@@ -206,12 +208,14 @@ const KpLongShort = (props: any) => {
               collateralToken.address,
               parsedAmount,
               parsedLeverage,
+              0, // minLongAmountOut
+              account, // onBehalfOf
             ],
           ),
         ).then(() => {
           console.log('Transaction done');
         });
-      } else if (selectedTab == 'Advanced') {
+      } else if (selectedTab == 'Hedge') {
         withConfirmation(
           performTx(
             library,
@@ -225,6 +229,8 @@ const KpLongShort = (props: any) => {
               longToken.address,
               parsedAmount,
               parsedLeverage,
+              0, // minLongAmountOut
+              account, // onBehalfOf
             ],
           ),
         ).then(() => {
@@ -251,7 +257,7 @@ const KpLongShort = (props: any) => {
           />
         </div>
 
-        {selectedTab == 'Advanced' ? (
+        {selectedTab == 'Hedge' ? (
           <>
             <div style={{ padding: '5px 0' }}>
               <span
@@ -333,10 +339,10 @@ const KpLongShort = (props: any) => {
           {lm && (
             <Slider
               onChange={onChangeLeverage}
-              marks={{ 1.5: '1.5x', 5: '5x', 10: '10x', 15: '15x', 20: '20x' }}
+              marks={{ 1.1: '1.1x', 5: '5x', 10: '10x', 15: '15x', 20: '20x' }}
               value={slider}
               step={0.1}
-              min={1.5}
+              min={1.1}
               max={20}
             />
           )}
