@@ -269,7 +269,10 @@ const Page = () => {
                       />
                     </TabPane>
                   </Tabs> */}
-                  <KpTabs onChange={(index) => setLm(index == 1)} />
+                  <KpTabs
+                    onChange={(index) => setLm(index == 1)}
+                    tabType="market"
+                  />
                   <KpBuy
                     onSelectPool={onSelectPool}
                     onSelectToken={onSelectToken}

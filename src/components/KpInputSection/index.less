@@ -1,46 +1,37 @@
 @bgColor: #373536;
 
-.kpselect {
-  border: 1px;
-  height: 4.4375rem;
+.kb {
+  margin: 10px auto;
+  width: 100%;
+  border: 1px solid #323232;
+  border-radius: 6px;
   display: flex;
-  overflow: hidden;
-  border-color: #323232;
-  border-style: solid;
-  border-radius: 8px;
 
-  .root {
-    border: 0;
-    margin: 0;
-    display: inline-flex;
-    padding: 0;
-    position: relative;
-    min-width: 0;
-    flex-direction: column;
-    vertical-align: top;
-    width: 100%;
-    cursor: pointer;
-    position: relative;
+  .areaInput {
+    padding-right: 60px;
 
-    label {
-      color: #999999;
-      position: absolute;
-      font-size: 0.75rem;
-      line-height: 1rem;
-      padding-top: 0.5rem;
-      padding-left: 1rem;
+    input {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      outline: none;
+      box-shadow: none;
+      width: 100%;
+      padding: 10px 15px 0;
+      font-size: 18px;
     }
   }
 
-  .left {
-    flex: 190;
-    border-right: 1px;
-    border-right-color: #323232;
-    border-right-style: solid;
+  .price {
+    text-align: left;
+    padding-left: 17px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 3px;
+    font-size: 12px;
   }
 
-  .right {
-    flex: 140;
+  .tokenSelector {
+    width: 50px;
   }
 }
 
@@ -61,7 +52,7 @@
     font-weight: 400;
     line-height: 1.1876em;
     letter-spacing: 0.03125rem;
-    // padding-top: 1.25rem;
+    padding-top: 1.25rem;
     padding-left: 1rem;
     .tokenIcon {
       flex-grow: 0;
@@ -95,27 +86,37 @@
     }
   }
 }
-.tokenlist {
-  background: #1b1d23;
-  .item {
-    display: flex;
-    justify-content: space-between;
-    border-radius: 5px;
-    padding: 10px 20px;
-    line-height: 36px;
-    &:hover {
-      background: rgba(255, 255, 255, 0.08);
+
+.kpselect {
+  margin-right: 10px;
+  .root {
+    border: 0;
+    margin: 0;
+    display: inline-flex;
+    padding: 0;
+    position: relative;
+    min-width: 0;
+    flex-direction: column;
+    vertical-align: top;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+
+    label {
+      color: #999999;
+      position: absolute;
+      font-size: 0.75rem;
+      line-height: 1rem;
+      padding-top: 0.5rem;
+      padding-left: 1rem;
     }
-    & > div {
-      display: flex;
-      align-items: center;
-      img {
-        width: 30px;
-        margin-right: 5px;
-      }
-      p {
-        margin: 0;
-      }
-    }
+  }
+
+  .left {
+    flex: 190;
+  }
+
+  .right {
+    flex: 140;
   }
 }

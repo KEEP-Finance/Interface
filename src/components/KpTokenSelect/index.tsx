@@ -51,30 +51,8 @@ const KpBigInput = (props: any) => {
   return (
     <div className={styles.kpselect} {...rest}>
       <div className={`${styles.root} ${styles.left}`} onClick={selectToken}>
-        <label>Token</label>
-        <Select
-          name={props.dataSource.r1.name || 'Select'}
-          icon={props.dataSource.r1.icon}
-        />
-      </div>
-      <div className={`${styles.root} ${styles.right}`}>
-        <label>Pool</label>
-        <div style={{ height: '100%' }}>
-          <Dropdown overlay={menu}>
-            <div style={{ height: '100%' }}>
-              <Select
-                name={
-                  (props.dataSource?.r2?.key &&
-                    '0' +
-                      props.dataSource?.r2?.key +
-                      ' ' +
-                      props.dataSource.r2.name) ||
-                  'Select'
-                }
-              />
-            </div>
-          </Dropdown>
-        </div>
+        {/* <label>Token</label> */}
+        <Select name={props.name || 'Select'} icon={props.icon} />
       </div>
     </div>
   );
