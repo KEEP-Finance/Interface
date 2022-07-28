@@ -11,12 +11,13 @@ import { getContractAddr } from '@/constants/addresses';
 
 const KpBigInput = (props: any) => {
   const {
+    selectedTab,
     name,
     price,
     number,
     placeholder,
-    inputVal,
-    setInputVal,
+    passedVal,
+    setPassedVal,
     KpTokenList,
     tokenName,
     ...rest
@@ -25,6 +26,7 @@ const KpBigInput = (props: any) => {
   const { active, library, chainId, account } = useWeb3React();
 
   const [balance, setBalance] = useState('');
+  const [inputVal, setInputVal] = useState();
 
   const fetchBalance = async () => {
     if (tokenName) {
@@ -36,7 +38,10 @@ const KpBigInput = (props: any) => {
         [0, KpTokenList[tokenName].address, account],
       );
       let decimals = KpTokenList[tokenName].decimals;
-      let bal = toFloat(res.currentKTokenBalance, decimals);
+      let bal = parseFloat(toFloat(res.currentKTokenBalance, decimals)).toFixed(
+        2,
+      );
+      // console.log("hjhjhj bal", typeof bal, typeof parseFloat(bal).toFixed(2), parseFloat(bal).toFixed(2))
       setBalance(bal);
 
       if (!res) {
@@ -48,13 +53,17 @@ const KpBigInput = (props: any) => {
   };
 
   const onButtonClicked = () => {
-    console.log('hjhjhj max button');
+    console.log('hjhjhj max button', typeof balance, parseInt(balance));
     //should be set to maximum balance
-    setInputVal('100000');
+    setInputVal(parseInt(balance));
+    setPassedVal(
+      '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+    );
   };
   useEffect(() => {
     fetchBalance();
   }, [library, KpTokenList, tokenName]);
+  useEffect(() => {});
 
   return (
     <div className={styles.kb} style={{ boxSizing: 'content-box' }} {...rest}>
@@ -66,7 +75,9 @@ const KpBigInput = (props: any) => {
             if (isNaN(e.target.value)) {
               return;
             }
+            setPassedVal(e.target.value);
             setInputVal(e.target.value);
+            console.log('hjhjhj inputval', inputVal);
           }}
         />
         <Row style={{ width: '100%' }}>
@@ -74,17 +85,21 @@ const KpBigInput = (props: any) => {
             <div className={styles.price}>${balance}</div>
           </Col>
           <Col span={4} offset={16} style={{ marginBottom: '0.3rem' }}>
-            <Button
-              style={{
-                fontSize: '0.6rem',
-                padding: '0px',
-                width: '30px',
-                height: '20px',
-              }}
-              onClick={onButtonClicked}
-            >
-              MAX
-            </Button>
+            {selectedTab == 'Repay' || selectedTab == 'Withdraw' ? (
+              <Button
+                style={{
+                  fontSize: '0.6rem',
+                  padding: '0px',
+                  width: '30px',
+                  height: '20px',
+                }}
+                onClick={onButtonClicked}
+              >
+                MAX
+              </Button>
+            ) : (
+              <div> </div>
+            )}
           </Col>
         </Row>
       </div>

@@ -52,7 +52,8 @@ const KpTotal = (props: any) => {
     ...rest
   } = props;
   const { active, account, chainId, library } = useWeb3React();
-  const [inputVal, setInputVal] = useState();
+  const [passedVal, setPassedVal] = useState();
+
   const [step, setStep] = useState('approve');
 
   const TabRef = useRef();
@@ -60,6 +61,8 @@ const KpTotal = (props: any) => {
   // useEffect(() => {
 
   // }, [])
+
+  console.log('hjhjhj tab', TabRef);
 
   const onButtonClicked = (selectedTab) => {
     console.log('executingTX');
@@ -84,7 +87,7 @@ const KpTotal = (props: any) => {
     } else {
       const token = getToken(chainId, dataSource.r1.name);
       const parsedAmount = parseUnits(
-        inputVal || `0`,
+        passedVal || `0`,
         token.decimals,
       ).toString();
       if (TabRef.current == 'Supply') {
@@ -118,7 +121,7 @@ const KpTotal = (props: any) => {
         const poolName = dataSource.r2.name;
         const poolAddr = getPoolAddr(poolName);
         console.log(LendingPool);
-        // const parsedAmount = parseUnits(`${inputVal}`,decimals).toString();
+        // const parsedAmount = parseUnits(`${passedVal}`,decimals).toString();
         withConfirmation(
           performTx(library, LendingPool.abi, account, poolAddr, 'withdraw', [
             token.address,
@@ -132,7 +135,7 @@ const KpTotal = (props: any) => {
         const poolName = dataSource.r2.name;
         const poolAddr = getPoolAddr(poolName);
         console.log(LendingPool);
-        // const parsedAmount = parseUnits(`${inputVal}`,decimals).toString();
+        // const parsedAmount = parseUnits(`${passedVal}`,decimals).toString();
         withConfirmation(
           performTx(library, LendingPool.abi, account, poolAddr, 'repay', [
             token.address,
@@ -159,9 +162,18 @@ const KpTotal = (props: any) => {
   );
 
   useEffect(() => {
-    console.log('kpbuy, update step', inputVal, allowance);
-    if (!inputVal || !allowance) return;
-    const inputBN = ethers.BigNumber.from(`${inputVal}`);
+    console.log('kpbuy, update step', passedVal, allowance);
+    if (!passedVal || !allowance) return;
+    let inputBN;
+    if (
+      passedVal ==
+      '115792089237316195423570985008687907853269984665640564039457584007913129639935'
+    ) {
+      inputBN = ethers.BigNumber.from(`${passedVal}`);
+    } else {
+      inputBN = ethers.BigNumber.from(`${parseFloat(passedVal)}`);
+    }
+
     if (inputBN.gt(allowance)) {
       setStep('approve');
       console.log('api debug: setstep approve');
@@ -169,8 +181,8 @@ const KpTotal = (props: any) => {
       setStep('tx');
       console.log('api debug: setstep tx');
     }
-    setInputVal(inputVal);
-  }, [allowance, inputVal]);
+    setPassedVal(passedVal);
+  }, [allowance, passedVal]);
 
   useEffect(() => {
     if (!library) return;
@@ -184,7 +196,7 @@ const KpTotal = (props: any) => {
   }, [library]);
 
   const printArgs = () => {
-    console.log('kpbuy, args: ', dataSource.r1, dataSource.r2, inputVal);
+    console.log('kpbuy, args: ', dataSource.r1, dataSource.r2, passedVal);
   };
 
   return (
@@ -197,9 +209,10 @@ const KpTotal = (props: any) => {
           dataSource={props.dataSource}
         />
         <KpBigInput
+          selectedTab={selectedTab}
           placeholder="Amount"
-          inputVal={inputVal}
-          setInputVal={setInputVal}
+          passedVal={passedVal}
+          setPassedVal={setPassedVal}
           KpTokenList={KpTokenList}
           tokenName={props.dataSource.r1.name}
           // poolName={props.dataSource.r2.name}
