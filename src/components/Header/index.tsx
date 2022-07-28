@@ -59,15 +59,13 @@ const Header = () => {
             <Menu.Item key="1" onClick={() => history.push('/')}>
               Market
             </Menu.Item>
-            {/* <Menu.Item key="3" onClick={() => history.push('/')}>
-             Margin
-            </Menu.Item> */}
+
+            <Menu.Item key="3" onClick={() => history.push('/margin')}>
+              Margin
+            </Menu.Item>
 
             <Menu.Item key="2" onClick={() => history.push('/account')}>
               Account
-            </Menu.Item>
-            <Menu.Item key="3" onClick={() => history.push('/margin')}>
-              Margin
             </Menu.Item>
           </Menu>
         </Col>
