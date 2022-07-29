@@ -74,6 +74,7 @@ const Page = () => {
                   <KpPriceChart
                     longToken={longToken?.name || 'BTC'}
                     shortToken={shortToken?.name || 'USDT'}
+                    mode="hedge"
                   />
                 </>
               ) : (
