@@ -1,12 +1,53 @@
-import { DownOutlined, SmileOutlined } from '@ant-design/icons';
-import { Dropdown, Menu, Space } from 'antd';
+import {
+  DownOutlined,
+  SmileOutlined,
+  CheckCircleOutlined,
+} from '@ant-design/icons';
+import { Dropdown, Menu, Space, Row, Col } from 'antd';
 import { useWeb3React } from '@web3-react/core';
 import styles from './index.less';
 import { getNetworks, getDefaultNetwork } from '@/constants';
 import millify from 'millify';
+
+const switchChain = async (selectedChainId) => {
+  console.log(
+    'selected current chainId: ',
+    selectedChainId,
+    web3.utils.toHex(selectedChainId),
+  );
+  if (window.ethereum.networkVersion !== selectedChainId) {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: web3.utils.toHex(selectedChainId) }],
+      });
+    } catch (err) {
+      console.log('hjhjhj error change');
+      // This error code indicates that the chain has not been added to MetaMask
+      if (err.code === 4902) {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainName: 'Polygon Mainnet',
+              chainId: web3.utils.toHex(selectedChainId),
+              nativeCurrency: {
+                name: 'MATIC',
+                decimals: 18,
+                symbol: 'MATIC',
+              },
+              rpcUrls: ['https://polygon-rpc.com/'],
+            },
+          ],
+        });
+      }
+    }
+  }
+};
 const menu = (chainId: Number) => {
   const networks = getNetworks();
   const otherNetworks = networks.filter((network) => network.id != chainId);
+  console.log('hjhjhj network otherNetworks', otherNetworks);
   return (
     <div className={styles.marker}>
       <ul>
@@ -15,11 +56,26 @@ const menu = (chainId: Number) => {
           <hr></hr>
         </div>
         {otherNetworks.map((network) => (
-          <li>
-            <div className={styles.icon}>
-              <img src={network.img} />
-            </div>
-            <div>{network.name}</div>
+          <li style={{ padding: '3px 5px' }}>
+            {network.checked == true ? (
+              <li
+                className={styles.networkChecked}
+                style={{ padding: '5px 7px', border: '1px solid #ffc000' }}
+              >
+                <div className={styles.icon}>
+                  <img src={network.img} />
+                </div>
+                <div>{network.name}</div>
+                <CheckCircleOutlined className={styles.checked} />
+              </li>
+            ) : (
+              <li className={styles.networkChecked}>
+                <div className={styles.icon}>
+                  <img src={network.img} />
+                </div>
+                <div>{network.name}</div>
+              </li>
+            )}
           </li>
         ))}
       </ul>

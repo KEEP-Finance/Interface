@@ -14,7 +14,7 @@ import {
   Slider,
   TimePicker,
 } from 'antd';
-import { getNetworks, getTokenList, pools } from '@/constants';
+import { getNetworks, getTokenList, pools, getToken } from '@/constants';
 // import usePriceFeed from '@/components/Covalent';
 import usePriceFeed from '@/components/Binance';
 import { readState } from '@/apis';
@@ -142,14 +142,17 @@ const Page = (props) => {
           'market, failed to fetch tokenlist data from DataProvider',
         );
       }
+
       let data = {};
       for (let j = 0; j < res.length; j++) {
+        let tmp = getToken(chainId, res[j][0]);
         data[res[j][0].toString()] = {
           name: res[j][0],
           address: res[j][1],
           symbol: res[j].symbol,
           tokenAddress: res[j].tokenAddress,
           pool: pool.name,
+          decimals: tmp.decimals,
         };
       }
       newPoolList[`${pool.name} pool`] = data;
@@ -292,7 +295,6 @@ const Page = (props) => {
     library.on('block', async () => {
       await fetchTokensData();
     });
-    console.log('hjhjhj rename KpTokenList', KpTokenList);
   }, [library]);
 
   useEffect(async () => {

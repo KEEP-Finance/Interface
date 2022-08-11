@@ -1,6 +1,9 @@
 import { ethers } from 'ethers';
 
 export const toFloat = (bn, decimals) => {
+  if (bn == undefined) {
+    return;
+  }
   return ethers.utils.formatUnits(bn, decimals);
 };
 

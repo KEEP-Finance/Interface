@@ -177,6 +177,7 @@ const Header = () => {
                   <div
                     onClick={() => {
                       setNetworkList((data) => {
+                        console.log('hjhjhj network header data map', data);
                         let newData = data.map((ele) => {
                           ele.checked = false;
                           console.log('hjhjhj network ele', ele, index);
@@ -185,7 +186,7 @@ const Header = () => {
                         newData[index].checked = true;
                         return newData;
                       });
-                      console.log('hjhjhj network item', item);
+                      console.log('hjhjhj network item id', item, item.id);
                       switchChain(item.id);
                     }}
                     className={`${styles.tokenBox} ${

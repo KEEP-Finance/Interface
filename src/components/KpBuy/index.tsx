@@ -6,6 +6,7 @@ import KpInfoList from '@/components/KpInfoList';
 import KpTokenInput from '@/components/KpTokenInput';
 import KpTokenNPoolSelect from '@/components/KpTokenNPoolSelect';
 import { ethers } from 'ethers';
+import { toBN, toFloat } from '@/utils';
 
 import styles from './index.less';
 import { useWeb3React } from '@web3-react/core';
@@ -86,10 +87,13 @@ const KpTotal = (props: any) => {
       console.log('api debug check approve');
     } else {
       const token = getToken(chainId, dataSource.r1.name);
-      const parsedAmount = parseUnits(
-        passedVal || `0`,
-        token.decimals,
-      ).toString();
+      const parsedAmount = passedVal;
+      // parseUnits(
+      //   passedVal || `0`,
+      //   token.decimals,
+      // ).toString();
+      console.log('hjhjhj input token decimals', token.decimals, parsedAmount);
+
       if (TabRef.current == 'Supply') {
         const poolName = dataSource.r2.name;
         const poolAddr = getPoolAddr(poolName);
@@ -150,7 +154,6 @@ const KpTotal = (props: any) => {
     }
   };
 
-  console.log('hjhjhj check mainpool', dataSource);
   const token = dataSource.r1.name || 'ETH';
   const poolAddr = dataSource.r2?.name
     ? getPoolAddr(dataSource.r2.name)
@@ -163,7 +166,7 @@ const KpTotal = (props: any) => {
   );
 
   useEffect(() => {
-    console.log('kpbuy, update step', passedVal, allowance);
+    console.log('hjhjhj kpbuy passedVal', passedVal, allowance);
     if (!passedVal || !allowance) return;
     let inputBN;
     if (
@@ -174,7 +177,7 @@ const KpTotal = (props: any) => {
     } else {
       inputBN = ethers.BigNumber.from(`${parseFloat(passedVal)}`);
     }
-
+    console.log('hjhjhj kpbuy inputbn', inputBN, allowance);
     if (inputBN.gt(allowance)) {
       setStep('approve');
       console.log('api debug: setstep approve');

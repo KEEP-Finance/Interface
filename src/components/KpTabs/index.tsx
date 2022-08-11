@@ -63,7 +63,6 @@ const KpTabs = (props) => {
         item.checked = false;
         return item;
       });
-      console.log('hjhjhj debug  newData', newData, index);
       newData[index].checked = true;
       setSelectedTab(newData[index].name);
       return newData;

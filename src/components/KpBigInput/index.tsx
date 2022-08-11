@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import styles from './index.less';
 import { readState } from '@/apis';
 import { useWeb3React } from '@web3-react/core';
-import { toFloat } from '@/utils';
+import { toFloat, toBN } from '@/utils';
+import { getToken } from '@/constants';
 
 import DataProvider from '@/abis/DataProvider.json';
 import { getContractAddr } from '@/constants/addresses';
+import { parseUnits } from 'ethers/lib/utils';
 
 const KpBigInput = (props: any) => {
   const {
@@ -37,7 +39,8 @@ const KpBigInput = (props: any) => {
         'getUserReserveData',
         [0, KpTokenList[tokenName].address, account],
       );
-      let decimals = KpTokenList[tokenName].decimals;
+      let token = getToken(chainId, tokenName);
+      let decimals = token.decimals;
       let bal = parseFloat(toFloat(res.currentKTokenBalance, decimals)).toFixed(
         2,
       );
@@ -53,7 +56,6 @@ const KpBigInput = (props: any) => {
   };
 
   const onButtonClicked = () => {
-    console.log('hjhjhj max button', typeof balance, parseInt(balance));
     //should be set to maximum balance
     setInputVal(parseInt(balance));
     setPassedVal(
@@ -75,9 +77,13 @@ const KpBigInput = (props: any) => {
             if (isNaN(e.target.value)) {
               return;
             }
-            setPassedVal(e.target.value);
+            setPassedVal(
+              parseUnits(
+                e.target.value || `0`,
+                KpTokenList[tokenName].decimals,
+              ).toString(),
+            );
             setInputVal(e.target.value);
-            console.log('hjhjhj inputval', inputVal);
           }}
         />
         <Row style={{ width: '100%' }}>
