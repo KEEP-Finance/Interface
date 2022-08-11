@@ -3,7 +3,7 @@ import { history } from 'umi';
 import { Layout, Menu, Row, Col } from 'antd';
 import { createFromIconfontCN, CheckCircleOutlined } from '@ant-design/icons';
 import KpModal from '@/components/KpModal';
-import Logo from '@/assets/logo.png';
+import Logo from '@/assets/logo.svg';
 import iconjs from './iconfont.js';
 
 import styles from './index.less';
@@ -100,8 +100,9 @@ const Header = () => {
     <Layout.Header className={styles.header}>
       <Row justify="space-between" align="middle">
         <Col style={{ display: 'flex', alignItems: 'center' }}>
-          <span className={styles.logoText}>Keep</span>
-          <img src={Logo} style={{ width: '2.2em' }} />
+          {/* <span className={styles.logoText}>Keep</span> */}
+          <img src={Logo} style={{ width: '6.3rem' }} />
+          {/* <Logo width={100} style={{ verticalAlign: 'middle' }} /> */}
         </Col>
         <Col style={{ flex: '1' }}>
           <Menu
@@ -174,11 +175,13 @@ const Header = () => {
                       setNetworkList((data) => {
                         let newData = data.map((ele) => {
                           ele.checked = false;
+                          console.log('hjhjhj network ele', ele, index);
                           return ele;
                         });
                         newData[index].checked = true;
                         return newData;
                       });
+                      console.log('hjhjhj network item', item);
                       switchChain(item.id);
                     }}
                     className={`${styles.tokenBox} ${

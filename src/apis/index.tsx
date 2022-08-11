@@ -133,7 +133,7 @@ export const performTx = async (
   let estimate = contract.estimateGas[functionName];
   console.log('hjhjhj FINAL DEBUG estimate', estimate);
   let method = contract[functionName];
-  console.log('hjhjhj testing here method', method);
+  console.log('hjhjhj testing here method', functionName, method);
 
   let result = estimate(...args, value ? { value } : {}).then(
     (estimatedGasLimit) =>

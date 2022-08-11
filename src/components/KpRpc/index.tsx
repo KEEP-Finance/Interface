@@ -34,15 +34,18 @@ const KpTotal = (props: any) => {
   const currentNetwork = getNetworks().find((net) => net.id == chainId);
   return (
     <div className={styles.kt} {...rest}>
-      <div className={styles.title}>
-        <div>
-          <img
-            style={{ width: '35px', verticalAlign: 'top' }}
-            src={currentNetwork.img}
-          />
-          <span className={styles.rpc}>{currentNetwork.name}</span>
+      <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
+        <div className={styles.title}>
+          <div>
+            <img
+              style={{ width: '35px', verticalAlign: 'top' }}
+              src={currentNetwork.img}
+            />
+            <span className={styles.rpc}>{currentNetwork.name}</span>
+            <DownOutlined style={{ fontSize: '20px', color: '#ffffff' }} />
+          </div>
         </div>
-      </div>
+      </Dropdown>
       <div className={styles.dashboard}>
         {/* <div className={styles.item}>
           <div>

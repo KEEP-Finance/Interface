@@ -95,7 +95,7 @@ const KpTotal = (props: any) => {
         const poolAddr = getPoolAddr(poolName);
         // console.log("withconfirmation see lending pool", LendingPool);
         withConfirmation(
-          performTx(library, LendingPool.abi, account, poolAddr, 'deposit', [
+          performTx(library, LendingPool.abi, account, poolAddr, 'supply', [
             token.address,
             parsedAmount,
             account,

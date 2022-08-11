@@ -55,19 +55,18 @@ const Page = (props) => {
   const tokenList = getTokenList(chainId);
 
   const [selectedTab, setSelectedTab] = useState('Supply');
-  const [more, setMore] = useState(false);
   const [pool, setPool] = useState(false);
   const [lm, setLm] = useState(false);
   const [r1, setR1] = useState({});
   const [r2, setR2] = useState({});
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
   const [tokenListData, setTokenListData] = useState({});
-  const [poolListData, setPoolListData] = useState({});
+  const [poolList, setPoolList] = useState({});
   // const [poolData, setPoolData] = useState({});
   const [dashboardData, setDashboardData] = useState({});
   // const [assetData, setAssetData] = useState({});
   const [tokenTMP, setTokenTMP] = useState({});
-  const [KpTokenList, setKpTokenList] = useState({});
+  const [KpTokenList, setKpTokenList] = useState({}); // for making tokenlist from pool with most tokens
   // const [tmpPools, setTmpPools] = useState({});
   const [testData, setTestData] = useState({});
 
@@ -103,21 +102,6 @@ const Page = (props) => {
   const onChange = (key: any) => {
     setKey(key);
   };
-  // const tokenList = getTokenList(chainId);
-  // const parentTable = tokenList.map(token => ({
-  //   icon: token.icon,
-  //   name: token.name,
-  //   price: token.price,
-  //   lev: token.lev,
-
-  //   ltv: 5,
-  //   totalSupply: 123,
-  //   totalBorrow: 123,
-  //   supplyApr: 5,
-  //   borrowApr: 8,
-  // }))
-
-  //
 
   // Covalent price feed
   let latestPrices = usePriceFeed();
@@ -128,21 +112,22 @@ const Page = (props) => {
   const fetchTokensData = async () => {
     // const tokenList = getTokenList(chainId);
     // const newDashboardData = {};
-    const poolListFetched = await readState(
+    const poolListInfo = await readState(
       library,
       DataProvider.abi,
       getContractAddr('dataProvider'),
       'getAllPoolData',
       [],
     );
-    if (!poolListFetched) {
-      console.warn('market, failed to fetch pool list from DataProvider');
+    if (!poolListInfo) {
+      console.warn('market, failed to fetch poolListInfo from DataProvider');
     }
-    let newTokenList = {};
+    let newPoolList = {};
     let tmpKp = {};
-    for (let i = 0; i < poolListFetched.length; i++) {
-      let pool = poolListFetched[i];
-      const tokenListFetched = await readState(
+    let fullList = {};
+    for (let i = 0; i < poolListInfo.length; i++) {
+      let pool = poolListInfo[i];
+      const res = await readState(
         library,
         DataProvider.abi,
         getContractAddr('dataProvider'),
@@ -151,101 +136,116 @@ const Page = (props) => {
       );
       console.warn('warning while fetch tokenlist');
 
-      if (!tokenListFetched) {
+      if (!res) {
         console.warn(
           'market, failed to fetch tokenlist data from DataProvider',
         );
       }
       let data = {};
-      for (let j = 0; j < tokenListFetched.length; j++) {
-        data[tokenListFetched[j][0].toString()] = {
-          name: tokenListFetched[j][0],
-          address: tokenListFetched[j][1],
-          symbol: tokenListFetched[j].symbol,
-          tokenAddress: tokenListFetched[j].tokenAddress,
+      for (let j = 0; j < res.length; j++) {
+        data[res[j][0].toString()] = {
+          name: res[j][0],
+          address: res[j][1],
+          symbol: res[j].symbol,
+          tokenAddress: res[j].tokenAddress,
           pool: pool.name,
         };
       }
-      newTokenList[`${pool.name} pool`] = data;
-      tmpKp[i] = data;
-
-      let j = i - 1;
-      if (!tmpKp[j]) {
+      newPoolList[`${pool.name} pool`] = data;
+      //start of set longest tokenlist
+      let poolListKeys = Object.keys(newPoolList);
+      if (!poolListKeys[i - 1]) {
         setKpTokenList(data);
-      }
-      if (tmpKp[j]) {
-        if (Object.keys(tmpKp[j]).length < Object.keys(tmpKp[i]).length) {
+      } else {
+        if (
+          newPoolList[poolListKeys[i - 1]].length <
+          newPoolList[poolListKeys[i]].length
+        ) {
           setKpTokenList(data);
         }
       }
+      //end of set longest tokenlist
     }
-    setPoolListData(newTokenList);
+    setPoolList(newPoolList);
   };
+
   // fetch asset, ltv, totalSupply, supplyApr, totalBorrow, borrowApr for all token, all pools
   // dashboard data fetching
   const fetchDashboardData = async () => {
     const newDashboardData = {};
-    poolListDataKeys = Object.keys(poolListData);
+    let poolListKeys = Object.keys(poolList);
     let tmp = {};
     let tmpPool = {};
-    // setTmpPools(poolListDataKeys);
-    for (let i = 0; i < poolListDataKeys.length; i++) {
-      tmp[poolListDataKeys[i]] = {};
-      newDashboardData[poolListDataKeys[i]] = {};
-      let poolTokenData = poolListData[poolListDataKeys[i]];
-      poolTokenDataKeys = Object.keys(poolTokenData);
+    let resultPools = {};
+    // setTmpPools(poolListKeys);
+    for (let i = 0; i < poolListKeys.length; i++) {
+      tmp[poolListKeys[i]] = {};
+      newDashboardData[poolListKeys[i]] = {};
+      let newAssetBoardData = poolList[poolListKeys[i]];
+      console.log('hjhjhj rename newAssetBoardData', newAssetBoardData);
+      let newAssetBoardDataKeys = Object.keys(newAssetBoardData);
 
-      for (let j = 0; j < poolTokenDataKeys.length; j++) {
-        let poolToken = poolTokenData[poolTokenDataKeys[j]];
+      for (let j = 0; j < newAssetBoardDataKeys.length; j++) {
+        console.log(
+          'hjhjhj rename newAssetBoardDataKeys',
+          newAssetBoardDataKeys,
+        );
+
+        let poolToken = newAssetBoardData[newAssetBoardDataKeys[j]];
+        console.log('hjhjhj rename poolToken', poolToken);
+
         const res = await readState(
           library,
           DataProvider.abi,
           getContractAddr('dataProvider'),
           'getReserveData',
-          [0, poolToken.address],
+          [i, poolToken.address],
         );
         console.warn('dashboard fetch has warning');
         if (!res) {
           console.warn('market, failed to fetch board data from DataProvider');
           break;
         }
+
         console.log(
           'hjhjhj see dashboard data fetched',
           res,
           'length: ',
-          res.length,
+          // res.length,
+          'decimals: ',
+          res[0][0],
+          res[0][3],
           'ltv: ',
           toFloat(res[0][0], 2),
           'totalSupply: ',
-          toFloat(res[1], 27),
-          'totalBorrow:',
           toFloat(res[2], 27),
-          'supplyApr',
+          'totalBorrow:',
           toFloat(res[3], 27),
-          'borrowApr',
+          'supplyApr',
           toFloat(res[4], 27),
+          'borrowApr',
+          toFloat(res[5], 27),
         );
-        // data[([i][j]).toString()] = {
         let data = {
           ltv: toFloat(res[0][0], 2),
-          totalSupply: toFloat(res[1], 27),
-          totalBorrow: toFloat(res[2], 27),
-          supplyApr: toFloat(res[3], 27),
-          borrowApr: toFloat(res[4], 27),
+          totalSupply: toFloat(res[2], 27),
+          totalBorrow: toFloat(res[3], 27),
+          supplyApr: toFloat(res[4], 27),
+          borrowApr: toFloat(res[5], 27),
         };
-        newDashboardData[`${poolListDataKeys[i]}`][`${poolToken.name}`] = data;
+        newDashboardData[`${poolListKeys[i]}`][`${poolToken.name}`] = data;
       }
 
-      tmp[poolListDataKeys[i]] = poolTokenDataKeys;
+      tmp[poolListKeys[i]] = newAssetBoardDataKeys;
     }
     setTokenTMP(tmp);
     setDashboardData(newDashboardData);
   };
 
   const fetchTestContract = async () => {
-    poolListDataKeys = Object.keys(poolListData);
-    for (let i = 0; i < poolListDataKeys.length; i++) {
-      let poolTokenData = poolListData[poolListDataKeys[i]];
+    poolListKeys = Object.keys(poolList);
+    for (let i = 0; i < poolListKeys.length; i++) {
+      let poolTokenData = poolList[poolListKeys[i]];
       // let poolToken = poolTokenData[poolTokenDataKeys[j]];
       for (let j = 0; j < poolTokenDataKeys.length; j++) {
         let poolToken = poolTokenData[poolTokenDataKeys[j]];
@@ -269,6 +269,7 @@ const Page = (props) => {
     if (tokenTMP == {}) {
       return;
     }
+    console.log('hjhjhj rename tokenTMP', tokenTMP);
     let poolKeys = Object.keys(tokenTMP);
     let newTokenList = {};
     for (let i = 0; i < poolKeys.length; i++) {
@@ -290,13 +291,14 @@ const Page = (props) => {
     library.on('block', async () => {
       await fetchTokensData();
     });
+    console.log('hjhjhj rename KpTokenList', KpTokenList);
   }, [library]);
 
   useEffect(async () => {
     await fetchDashboardData();
     // getAssetData()
     // await fetchTestContract();
-  }, [poolListData]);
+  }, [poolList]);
 
   useEffect(() => {
     getAssetData();
@@ -304,6 +306,7 @@ const Page = (props) => {
 
   const marketData = useMemo(() => {
     let tokens = Object.keys(tokenListData);
+    console.log('hjhjhj rename temp tokenListData', tokenListData);
     let marketData = tokens.map((token, idx) => {
       let pools = Object.keys(tokenListData[token]).map((pool) => {
         // const key = `${token.name}-${pool}`;
@@ -324,7 +327,7 @@ const Page = (props) => {
           supplyApr: parseFloat(tokenListData[token][pool].supplyApr) || 0,
           borrowApr: parseFloat(tokenListData[token][pool].borrowApr) || 0,
         };
-
+        console.log('hjhjhj rename temp', temp);
         if (temp.key == 'ETH') {
           temp.icon = '/eth.svg';
         }
