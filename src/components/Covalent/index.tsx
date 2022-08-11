@@ -13,7 +13,6 @@ const APIEndpoint = '/pricing/tickers';
 
 // Covalent API request setup
 const url = new URL(`${covalentAPI}${APIEndpoint}/`);
-console.log('hjhjhj api url', url);
 url.search = new URLSearchParams({
   key: APIKEY,
   tickers: tickers,

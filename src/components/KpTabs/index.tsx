@@ -30,7 +30,7 @@ const marginTabs = [
     checked: false,
   },
   {
-    name: 'Advanced',
+    name: 'Hedge',
     checked: false,
   },
 ];

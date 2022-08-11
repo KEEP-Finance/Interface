@@ -122,6 +122,7 @@ const Page = (props) => {
     if (!poolListInfo) {
       console.warn('market, failed to fetch poolListInfo from DataProvider');
     }
+    console.log('hjhjhj error poollist', poolListInfo);
     let newPoolList = {};
     let tmpKp = {};
     let fullList = {};
@@ -563,10 +564,35 @@ const Page = (props) => {
             >
               <Affix offsetTop={10}>
                 <div className={styles.action}>
+                  {/* <Tabs defaultActiveKey="1" type="card">
+                    <TabPane tab="Supply" key="1">
+                      <KpBuy
+                        onSelectPool={onSelectPool}
+                        onSelectToken={onSelectToken}
+                      />
+                    </TabPane>
+                    <TabPane tab="Borrow" key="2">
+                      <KpBuy
+                        onSelectPool={onSelectPool}
+                        onSelectToken={onSelectToken}
+                      />
+                    </TabPane>
+                    <TabPane tab="Withdraw" key="3">
+                      <KpBuy
+                        onSelectPool={onSelectPool}
+                        onSelectToken={onSelectToken}
+                      />
+                    </TabPane>
+                    <TabPane tab="Repay" key="4">
+                      <KpBuy
+                        onSelectPool={onSelectPool}
+                        onSelectToken={onSelectToken}
+                      />
+                    </TabPane>
+                  </Tabs> */}
                   <KpTabs
+                    onChange={(index) => setLm(index == 1)}
                     tabType="market"
-                    setSelectedTab={setSelectedTab}
-                    onChange={() => {}}
                   />
                   <KpBuy
                     onSelectPool={onSelectPool}

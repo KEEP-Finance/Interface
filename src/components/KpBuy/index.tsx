@@ -150,6 +150,7 @@ const KpTotal = (props: any) => {
     }
   };
 
+  console.log('hjhjhj check mainpool', dataSource);
   const token = dataSource.r1.name || 'ETH';
   const poolAddr = dataSource.r2?.name
     ? getPoolAddr(dataSource.r2.name)

@@ -124,6 +124,10 @@ const Header = () => {
               Market
             </Menu.Item>
 
+            <Menu.Item key="3" onClick={() => history.push('/margin')}>
+              Margin
+            </Menu.Item>
+
             <Menu.Item key="2" onClick={() => history.push('/Margin')}>
               Margin
             </Menu.Item>

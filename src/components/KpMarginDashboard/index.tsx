@@ -53,7 +53,7 @@ const MarginDashboard = () => {
               ? 'Long'
               : collateral == long
               ? 'Short'
-              : 'Advanced',
+              : 'Hedge',
           size: collateral == short ? shortAmount : longAmount,
           pnl: pnl,
           entryPrice:

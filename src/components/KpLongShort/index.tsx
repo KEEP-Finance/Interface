@@ -40,9 +40,11 @@ const KpLongShort = (props: any) => {
   const [lm, setLm] = useState(true);
   const { library, chainId, active, account, activate, deactivate } =
     useWeb3React();
-  const [slider, setSlider] = useState(1.5);
+  const [slider, setSlider] = useState(1.0);
   const [inputVal, setInputVal] = useState();
   const [inputFutureVal, setInputFutureVal] = useState();
+  const [inputLongVal, setInputLongVal] = useState();
+
   const [step, setStep] = useState('approve');
   const [buttonText, setButtonText] = useState('Approvee');
 
@@ -145,20 +147,27 @@ const KpLongShort = (props: any) => {
     setSlider(e);
     if (collateralToken && inputVal && (futureToken || shortToken)) {
       setInputFutureVal(inputVal * e);
+      setInputLongVal(inputVal * e);
     }
   };
 
   const onChangeFutureVal = (input) => {
+    setInputLongVal(input);
     if (collateralToken && inputVal && (futureToken || shortToken)) {
       const sliderVal = input / inputVal;
-      if (1.5 <= sliderVal && sliderVal <= 20) {
+      if (1.0 <= sliderVal && sliderVal <= 20) {
         setSlider(sliderVal);
-      } else if (sliderVal < 1.5) {
-        setSlider(1.5);
+      } else if (sliderVal < 1.0) {
+        setSlider(1.0);
       } else {
         setSlider(20);
       }
     }
+  };
+
+  const onChangeLongVal = (input) => {
+    setInputFutureVal(input);
+    onChangeFutureVal(input);
   };
 
   // button click action
@@ -187,6 +196,8 @@ const KpLongShort = (props: any) => {
               futureToken.address,
               parsedAmount,
               parsedLeverage,
+              0, // minLongAmountOut
+              account, // onBehalfOf
             ],
           ),
         ).then(() => {
@@ -206,12 +217,14 @@ const KpLongShort = (props: any) => {
               collateralToken.address,
               parsedAmount,
               parsedLeverage,
+              0, // minLongAmountOut
+              account, // onBehalfOf
             ],
           ),
         ).then(() => {
           console.log('Transaction done');
         });
-      } else if (selectedTab == 'Advanced') {
+      } else if (selectedTab == 'Hedge') {
         withConfirmation(
           performTx(
             library,
@@ -225,6 +238,8 @@ const KpLongShort = (props: any) => {
               longToken.address,
               parsedAmount,
               parsedLeverage,
+              0, // minLongAmountOut
+              account, // onBehalfOf
             ],
           ),
         ).then(() => {
@@ -251,19 +266,30 @@ const KpLongShort = (props: any) => {
           />
         </div>
 
-        {selectedTab == 'Advanced' ? (
+        {selectedTab == 'Hedge' ? (
           <>
+            <div style={{ padding: '5px 0' }}>
+              <span
+                style={{ display: 'flex', color: 'rgba(255, 255, 255, 0.4)' }}
+              >
+                Long
+              </span>
+              <KpInputSection
+                placeholder="Long Amount"
+                inputVal={inputLongVal}
+                setInputVal={setInputLongVal}
+                onSelectToken={onSelectLongToken}
+                name={longToken?.name}
+                icon={longToken?.icon}
+                onChangeFutureVal={onChangeLongVal}
+              />
+            </div>
             <div style={{ padding: '5px 0' }}>
               <span
                 style={{ display: 'flex', color: 'rgba(255, 255, 255, 0.4)' }}
               >
                 Short
               </span>
-              {/* <KpTokenSelect
-                onSelectToken={onSelectShortToken}
-                name={shortToken?.name}
-                icon={shortToken?.icon}
-              /> */}
               <KpInputSection
                 placeholder="Short Amount"
                 inputVal={inputFutureVal}
@@ -274,7 +300,7 @@ const KpLongShort = (props: any) => {
                 onChangeFutureVal={onChangeFutureVal}
               />
             </div>
-            <div style={{ padding: '5px 0' }}>
+            {/* <div style={{ padding: '5px 0' }}>
               <span
                 style={{ display: 'flex', color: 'rgba(255, 255, 255, 0.4)' }}
               >
@@ -285,7 +311,7 @@ const KpLongShort = (props: any) => {
                 name={longToken?.name}
                 icon={longToken?.icon}
               />
-            </div>
+            </div> */}
           </>
         ) : (
           <>
@@ -333,10 +359,10 @@ const KpLongShort = (props: any) => {
           {lm && (
             <Slider
               onChange={onChangeLeverage}
-              marks={{ 1.5: '1.5x', 5: '5x', 10: '10x', 15: '15x', 20: '20x' }}
+              marks={{ 1.0: '1.0x', 5: '5x', 10: '10x', 15: '15x', 20: '20x' }}
               value={slider}
               step={0.1}
-              min={1.5}
+              min={1.0}
               max={20}
             />
           )}

@@ -50,14 +50,14 @@ const KpInputSection = (props: any) => {
   return (
     <div className={styles.kb} {...rest}>
       <div>
-        {/* <div className={styles.areaInput}>
+        <div className={styles.areaInput}>
           <input
             placeholder={placeholder}
             value={inputVal}
             onChange={onChangeInput}
           />
         </div>
-        <div className={styles.price}>$0.0</div> */}
+        <div className={styles.price}>$0.0</div>
       </div>
 
       <div className={styles.kpselect} {...rest}>

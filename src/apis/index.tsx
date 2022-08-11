@@ -119,7 +119,8 @@ export const performTx = async (
 ) => {
   console.log('hjhjhj DEBUGGING args', args);
   console.log(library, account, contractAddr, functionName, args);
-  let value;
+  // let value;
+  let value = undefined;
   let contract = getContract(contractAddr, abi, library, account);
   console.log('hjhjhj contract', contract);
   console.log(
