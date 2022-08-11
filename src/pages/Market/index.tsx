@@ -592,6 +592,7 @@ const Page = (props) => {
                   </Tabs> */}
                   <KpTabs
                     onChange={(index) => setLm(index == 1)}
+                    setSelectedTab={setSelectedTab}
                     tabType="market"
                   />
                   <KpBuy
