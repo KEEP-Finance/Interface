@@ -46,11 +46,23 @@ const priceChartTabs = [
   },
 ];
 
+const rateTabs = [
+  {
+    name: 'Fixed Yield',
+    checked: true,
+  },
+  {
+    name: 'Amplified Yield',
+    checked: false,
+  },
+];
+
 const tabsSelector = (tabType) =>
   ({
     margin: marginTabs,
     market: marketTabs,
     priceChart: priceChartTabs,
+    rate: rateTabs,
   }[tabType]);
 
 const KpTabs = (props) => {
