@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import RateDashboard from '../KpRateDashboard';
 import styles from './index.less';
 
 const marketTabs = [
@@ -57,12 +58,24 @@ const rateTabs = [
   },
 ];
 
+const rateDashboardTabs = [
+  {
+    name: 'Orders',
+    checked: true,
+  },
+  {
+    name: 'Trades',
+    checked: false,
+  },
+];
+
 const tabsSelector = (tabType) =>
   ({
     margin: marginTabs,
     market: marketTabs,
     priceChart: priceChartTabs,
     rate: rateTabs,
+    rateDashboard: rateDashboardTabs,
   }[tabType]);
 
 const KpTabs = (props) => {

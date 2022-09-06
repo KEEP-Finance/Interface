@@ -5,6 +5,7 @@ import { Row, Col, Drawer } from 'antd';
 import KpPriceChart from '@/components/KpPriceChart';
 import KpTabs from '@/components/KpTabs';
 import KpRateSwap from '@/components/KpRateSwap';
+import KpRateDashboard from '@/components/KpRateDashboard';
 import { getTokenList } from '@/constants';
 
 import styles from './index.less';
@@ -43,7 +44,7 @@ const Page = () => {
           <Row>
             <Col span={16}>
               <KpPriceChart token="BTC" />
-              {/* <KpRateDashboard /> */}
+              <KpRateDashboard />
             </Col>
             <Col style={{ paddingLeft: '25px' }} span={8}>
               <div className={styles.action}>
