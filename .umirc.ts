@@ -45,6 +45,11 @@ export default defineConfig({
           title: 'Keep Finance',
           component: '@/pages/Margin',
         },
+        {
+          path: '/rate',
+          title: 'Keep Finance',
+          component: '@/pages/Rate',
+        },
       ],
     },
   ],
