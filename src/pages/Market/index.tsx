@@ -43,11 +43,6 @@ import MarketDashboard from '@/components/KpMarketDashboard';
 const { TabPane } = Tabs;
 
 const Page = (props) => {
-  // library	当前连接的library
-  // deactivate	断开连接的方法
-  // chainId	当前连接的链id
-  // account	当前连接的钱包账户地址
-  // active	当前连接的状态，是否连接
   let { library, deactivate, chainId, account, active, activate, error } =
     useWeb3React();
   chainId = getNetworks()[3].id;

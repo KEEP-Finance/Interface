@@ -108,7 +108,7 @@ const Header = () => {
           <Menu
             theme="dark"
             mode="horizontal"
-            defaultSelectedKeys={['2']}
+            defaultSelectedKeys={['1']}
             style={{
               lineHeight: '64px',
               marginLeft: '24px',
@@ -116,23 +116,13 @@ const Header = () => {
               background: 'transparent',
             }}
           >
-            <Menu.Item key="0" onClick={() => history.push('/')}>
-              Protocol
-            </Menu.Item>
-
             <Menu.Item key="1" onClick={() => history.push('/Market')}>
               Market
-            </Menu.Item>
-
-            <Menu.Item key="3" onClick={() => history.push('/margin')}>
-              Margin
             </Menu.Item>
 
             <Menu.Item key="2" onClick={() => history.push('/Margin')}>
               Margin
             </Menu.Item>
-
-            <Menu.Item key="4">Docs</Menu.Item>
           </Menu>
         </Col>
         <div
