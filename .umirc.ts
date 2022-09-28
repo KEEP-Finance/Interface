@@ -46,9 +46,9 @@ export default defineConfig({
           component: '@/pages/Margin',
         },
         {
-          path: '/margin',
+          path: '/rate',
           title: 'Keep Finance',
-          component: '@/pages/Margin',
+          component: '@/pages/Rate',
         },
       ],
     },
