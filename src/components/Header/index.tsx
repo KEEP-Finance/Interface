@@ -37,7 +37,6 @@ const Header = () => {
           params: [{ chainId: web3.utils.toHex(selectedChainId) }],
         });
       } catch (err) {
-        console.log('hjhjhj error change');
         // This error code indicates that the chain has not been added to MetaMask
         if (err.code === 4902) {
           await window.ethereum.request({
@@ -167,16 +166,15 @@ const Header = () => {
                   <div
                     onClick={() => {
                       setNetworkList((data) => {
-                        console.log('hjhjhj network header data map', data);
                         let newData = data.map((ele) => {
                           ele.checked = false;
-                          console.log('hjhjhj network ele', ele, index);
+
                           return ele;
                         });
                         newData[index].checked = true;
                         return newData;
                       });
-                      console.log('hjhjhj network item id', item, item.id);
+
                       switchChain(item.id);
                     }}
                     className={`${styles.tokenBox} ${

@@ -117,7 +117,7 @@ const Page = (props) => {
     if (!poolListInfo) {
       console.warn('market, failed to fetch poolListInfo from DataProvider');
     }
-    console.log('hjhjhj error poollist', poolListInfo);
+
     let newPoolList = {};
     let tmpKp = {};
     let fullList = {};
@@ -181,17 +181,11 @@ const Page = (props) => {
       tmp[poolListKeys[i]] = {};
       newDashboardData[poolListKeys[i]] = {};
       let newAssetBoardData = poolList[poolListKeys[i]];
-      console.log('hjhjhj rename newAssetBoardData', newAssetBoardData);
+
       let newAssetBoardDataKeys = Object.keys(newAssetBoardData);
 
       for (let j = 0; j < newAssetBoardDataKeys.length; j++) {
-        console.log(
-          'hjhjhj rename newAssetBoardDataKeys',
-          newAssetBoardDataKeys,
-        );
-
         let poolToken = newAssetBoardData[newAssetBoardDataKeys[j]];
-        console.log('hjhjhj rename poolToken', poolToken);
 
         const res = await readState(
           library,
@@ -260,7 +254,6 @@ const Page = (props) => {
             'market, failed to fetch reserveConfigData from DataProvider',
           );
         }
-        console.log('hjhjhj test contract res', reserveConfigData);
       }
     }
   };
@@ -268,7 +261,7 @@ const Page = (props) => {
     if (tokenTMP == {}) {
       return;
     }
-    console.log('hjhjhj rename tokenTMP', tokenTMP);
+
     let poolKeys = Object.keys(tokenTMP);
     let newTokenList = {};
     for (let i = 0; i < poolKeys.length; i++) {
@@ -304,7 +297,7 @@ const Page = (props) => {
 
   const marketData = useMemo(() => {
     let tokens = Object.keys(tokenListData);
-    console.log('hjhjhj rename temp tokenListData', tokenListData);
+
     let marketData = tokens.map((token, idx) => {
       let pools = Object.keys(tokenListData[token]).map((pool) => {
         // const key = `${token.name}-${pool}`;
@@ -325,7 +318,7 @@ const Page = (props) => {
           supplyApr: parseFloat(tokenListData[token][pool].supplyApr) || 0,
           borrowApr: parseFloat(tokenListData[token][pool].borrowApr) || 0,
         };
-        console.log('hjhjhj rename temp', temp);
+
         if (temp.key == 'ETH') {
           temp.icon = '/eth.svg';
         }

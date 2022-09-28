@@ -40,7 +40,6 @@ const KpInputSection = (props: any) => {
   } = props;
 
   const onChangeInput = (e) => {
-    console.log('hjhjhj see setinpulval', e.target.value);
     setInputVal(e.target.value);
     if (onChangeFutureVal) {
       onChangeFutureVal(e.target.value);

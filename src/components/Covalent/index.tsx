@@ -26,7 +26,6 @@ const usePriceFeed = () => {
     const res = await fetch(url)
       .then((resp) => resp.json())
       .then(function (data) {
-        console.log('hjhjhj api check res', data);
         let tokens = data.data.items;
         const priceDict = {};
         tokens.forEach((token) => {

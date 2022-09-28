@@ -24,7 +24,6 @@ const usePriceFeed = () => {
       .all([ETHPrice, USDCPrice, MATICPrice])
       .then(
         axios.spread((...responses) => {
-          // console.log("hjhjhj get price responses", responses)
           priceDict['ETH'] = responses[0].data.lastPrice;
           priceDict['USDC'] = responses[1].data.lastPrice;
           priceDict['MATIC'] = responses[2].data.lastPrice;
@@ -32,7 +31,6 @@ const usePriceFeed = () => {
       )
       .catch((e) => console.log('covalent error: ', e));
 
-    // console.log("hjhjhj get price", priceDict)
     setLatestPrices(priceDict);
     setTimeout(fetchPrice, 1000 * 60);
   };
