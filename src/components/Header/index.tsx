@@ -37,7 +37,6 @@ const Header = () => {
           params: [{ chainId: web3.utils.toHex(selectedChainId) }],
         });
       } catch (err) {
-        console.log('hjhjhj error change');
         // This error code indicates that the chain has not been added to MetaMask
         if (err.code === 4902) {
           await window.ethereum.request({
@@ -108,7 +107,7 @@ const Header = () => {
           <Menu
             theme="dark"
             mode="horizontal"
-            defaultSelectedKeys={['2']}
+            defaultSelectedKeys={['1']}
             style={{
               lineHeight: '64px',
               marginLeft: '24px',
@@ -116,11 +115,7 @@ const Header = () => {
               background: 'transparent',
             }}
           >
-            <Menu.Item key="0" onClick={() => history.push('/')}>
-              Protocol
-            </Menu.Item>
-
-            <Menu.Item key="1" onClick={() => history.push('/Market')}>
+            <Menu.Item key="1" onClick={() => history.push('/market')}>
               Market
             </Menu.Item>
 
@@ -131,8 +126,6 @@ const Header = () => {
             <Menu.Item key="3" onClick={() => history.push('/rate')}>
               IRS
             </Menu.Item>
-
-            <Menu.Item key="4">Docs</Menu.Item>
           </Menu>
         </Col>
         <div
@@ -177,16 +170,15 @@ const Header = () => {
                   <div
                     onClick={() => {
                       setNetworkList((data) => {
-                        console.log('hjhjhj network header data map', data);
                         let newData = data.map((ele) => {
                           ele.checked = false;
-                          console.log('hjhjhj network ele', ele, index);
+
                           return ele;
                         });
                         newData[index].checked = true;
                         return newData;
                       });
-                      console.log('hjhjhj network item id', item, item.id);
+
                       switchChain(item.id);
                     }}
                     className={`${styles.tokenBox} ${

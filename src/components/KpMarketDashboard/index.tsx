@@ -32,8 +32,6 @@ const MarketDashboard = (props) => {
     // let reader = getContract(getPoolAddr("Main Pool"), LendingPool.abi, library, account)
     // let res = await reader["getTraderPositions"]();
     const tokenList = getTokenList(chainId);
-    console.log('hjhjhj get price KpMarketDashboard tokenList 1', KpTokenList);
-    console.log('hjhjhj get price tokenlsit tokenList', tokenList);
 
     const userTokenData = [];
     for (let i = 0; i < KpTokenList.length; i++) {

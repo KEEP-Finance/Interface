@@ -22,7 +22,6 @@ const switchChain = async (selectedChainId) => {
         params: [{ chainId: web3.utils.toHex(selectedChainId) }],
       });
     } catch (err) {
-      console.log('hjhjhj error change');
       // This error code indicates that the chain has not been added to MetaMask
       if (err.code === 4902) {
         await window.ethereum.request({
@@ -47,7 +46,7 @@ const switchChain = async (selectedChainId) => {
 const menu = (chainId: Number) => {
   const networks = getNetworks();
   const otherNetworks = networks.filter((network) => network.id != chainId);
-  console.log('hjhjhj network otherNetworks', otherNetworks);
+
   return (
     <div className={styles.marker}>
       <ul>

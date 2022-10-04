@@ -44,7 +44,6 @@ const KpBigInput = (props: any) => {
       let bal = parseFloat(toFloat(res.currentKTokenBalance, decimals)).toFixed(
         2,
       );
-      // console.log("hjhjhj bal", typeof bal, typeof parseFloat(bal).toFixed(2), parseFloat(bal).toFixed(2))
       setBalance(bal);
 
       if (!res) {

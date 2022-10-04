@@ -117,24 +117,14 @@ export const performTx = async (
   functionName,
   args,
 ) => {
-  console.log('hjhjhj DEBUGGING args', args);
   console.log(library, account, contractAddr, functionName, args);
   // let value;
   let value = undefined;
   let contract = getContract(contractAddr, abi, library, account);
-  console.log('hjhjhj contract', contract);
-  console.log(
-    'hjhjhj FINAL DEBUG before estimate',
-    'contract:',
-    contract,
-    'functionName: ',
-    functionName,
-  );
 
   let estimate = contract.estimateGas[functionName];
-  console.log('hjhjhj FINAL DEBUG estimate', estimate);
+
   let method = contract[functionName];
-  console.log('hjhjhj testing here method', functionName, method);
 
   let result = estimate(...args, value ? { value } : {}).then(
     (estimatedGasLimit) =>
@@ -146,7 +136,7 @@ export const performTx = async (
         new CustomError('CustomError in transaction');
       }),
   );
-  console.log('hjhjhj result:', result);
+
   return result;
 };
 
@@ -156,7 +146,7 @@ export const withConfirmation = async (txpromise) => {
   //   result.receipt ? result.receipt.transactionHash : result.hash,
   //   3
   // );
-  console.log('hjhjhj txpromise result', result);
+
   await result.wait;
   return result;
 };

@@ -63,8 +63,6 @@ const KpTotal = (props: any) => {
 
   // }, [])
 
-  console.log('hjhjhj tab', TabRef);
-
   const onButtonClicked = (selectedTab) => {
     console.log('executingTX');
     if (step == 'approve') {
@@ -92,7 +90,6 @@ const KpTotal = (props: any) => {
       //   passedVal || `0`,
       //   token.decimals,
       // ).toString();
-      console.log('hjhjhj input token decimals', token.decimals, parsedAmount);
 
       if (TabRef.current == 'Supply') {
         const poolName = dataSource.r2.name;
@@ -166,7 +163,6 @@ const KpTotal = (props: any) => {
   );
 
   useEffect(() => {
-    console.log('hjhjhj kpbuy passedVal', passedVal, allowance);
     if (!passedVal || !allowance) return;
     let inputBN;
     if (
@@ -177,7 +173,7 @@ const KpTotal = (props: any) => {
     } else {
       inputBN = ethers.BigNumber.from(`${parseFloat(passedVal)}`);
     }
-    console.log('hjhjhj kpbuy inputbn', inputBN, allowance);
+
     if (inputBN.gt(allowance)) {
       setStep('approve');
       console.log('api debug: setstep approve');
