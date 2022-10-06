@@ -124,7 +124,7 @@ const Header = () => {
             </Menu.Item>
 
             <Menu.Item key="3" onClick={() => history.push('/rate')}>
-              IRS
+              Interest Rate
             </Menu.Item>
           </Menu>
         </Col>
