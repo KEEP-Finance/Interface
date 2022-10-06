@@ -7,7 +7,7 @@ export default defineConfig({
   },
 
   theme: {
-    'primary-color': '#ffc000',
+    'primary-color': '#CBFF00',
     'table-header-bg': '#0e1118',
     'table-header-color': '#ffffff',
     'table-selected-row-bg': '#0e1118',
@@ -17,7 +17,7 @@ export default defineConfig({
     'table-border-color': 'rgba(0,0,0,0)',
     'tabs-card-head-background': '#1b1d23',
     'tabs-card-gutter': '0',
-    'tabs-card-tab-active-border-top': '2px solid #ffc000',
+    'tabs-card-tab-active-border-top': '2px solid #CBFF00',
     'text-color': '#ffffff',
     'body-background': '#0e1118',
     'component-background': '#0e1118',

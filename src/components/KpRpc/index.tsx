@@ -59,7 +59,7 @@ const menu = (chainId: Number) => {
             {network.checked == true ? (
               <li
                 className={styles.networkChecked}
-                style={{ padding: '5px 7px', border: '1px solid #ffc000' }}
+                style={{ padding: '5px 7px', border: '1px solid #CBFF00' }}
               >
                 <div className={styles.icon}>
                   <img src={network.img} />
