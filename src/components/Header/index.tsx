@@ -113,10 +113,11 @@ const Header = () => {
               marginLeft: '24px',
               transform: 'translateY(-1px)',
               background: 'transparent',
+              justifyContent: 'center',
             }}
           >
             <Menu.Item key="1" onClick={() => history.push('/market')}>
-              Market
+              Lending
             </Menu.Item>
 
             <Menu.Item key="2" onClick={() => history.push('/margin')}>
@@ -125,6 +126,9 @@ const Header = () => {
 
             <Menu.Item key="3" onClick={() => history.push('/rate')}>
               Interest Rate
+            </Menu.Item>
+            <Menu.Item key="4" onClick={() => history.push('/account')}>
+              Account
             </Menu.Item>
           </Menu>
         </Col>
