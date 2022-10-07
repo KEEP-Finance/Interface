@@ -508,7 +508,7 @@ const Page = (props) => {
                     }}
                     pagination={false}
                   />
-                  <MarketDashboard KpTokenList={KpTokenList} />
+                  {/* <MarketDashboard KpTokenList={KpTokenList} /> */}
                 </>
               )) || (
                 <>

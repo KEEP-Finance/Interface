@@ -35,37 +35,60 @@ export default function KpPriceChart(props) {
       width: chartContainerRef.current.clientWidth,
       height: chartContainerRef.current.clientHeight,
       layout: {
-        backgroundColor: '#0e1118',
-        textColor: 'rgba(255, 255, 255, 0.9)',
+        backgroundColor: 'rgba(255, 255, 255, 0)',
+        textColor: '#ccc',
+        fontFamily: 'Karla 300',
       },
       grid: {
         vertLines: {
-          color: '#334158',
+          visible: true,
+          // color: "rgba(27, 27, 27, 1)",
+          color: '#1b1b1b',
+          style: 0,
         },
         horzLines: {
-          color: '#334158',
+          visible: true,
+          // color: "rgba(35, 38, 59, 1)",
+          color: '#1b1b1b',
+          style: 2,
         },
       },
-      crosshair: {
-        mode: CrosshairMode.Normal,
-      },
-      priceScale: {
-        borderColor: '#485c7b',
-      },
+      // https://github.com/tradingview/lightweight-charts/blob/master/docs/time-scale.md#time-scale
       timeScale: {
-        borderColor: '#485c7b',
+        rightOffset: 5,
+        borderVisible: false,
+        barSpacing: 5,
+        timeVisible: true,
+        fixLeftEdge: true,
+      },
+      // https://github.com/tradingview/lightweight-charts/blob/master/docs/customization.md#price-axis
+      priceScale: {
+        borderVisible: false,
+      },
+      crosshair: {
+        horzLine: {
+          color: '#aaa',
+        },
+        vertLine: {
+          color: '#aaa',
+        },
+        mode: 0,
       },
     });
 
     console.log(chart.current);
 
     candleSeries.current = chart.current.addCandlestickSeries({
-      upColor: '#4bffb5',
-      downColor: '#ff4976',
-      borderDownColor: '#ff4976',
-      borderUpColor: '#4bffb5',
-      wickDownColor: '#838ca1',
-      wickUpColor: '#838ca1',
+      lineColor: '#5472cc',
+      topColor: 'rgba(49, 69, 131, 0.4)',
+      bottomColor: 'rgba(42, 64, 103, 0.0)',
+      lineWidth: 2,
+      priceLineColor: '#3a3e5e',
+      downColor: '#fa3c58',
+      wickDownColor: '#fa3c58',
+      upColor: '#0ecc83',
+      wickUpColor: '#0ecc83',
+      borderVisible: false,
     });
   }, []);
 

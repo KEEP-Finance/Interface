@@ -80,7 +80,7 @@ const Page = () => {
               ) : (
                 <KpPriceChart token={futureToken?.name || 'BTC'} />
               )}
-              <KpMarginDashboard />
+              {/* <KpMarginDashboard /> */}
             </Col>
             <Col
               className="gutter-row"

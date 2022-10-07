@@ -14,12 +14,19 @@ function getLibrary(provider) {
 }
 const BasicLayout = (props) => {
   const { pathname } = props.location;
-
+  debugger;
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <Layout style={{ minHeight: '100vh' }}>
         <Header />
-        <Content className={styles.main} style={{ padding: '0 150px' }}>
+        <Content
+          className={styles.main}
+          style={{
+            padding: `0 ${
+              (['/margin', '/rate'].indexOf(pathname) > -1 && '30px') || '150px'
+            }`,
+          }}
+        >
           {props.children}
           {/* {cloneElement(props.children, {setVisibleMetaMask: setVisibleMetaMask})} */}
         </Content>
