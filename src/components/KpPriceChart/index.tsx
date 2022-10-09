@@ -1,11 +1,39 @@
 import { useEffect, useRef, useState } from 'react';
 import Binance from 'binance-api-node';
 import { createChart, CrosshairMode } from 'lightweight-charts';
+import { Radio } from 'antd';
 import axios from 'axios';
-
+import styled from 'styled-components';
 const client = Binance();
 const BinancePriceApi = 'https://api.acy.finance/polygon-test';
-
+const StyledSelect = styled(Radio.Group)`
+  .ant-radio-button-wrapper {
+    background: transparent !important;
+    height: 22px;
+    font-size: 0.7rem;
+    padding: 0 0.1rem;
+    border: 0.75px solid #333333;
+    border-radius: 0 0 0 0;
+    line-height: 22px;
+    color: #b5b5b6;
+  }
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    color: #ffffff;
+    box-shadow: 0 0 0 0 black;
+    border-color: #333333;
+    background-color: #29292c !important;
+  }
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+    color: #ffffff;
+    background-color: #29292c !important;
+  }
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
+    background-color: #black !important;
+  }
+  .ant-radio-button-wrapper:not(:first-child)::before {
+    background-color: transparent;
+  }
+`;
 export default function KpPriceChart(props) {
   const [pairName, setPairName] = useState('BTC/USDT');
   const [latestPrice, setLatestPrice] = useState(0);
@@ -230,7 +258,71 @@ export default function KpPriceChart(props) {
       {/* <div>{pairName.substring(0, pairName.length - 4)}/USDT</div> */}
       <div>{pairName}</div>
       <h2>{Number.parseFloat(latestPrice).toFixed(3)}</h2>
-      <div ref={chartContainerRef} style={{ width: '100%', height: '300px' }} />
+      <div>
+        <div className="timeSelector" style={{ float: 'left' }}>
+          {/* <div className="ExchangeChart-info-label">24h Change</div> */}
+          <StyledSelect value="1m" style={{ width: '200%', height: '23px' }}>
+            <Radio.Button
+              value="1m"
+              style={{ width: '9%', textAlign: 'center' }}
+            >
+              1m
+            </Radio.Button>
+            <Radio.Button
+              value="5m"
+              style={{ width: '9%', textAlign: 'center' }}
+            >
+              5m
+            </Radio.Button>
+            <Radio.Button
+              value="15m"
+              style={{ width: '9%', textAlign: 'center' }}
+            >
+              15m
+            </Radio.Button>
+            <Radio.Button
+              value="30m"
+              style={{ width: '9%', textAlign: 'center' }}
+            >
+              30m
+            </Radio.Button>
+            <Radio.Button
+              value="1h"
+              style={{ width: '9%', textAlign: 'center' }}
+            >
+              1h
+            </Radio.Button>
+            <Radio.Button
+              value="2h"
+              style={{ width: '9%', textAlign: 'center' }}
+            >
+              2h
+            </Radio.Button>
+            <Radio.Button
+              value="4h"
+              style={{ width: '9%', textAlign: 'center' }}
+            >
+              4h
+            </Radio.Button>
+            <Radio.Button
+              value="1d"
+              style={{ width: '9%', textAlign: 'center' }}
+            >
+              1D
+            </Radio.Button>
+            <Radio.Button
+              value="1w"
+              style={{ width: '9%', textAlign: 'center' }}
+            >
+              1W
+            </Radio.Button>
+          </StyledSelect>
+        </div>
+      </div>
+      <div
+        ref={chartContainerRef}
+        style={{ width: '100%', height: '500px', border: '.75px solid #444' }}
+      />
     </div>
   );
 }

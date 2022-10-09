@@ -11,6 +11,7 @@ import {
   Affix,
   Drawer,
   Slider,
+  Radio,
 } from 'antd';
 import KpTabs from '@/components/KpTabs';
 import KpMarginDashboard from '@/components/KpMarginDashboard';
@@ -18,6 +19,7 @@ import styles from './index.less';
 import KpLongShort from '@/components/KpLongShort';
 import KpPriceChart from '@/components/KpPriceChart';
 import { getTokenList } from '@/constants';
+
 const Page = () => {
   const { library, deactivate, chainId, account, active, activate, error } =
     useWeb3React();
