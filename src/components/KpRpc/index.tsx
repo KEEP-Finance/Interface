@@ -57,7 +57,7 @@ const menu = (chainId: Number) => {
         {otherNetworks.map((network) => (
           <li style={{ padding: '3px 5px' }}>
             {network.checked == true ? (
-              <li
+              <div
                 className={styles.networkChecked}
                 style={{ padding: '5px 7px', border: '1px solid #CBFF00' }}
               >
@@ -66,14 +66,14 @@ const menu = (chainId: Number) => {
                 </div>
                 <div>{network.name}</div>
                 <CheckCircleOutlined className={styles.checked} />
-              </li>
+              </div>
             ) : (
-              <li className={styles.networkChecked}>
+              <div className={styles.networkChecked}>
                 <div className={styles.icon}>
                   <img src={network.img} />
                 </div>
                 <div>{network.name}</div>
-              </li>
+              </div>
             )}
           </li>
         ))}
