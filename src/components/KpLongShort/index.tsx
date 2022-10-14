@@ -371,7 +371,11 @@ const KpLongShort = (props: any) => {
         <KpInfoList dataSource={infolistMain} />
 
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <Button disabled={!active} onClick={onButtonClicked}>
+          <Button
+            style={{ width: '30%' }}
+            disabled={!active}
+            onClick={onButtonClicked}
+          >
             {step == 'approve' ? 'Approve' : selectedTab}
           </Button>
         </div>

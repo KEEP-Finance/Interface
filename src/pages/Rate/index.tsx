@@ -44,7 +44,9 @@ const Page = () => {
           <Row>
             <Col span={16}>
               <KpPriceChart token="BTC" />
-              <KpRateDashboard />
+              <div style={{ marginTop: '50px' }}>
+                <KpRateDashboard />
+              </div>
             </Col>
             <Col style={{ paddingLeft: '25px' }} span={8}>
               <div className={styles.action}>

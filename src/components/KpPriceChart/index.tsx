@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import Binance from 'binance-api-node';
 import { createChart, CrosshairMode } from 'lightweight-charts';
-import { Radio } from 'antd';
+import { Radio, Menu, Dropdown } from 'antd';
 import axios from 'axios';
 import styled from 'styled-components';
+import styles from './index.less';
+import { DownOutlined } from '@ant-design/icons';
 const client = Binance();
 const BinancePriceApi = 'https://api.acy.finance/polygon-test';
 const StyledSelect = styled(Radio.Group)`
@@ -39,7 +41,42 @@ export default function KpPriceChart(props) {
   const [latestPrice, setLatestPrice] = useState(0);
   const [candleData1, setCandleData1] = useState();
   const [candleData2, setCandleData2] = useState();
+  const menu = (chainId: Number) => {
+    const otherNetworks = [
+      {
+        checked: false,
+        img: false,
+        name: 'ACY/USDT',
+      },
+      {
+        checked: false,
+        img: false,
+        name: 'ACY/USDT',
+      },
+      {
+        checked: false,
+        img: false,
+        name: 'ACY/USDT',
+      },
+    ];
 
+    return (
+      <div className={styles.marker}>
+        <ul>
+          {otherNetworks.map((network) => (
+            <li style={{ padding: '3px 5px' }}>
+              <div className={styles.networkChecked}>
+                {/* <div className={styles.icon}>
+                    <img src={network.img} />
+                  </div> */}
+                <div>{network.name}</div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
   useEffect(() => {
     if (props.longToken && props.shortToken) {
       setPairName(`${props.longToken}/${props.shortToken}`);
@@ -256,9 +293,15 @@ export default function KpPriceChart(props) {
   return (
     <div className="App">
       {/* <div>{pairName.substring(0, pairName.length - 4)}/USDT</div> */}
-      <div>{pairName}</div>
-      <h2>{Number.parseFloat(latestPrice).toFixed(3)}</h2>
-      <div>
+      {/* <div>{pairName}</div> */}
+      <Dropdown className={styles.kt} overlay={menu}>
+        <span className={styles.title}>
+          {pairName}&nbsp;
+          <DownOutlined style={{ fontSize: '20px', color: '#ffffff' }} />
+        </span>
+      </Dropdown>
+      &nbsp;&nbsp;<span>{Number.parseFloat(latestPrice).toFixed(3)}</span>
+      <div style={{ marginTop: '20px' }}>
         <div className="timeSelector" style={{ float: 'left' }}>
           {/* <div className="ExchangeChart-info-label">24h Change</div> */}
           <StyledSelect value="1m" style={{ width: '200%', height: '23px' }}>
