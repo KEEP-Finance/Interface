@@ -66,14 +66,17 @@ export const assetColumnsTemplate = [
 export const poolColumnsTemplate = [
   {
     title: 'Asset',
+    width: '16%',
+    dataIndex: 'icon',
     // specify the condition of filtering result
     // here is that finding the name started with `value`
     sorter: (a, b) => a.name.length - b.name.length,
     showSorterTooltip: false,
-    render: (item) => <KpToken pool={true} name={item.name} />,
+    render: (text, item) => <KpToken icon={text} name={item.name} />,
   },
   {
-    title: 'Reserves',
+    title: 'LTV',
+    width: '16%',
     dataIndex: 'ltv',
     defaultSortOrder: 'descend',
     sorter: (a, b) => a - b,
@@ -81,7 +84,8 @@ export const poolColumnsTemplate = [
     render: (text) => `${text.toFixed(3)}%`,
   },
   {
-    title: 'Deposited',
+    title: 'Total Supply',
+    width: '16%',
     dataIndex: 'totalSupply',
     sorter: (a, b) => a.totalSupply - b.totalSupply,
     showSorterTooltip: false,
@@ -93,14 +97,16 @@ export const poolColumnsTemplate = [
     ),
   },
   {
-    title: 'Shares',
+    title: 'Supply APR',
+    width: '16%',
     dataIndex: 'supplyApr',
     sorter: (a, b) => a.supplyApr - b.supplyApr,
     showSorterTooltip: false,
     render: (text) => `${text.toFixed(3)}%`,
   },
   {
-    title: 'APY',
+    title: 'Total Borrow',
+    width: '16%',
     dataIndex: 'address',
     sorter: (a, b) => a.totalBorrow - b.totalBorrow,
     showSorterTooltip: false,
@@ -108,15 +114,15 @@ export const poolColumnsTemplate = [
       <KpTotal number={item.totalBorrow} name={item.name} />
     ),
   },
-  // {
-  //   width: '19%',
-  //   title: 'Borrow APR',
-  //   dataIndex: 'borrowApr',
-  //   sorter: (a, b) => a.borrowApr - b.borrowApr,
-  //   showSorterTooltip: false,
-  //   render: (text) => `${text.toFixed(3)}%`,
-  // },
-  // Table.EXPAND_COLUMN,
+  {
+    width: '19%',
+    title: 'Borrow APR',
+    dataIndex: 'borrowApr',
+    sorter: (a, b) => a.borrowApr - b.borrowApr,
+    showSorterTooltip: false,
+    render: (text) => `${text.toFixed(3)}%`,
+  },
+  Table.EXPAND_COLUMN,
 ];
 // export const childColumns = [
 //   {
