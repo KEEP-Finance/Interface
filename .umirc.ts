@@ -33,12 +33,12 @@ export default defineConfig({
         {
           path: '/',
           title: 'Keep Finance',
-          component: '@/pages/Market',
+          component: '@/pages/Lending',
         },
         {
-          path: '/market',
+          path: '/lending',
           title: 'Keep Finance',
-          component: '@/pages/Market',
+          component: '@/pages/Lending',
         },
         {
           path: '/margin',

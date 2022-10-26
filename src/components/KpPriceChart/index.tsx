@@ -1,11 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import Binance from 'binance-api-node';
 import { createChart, CrosshairMode } from 'lightweight-charts';
-import { Radio, Menu, Dropdown } from 'antd';
+import { Radio, Menu, Dropdown, Input, Tabs, Table } from 'antd';
+import KpDrawer from '../KpDrawer';
 import axios from 'axios';
 import styled from 'styled-components';
 import styles from './index.less';
-import { DownOutlined } from '@ant-design/icons';
+import {
+  SwapOutlined,
+  CloseOutlined,
+  SearchOutlined,
+  StarFilled,
+  StarOutlined,
+} from '@ant-design/icons';
 const client = Binance();
 const BinancePriceApi = 'https://api.acy.finance/polygon-test';
 const StyledSelect = styled(Radio.Group)`
@@ -39,8 +46,58 @@ const StyledSelect = styled(Radio.Group)`
 export default function KpPriceChart(props) {
   const [pairName, setPairName] = useState('BTC/USDT');
   const [latestPrice, setLatestPrice] = useState(0);
+  const [latestPriceColor, setLatestPriceColor] = useState('#0ecc83');
+  const [latestPricePercentage, setLatestPricePercentage] = useState('+0%');
   const [candleData1, setCandleData1] = useState();
   const [candleData2, setCandleData2] = useState();
+  const [open, setOpen] = useState(false);
+  const dataSource = [
+    {
+      key: '1',
+      name: (
+        <span>
+          <StarOutlined />
+          <img style={{ width: '20px', margin: '0 10px' }} src="/btc.svg" />
+          BTCUSDT
+        </span>
+      ),
+      age: 20600.5,
+      address: <span style={{ color: '#0ecc83' }}>+6.94%</span>,
+    },
+    {
+      key: '2',
+      name: (
+        <span>
+          <StarOutlined />
+          <img style={{ width: '20px', margin: '0 10px' }} src="/eth.svg" />
+          BTCUSDT
+        </span>
+      ),
+      age: 1531.55,
+      address: <span style={{ color: '#0ecc83' }}>+14.94%</span>,
+    },
+  ];
+
+  const columns = [
+    {
+      title: 'Token',
+      sorter: (a: any, b: any) => a - b,
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Price',
+      sorter: (a: any, b: any) => a - b,
+      dataIndex: 'age',
+      key: 'age',
+    },
+    {
+      title: '24-hour rise and fall',
+      dataIndex: 'address',
+      sorter: (a: any, b: any) => a - b,
+      key: 'address',
+    },
+  ];
   const menu = (chainId: Number) => {
     const otherNetworks = [
       {
@@ -207,6 +264,7 @@ export default function KpPriceChart(props) {
       console.log('update candleData', candleData1, candleData2);
       candleSeries.current.update(candleData);
       setLatestPrice(candleData1.close / candleData2.close);
+      debugger;
     }
   }, [candleData1, candleData2]);
 
@@ -242,7 +300,7 @@ export default function KpPriceChart(props) {
             close: res.close,
           };
           candleSeries.current.update(candleData);
-          setLatestPrice(res.close);
+          UpdatePrice(candleData);
         },
       );
       cleaner.current = clean;
@@ -290,17 +348,55 @@ export default function KpPriceChart(props) {
     fetchPrevAndSubscribe();
   }, [pairName]);
 
+  const UpdatePrice = (candleData) => {
+    setLatestPrice(candleData.close);
+    setLatestPriceColor(
+      (candleData.close * 1 - candleData.open * 1 >= 0 && '#0ecc83') ||
+        '#fa3c58',
+    );
+    setLatestPricePercentage(
+      (candleData.close * 1 - candleData.open * 1 >= 0 &&
+        `+${(
+          ((candleData.close * 1 - candleData.open * 1) / candleData.open) *
+          1 *
+          100
+        ).toFixed(2)}%`) ||
+        `${(
+          ((candleData.close * 1 - candleData.open * 1) / candleData.open) *
+          1 *
+          100
+        ).toFixed(2)}%`,
+    );
+    // const [latestPriceColor, setLatestPriceColor] = useState('#0ecc83');
+    // const [latestPricePercentage, setLatestPricePercentage] = useState('+0%');
+  };
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
   return (
     <div className="App">
       {/* <div>{pairName.substring(0, pairName.length - 4)}/USDT</div> */}
       {/* <div>{pairName}</div> */}
-      <Dropdown className={styles.kt} overlay={menu}>
-        <span className={styles.title}>
-          {pairName}&nbsp;
-          <DownOutlined style={{ fontSize: '20px', color: '#ffffff' }} />
-        </span>
-      </Dropdown>
-      &nbsp;&nbsp;<span>{Number.parseFloat(latestPrice).toFixed(3)}</span>
+      {/* <Dropdown className={styles.kt} overlay={menu}> */}
+      <span className={styles.title}>
+        {pairName}&nbsp;
+        <SwapOutlined
+          onClick={showDrawer}
+          style={{ fontSize: '20px', color: '#ffffff', cursor: 'pointer' }}
+        />
+      </span>
+      {/* </Dropdown> */}
+      &nbsp;&nbsp;
+      <span style={{ color: latestPriceColor }}>
+        {Number.parseFloat(latestPrice).toFixed(3)}
+      </span>
+      &nbsp;&nbsp;
+      <span style={{ color: latestPriceColor }}>{latestPricePercentage}</span>
       <div style={{ marginTop: '20px' }}>
         <div className="timeSelector" style={{ float: 'left' }}>
           {/* <div className="ExchangeChart-info-label">24h Change</div> */}
@@ -366,6 +462,64 @@ export default function KpPriceChart(props) {
         ref={chartContainerRef}
         style={{ width: '100%', height: '500px', border: '.75px solid #444' }}
       />
+      <KpDrawer
+        title="Basic Drawer"
+        placement="left"
+        onClose={onClose}
+        open={open}
+        footer={null}
+        width={520}
+      >
+        {/* header */}
+        <div
+          className="flex flex-between flex-align-center"
+          style={{ fontSize: '24px' }}
+        >
+          <span>Token</span>
+          <CloseOutlined
+            onClick={onClose}
+            style={{
+              fontSize: '20px',
+              color: 'rgba(255, 255, 255, .45)',
+              cursor: 'pointer',
+            }}
+          />
+        </div>
+        {/* search */}
+        <div style={{ padding: '16px 0' }}>
+          <Input
+            style={{ borderColor: 'hsla(0,0%,100%,0.08)' }}
+            prefix={<SearchOutlined />}
+          />
+        </div>
+        {/* action */}
+        <div className={styles.kptab}>
+          <Tabs defaultActiveKey="1">
+            <Tabs.TabPane
+              tab={
+                <span>
+                  <StarFilled style={{ margin: 0 }} />
+                  收藏
+                </span>
+              }
+              key="1"
+            >
+              <Table
+                dataSource={dataSource}
+                columns={columns}
+                pagination={false}
+              />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="全部" key="2">
+              <Table
+                dataSource={dataSource}
+                columns={columns}
+                pagination={false}
+              />
+            </Tabs.TabPane>
+          </Tabs>
+        </div>
+      </KpDrawer>
     </div>
   );
 }

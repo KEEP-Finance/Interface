@@ -116,7 +116,7 @@ const Header = () => {
               justifyContent: 'center',
             }}
           >
-            <Menu.Item key="1" onClick={() => history.push('/market')}>
+            <Menu.Item key="1" onClick={() => history.push('/lending')}>
               Lending
             </Menu.Item>
 

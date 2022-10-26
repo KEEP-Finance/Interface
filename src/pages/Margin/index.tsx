@@ -15,7 +15,7 @@ import {
   Menu,
 } from 'antd';
 import KpTabs from '@/components/KpTabs';
-import KpMarginDashboard from '@/components/KpMarginDashboard';
+import KpRateDashboard from '@/components/KpRateDashboard';
 import styles from './index.less';
 import KpLongShort from '@/components/KpLongShort';
 import KpPriceChart from '@/components/KpPriceChart';
@@ -83,7 +83,9 @@ const Page = () => {
               ) : (
                 <KpPriceChart token={futureToken?.name || 'BTC'} />
               )}
-              {/* <KpMarginDashboard /> */}
+              <div style={{ marginTop: '50px' }}>
+                <KpRateDashboard />
+              </div>
             </Col>
             <Col
               className="gutter-row"

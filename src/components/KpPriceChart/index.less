@@ -150,3 +150,14 @@
     padding-left: 12px;
   }
 }
+.kptab {
+  :global {
+    .ant-tabs-top > .ant-tabs-nav::before,
+    .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
+      border-bottom: 1px solid hsla(0, 0%, 100%, 0.08);
+    }
+    .ant-tabs-nav {
+      margin-bottom: 0;
+    }
+  }
+}
