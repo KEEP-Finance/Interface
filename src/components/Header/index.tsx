@@ -125,7 +125,7 @@ const Header = () => {
             </Menu.Item>
 
             <Menu.Item key="3" onClick={() => history.push('/rate')}>
-              Interest Rate
+              Ratex
             </Menu.Item>
             <Menu.Item key="4" onClick={() => history.push('/account')}>
               Account

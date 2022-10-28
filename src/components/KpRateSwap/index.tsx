@@ -59,8 +59,17 @@ const KpRateSwap = (props: any) => {
             onSelectToken={onSelectToken}
             name={selectedToken?.name}
             icon={selectedToken?.icon}
+            direction="Pay: "
           />
-
+          <KpInputSection
+            placeholder="Amount"
+            inputVal={inputVal}
+            setInputVal={setInputVal}
+            onSelectToken={onSelectToken}
+            name={selectedToken?.name}
+            icon={selectedToken?.icon}
+            direction="Long: "
+          />
           {mode == 'Limit' && <KpBigInput placeholder="Price" />}
         </div>
 

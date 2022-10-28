@@ -5,32 +5,35 @@ import { ReactComponent as Discord } from '@/assets/discord.svg';
 import { ReactComponent as Medium } from '@/assets/medium.svg';
 import { ReactComponent as Telegram } from '@/assets/telegram.svg';
 import { ReactComponent as Youtube } from '@/assets/youtube.svg';
-import { ReactComponent as Paper } from '@/assets/paper.svg';
+import { ReactComponent as Gitbook } from '@/assets/gitbook.svg';
 import styles from './index.less';
 const Footer = () => {
   return (
     <Layout.Footer className={styles.footer}>
       <div className={styles.connect}>
-        <a href="#" title="WhitePaper">
-          <Paper />
+        <a
+          target="_blank"
+          href="https://keep-finance.gitbook.io/keep-finance/"
+          title="Gitbook"
+        >
+          <Gitbook />
         </a>
-        <a href="#" title="Github">
+        <a
+          target="_blank"
+          href="https://github.com/KEEP-Finance"
+          title="Github"
+        >
           <Github />
         </a>
-        <a href="#" title="Twitter">
+        <a
+          target="_blank"
+          href="https://twitter.com/Keep_Finance"
+          title="Twitter"
+        >
           <Twitter />
         </a>
-        <a href="#" title="Telegram">
+        <a target="_blank" href="https://t.me/Keep_Finance" title="Telegram">
           <Telegram />
-        </a>
-        <a href="#" title="Discord">
-          <Discord />
-        </a>
-        <a href="#" title="Medium">
-          <Medium />
-        </a>
-        <a href="#" title="Youtube">
-          <Youtube />
         </a>
       </div>
     </Layout.Footer>

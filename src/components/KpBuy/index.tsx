@@ -218,10 +218,14 @@ const KpTotal = (props: any) => {
           // poolName={props.dataSource.r2.name}
         />
 
-        <KpInfoList dataSource={infolistMain} />
+        {/* <KpInfoList dataSource={infolistMain} /> */}
 
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <Button disabled={!active} onClick={onButtonClicked}>
+          <Button
+            style={{ width: '30%' }}
+            disabled={!active}
+            onClick={onButtonClicked}
+          >
             {step == 'approve' ? 'Approve' : selectedTab}
           </Button>
         </div>

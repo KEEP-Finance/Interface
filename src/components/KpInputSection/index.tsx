@@ -56,7 +56,7 @@ const KpInputSection = (props: any) => {
             onChange={onChangeInput}
           />
         </div>
-        <div className={styles.price}>$0.0</div>
+        <div className={styles.price}>{props.direction || ''}$0.0</div>
       </div>
 
       <div className={styles.kpselect} {...rest}>

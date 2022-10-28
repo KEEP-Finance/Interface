@@ -70,7 +70,7 @@ export default function KpPriceChart(props) {
         <span>
           <StarOutlined />
           <img style={{ width: '20px', margin: '0 10px' }} src="/eth.svg" />
-          BTCUSDT
+          ETHUSDT
         </span>
       ),
       age: 1531.55,
@@ -83,17 +83,20 @@ export default function KpPriceChart(props) {
       title: 'Token',
       sorter: (a: any, b: any) => a - b,
       dataIndex: 'name',
+      showSorterTooltip: false,
       key: 'name',
     },
     {
-      title: 'Price',
+      title: 'Interest Rate',
       sorter: (a: any, b: any) => a - b,
       dataIndex: 'age',
+      showSorterTooltip: false,
       key: 'age',
     },
     {
       title: '24-hour rise and fall',
       dataIndex: 'address',
+      showSorterTooltip: false,
       sorter: (a: any, b: any) => a - b,
       key: 'address',
     },
@@ -264,7 +267,6 @@ export default function KpPriceChart(props) {
       console.log('update candleData', candleData1, candleData2);
       candleSeries.current.update(candleData);
       setLatestPrice(candleData1.close / candleData2.close);
-      debugger;
     }
   }, [candleData1, candleData2]);
 
@@ -348,27 +350,20 @@ export default function KpPriceChart(props) {
     fetchPrevAndSubscribe();
   }, [pairName]);
 
-  const UpdatePrice = (candleData) => {
+  const UpdatePrice = async (candleData: any) => {
     setLatestPrice(candleData.close);
     setLatestPriceColor(
       (candleData.close * 1 - candleData.open * 1 >= 0 && '#0ecc83') ||
         '#fa3c58',
     );
-    setLatestPricePercentage(
-      (candleData.close * 1 - candleData.open * 1 >= 0 &&
-        `+${(
-          ((candleData.close * 1 - candleData.open * 1) / candleData.open) *
-          1 *
-          100
-        ).toFixed(2)}%`) ||
-        `${(
-          ((candleData.close * 1 - candleData.open * 1) / candleData.open) *
-          1 *
-          100
-        ).toFixed(2)}%`,
-    );
-    // const [latestPriceColor, setLatestPriceColor] = useState('#0ecc83');
-    // const [latestPricePercentage, setLatestPricePercentage] = useState('+0%');
+
+    client.futuresDailyStats({ symbol: 'BTCUSDT' }).then((res) => {
+      setLatestPricePercentage(
+        ((res.priceChangePercent * 1 >= 0 && '+') || '') +
+          res.priceChangePercent +
+          '%',
+      );
+    });
   };
 
   const showDrawer = () => {

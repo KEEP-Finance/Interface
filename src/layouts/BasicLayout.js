@@ -14,7 +14,6 @@ function getLibrary(provider) {
 }
 const BasicLayout = (props) => {
   const { pathname } = props.location;
-  debugger;
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <Layout style={{ minHeight: '100vh' }}>
