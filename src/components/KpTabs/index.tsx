@@ -49,18 +49,18 @@ const priceChartTabs = [
 
 const rateTabs = [
   {
-    name: 'Fixed Yield',
+    name: 'Long',
     checked: true,
   },
   {
-    name: 'Amplified Yield',
+    name: 'Short',
     checked: false,
   },
 ];
 
 const rateDashboardTabs = [
   {
-    name: 'Orders',
+    name: 'Positions',
     checked: true,
   },
   {

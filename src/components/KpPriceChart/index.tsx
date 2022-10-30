@@ -51,6 +51,20 @@ export default function KpPriceChart(props) {
   const [candleData1, setCandleData1] = useState();
   const [candleData2, setCandleData2] = useState();
   const [open, setOpen] = useState(false);
+  const dataSourceF = [
+    {
+      key: '1',
+      name: (
+        <span>
+          <StarOutlined />
+          <img style={{ width: '20px', margin: '0 10px' }} src="/btc.svg" />
+          BTCUSDT
+        </span>
+      ),
+      age: 20600.5,
+      address: <span style={{ color: '#0ecc83' }}>+6.94%</span>,
+    },
+  ];
   const dataSource = [
     {
       key: '1',
@@ -77,7 +91,6 @@ export default function KpPriceChart(props) {
       address: <span style={{ color: '#0ecc83' }}>+14.94%</span>,
     },
   ];
-
   const columns = [
     {
       title: 'Token',
@@ -94,7 +107,7 @@ export default function KpPriceChart(props) {
       key: 'age',
     },
     {
-      title: '24-hour rise and fall',
+      title: '24H Change %',
       dataIndex: 'address',
       showSorterTooltip: false,
       sorter: (a: any, b: any) => a - b,
@@ -494,18 +507,18 @@ export default function KpPriceChart(props) {
               tab={
                 <span>
                   <StarFilled style={{ margin: 0 }} />
-                  收藏
+                  &nbsp; Favorites
                 </span>
               }
               key="1"
             >
               <Table
-                dataSource={dataSource}
+                dataSource={dataSourceF}
                 columns={columns}
                 pagination={false}
               />
             </Tabs.TabPane>
-            <Tabs.TabPane tab="全部" key="2">
+            <Tabs.TabPane tab="All" key="2">
               <Table
                 dataSource={dataSource}
                 columns={columns}

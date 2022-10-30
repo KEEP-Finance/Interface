@@ -17,6 +17,7 @@ import { toBN } from '@/utils';
 
 import styles from './index.less';
 import { getPoolAddr, getToken } from '@/constants';
+import KpSegmented from '../KpSegmented';
 
 const KpLongShort = (props: any) => {
   const {
@@ -338,7 +339,9 @@ const KpLongShort = (props: any) => {
             </div>
           </>
         )}
-
+        <div style={{ margin: '10px 0' }}>
+          <KpSegmented options={['10%', '25%', '50%', '75%', '100%']} />
+        </div>
         <>
           <div className={styles.lm}>
             <div style={{ color: 'rgba(255,255,255,0.8)' }}>Leverage Model</div>

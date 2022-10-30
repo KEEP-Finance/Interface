@@ -3,8 +3,10 @@ import { Button, Checkbox } from 'antd';
 import KpInputSection from '@/components/KpInputSection';
 import KpInfoList from '@/components/KpInfoList';
 import KpBigInput from '@/components/KpBigInput';
+import KpSegmented from '@/components/KpSegmented';
 
 import styles from './index.less';
+import KpLm from '@/components/KpLm';
 
 const KpRateSwap = (props: any) => {
   const { selectedTab, selectedToken, onSelectToken } = props;
@@ -72,9 +74,11 @@ const KpRateSwap = (props: any) => {
           />
           {mode == 'Limit' && <KpBigInput placeholder="Price" />}
         </div>
-
+        <div style={{ margin: '10px 0' }}>
+          <KpSegmented options={['10%', '25%', '50%', '75%', '100%']} />
+        </div>
+        <KpLm />
         <KpInfoList dataSource={infoList} />
-
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <Button> Place {mode} Order</Button>
         </div>
