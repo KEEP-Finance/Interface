@@ -3,6 +3,8 @@ import Binance from 'binance-api-node';
 import { createChart, CrosshairMode } from 'lightweight-charts';
 import { Radio, Menu, Dropdown, Input, Tabs, Table } from 'antd';
 import KpDrawer from '../KpDrawer';
+import KpSymbolNav from '../KpSymbolNav';
+import KpSymbol from '../KpSymbol';
 import axios from 'axios';
 import styled from 'styled-components';
 import styles from './index.less';
@@ -386,25 +388,34 @@ export default function KpPriceChart(props) {
   const onClose = () => {
     setOpen(false);
   };
+  const sn = [
+    {
+      symbol: 'BTCUSDT',
+      value: '+12.23',
+    },
+    {
+      symbol: 'APT-PERP',
+      value: '-8.97',
+    },
+    {
+      symbol: 'APTUSDT',
+      value: '+22.23',
+    },
+  ];
   return (
     <div className="App">
+      <KpSymbolNav data={sn} />
+      <KpSymbol
+        pairName={pairName}
+        showDrawer={showDrawer}
+        latestPriceColor={latestPriceColor}
+        latestPrice={latestPrice}
+        latestPricePercentage={latestPricePercentage}
+      />
       {/* <div>{pairName.substring(0, pairName.length - 4)}/USDT</div> */}
       {/* <div>{pairName}</div> */}
       {/* <Dropdown className={styles.kt} overlay={menu}> */}
-      <span className={styles.title}>
-        {pairName}&nbsp;
-        <SwapOutlined
-          onClick={showDrawer}
-          style={{ fontSize: '20px', color: '#ffffff', cursor: 'pointer' }}
-        />
-      </span>
-      {/* </Dropdown> */}
-      &nbsp;&nbsp;
-      <span style={{ color: latestPriceColor }}>
-        {Number.parseFloat(latestPrice).toFixed(3)}
-      </span>
-      &nbsp;&nbsp;
-      <span style={{ color: latestPriceColor }}>{latestPricePercentage}</span>
+
       <div style={{ marginTop: '20px' }}>
         <div className="timeSelector" style={{ float: 'left' }}>
           {/* <div className="ExchangeChart-info-label">24h Change</div> */}
