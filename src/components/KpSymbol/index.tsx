@@ -10,7 +10,14 @@ const KpSymbol = (props: any) => {
     latestPricePercentage,
   } = props;
   return (
-    <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+    <div
+      style={{
+        display: 'flex',
+        gap: '15px',
+        alignItems: 'center',
+        padding: '0px 26px 10px',
+      }}
+    >
       <div className={styles.title}>
         {pairName}&nbsp;
         <SwapOutlined
@@ -22,7 +29,7 @@ const KpSymbol = (props: any) => {
       <div style={{ color: latestPriceColor, fontSize: '20px' }}>
         {Number.parseFloat(latestPrice).toFixed(3)}
       </div>
-      <div className={styles.item}>
+      <div style={{ marginLeft: '20px' }} className={styles.item}>
         <div>24h Change%</div>
         <span style={{ color: latestPriceColor }}>{latestPricePercentage}</span>
       </div>

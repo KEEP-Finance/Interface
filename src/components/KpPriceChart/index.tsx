@@ -415,72 +415,74 @@ export default function KpPriceChart(props) {
       {/* <div>{pairName.substring(0, pairName.length - 4)}/USDT</div> */}
       {/* <div>{pairName}</div> */}
       {/* <Dropdown className={styles.kt} overlay={menu}> */}
-
-      <div style={{ marginTop: '20px' }}>
-        <div className="timeSelector" style={{ float: 'left' }}>
-          {/* <div className="ExchangeChart-info-label">24h Change</div> */}
-          <StyledSelect value="1m" style={{ width: '200%', height: '23px' }}>
-            <Radio.Button
-              value="1m"
-              style={{ width: '9%', textAlign: 'center' }}
-            >
-              1m
-            </Radio.Button>
-            <Radio.Button
-              value="5m"
-              style={{ width: '9%', textAlign: 'center' }}
-            >
-              5m
-            </Radio.Button>
-            <Radio.Button
-              value="15m"
-              style={{ width: '9%', textAlign: 'center' }}
-            >
-              15m
-            </Radio.Button>
-            <Radio.Button
-              value="30m"
-              style={{ width: '9%', textAlign: 'center' }}
-            >
-              30m
-            </Radio.Button>
-            <Radio.Button
-              value="1h"
-              style={{ width: '9%', textAlign: 'center' }}
-            >
-              1h
-            </Radio.Button>
-            <Radio.Button
-              value="2h"
-              style={{ width: '9%', textAlign: 'center' }}
-            >
-              2h
-            </Radio.Button>
-            <Radio.Button
-              value="4h"
-              style={{ width: '9%', textAlign: 'center' }}
-            >
-              4h
-            </Radio.Button>
-            <Radio.Button
-              value="1d"
-              style={{ width: '9%', textAlign: 'center' }}
-            >
-              1D
-            </Radio.Button>
-            <Radio.Button
-              value="1w"
-              style={{ width: '9%', textAlign: 'center' }}
-            >
-              1W
-            </Radio.Button>
-          </StyledSelect>
+      <div style={{ border: '1px solid var(--line)' }}>
+        <div>
+          <div className="timeSelector" style={{ float: 'left' }}>
+            {/* <div className="ExchangeChart-info-label">24h Change</div> */}
+            <StyledSelect value="1m" style={{ width: '200%', height: '23px' }}>
+              <Radio.Button
+                value="1m"
+                style={{ width: '9%', textAlign: 'center' }}
+              >
+                1m
+              </Radio.Button>
+              <Radio.Button
+                value="5m"
+                style={{ width: '9%', textAlign: 'center' }}
+              >
+                5m
+              </Radio.Button>
+              <Radio.Button
+                value="15m"
+                style={{ width: '9%', textAlign: 'center' }}
+              >
+                15m
+              </Radio.Button>
+              <Radio.Button
+                value="30m"
+                style={{ width: '9%', textAlign: 'center' }}
+              >
+                30m
+              </Radio.Button>
+              <Radio.Button
+                value="1h"
+                style={{ width: '9%', textAlign: 'center' }}
+              >
+                1h
+              </Radio.Button>
+              <Radio.Button
+                value="2h"
+                style={{ width: '9%', textAlign: 'center' }}
+              >
+                2h
+              </Radio.Button>
+              <Radio.Button
+                value="4h"
+                style={{ width: '9%', textAlign: 'center' }}
+              >
+                4h
+              </Radio.Button>
+              <Radio.Button
+                value="1d"
+                style={{ width: '9%', textAlign: 'center' }}
+              >
+                1D
+              </Radio.Button>
+              <Radio.Button
+                value="1w"
+                style={{ width: '9%', textAlign: 'center' }}
+              >
+                1W
+              </Radio.Button>
+            </StyledSelect>
+          </div>
         </div>
+        <div
+          ref={chartContainerRef}
+          style={{ width: '100%', height: '500px' }}
+        />
       </div>
-      <div
-        ref={chartContainerRef}
-        style={{ width: '100%', height: '500px', border: '.75px solid #444' }}
-      />
+
       <KpDrawer
         title="Basic Drawer"
         placement="left"

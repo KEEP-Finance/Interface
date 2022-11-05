@@ -1,4 +1,4 @@
-import { ReactComponent as Hot } from '@/assets/hot.svg';
+import { StarFilled } from '@ant-design/icons';
 import styles from './index.less';
 
 const KpSymbolNav = (props: any) => {
@@ -6,7 +6,11 @@ const KpSymbolNav = (props: any) => {
   return (
     <div className={styles.sn}>
       <div>
-        <Hot />
+        <StarFilled
+          style={{
+            color: '#cbff00',
+          }}
+        />
       </div>
       <div>
         <ul className={styles.ul}>

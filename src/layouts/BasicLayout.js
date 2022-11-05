@@ -22,7 +22,7 @@ const BasicLayout = (props) => {
           className={styles.main}
           style={{
             padding: `0 ${
-              (['/margin', '/rate'].indexOf(pathname) > -1 && '30px') || '150px'
+              (['/margin', '/rate'].indexOf(pathname) > -1 && '0') || '150px'
             }`,
           }}
         >

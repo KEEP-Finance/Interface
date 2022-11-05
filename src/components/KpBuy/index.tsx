@@ -5,6 +5,7 @@ import KpBigInput from '@/components/KpBigInput';
 import KpInfoList from '@/components/KpInfoList';
 import KpTokenInput from '@/components/KpTokenInput';
 import KpTokenNPoolSelect from '@/components/KpTokenNPoolSelect';
+import KpSegmented from '../KpSegmented';
 import { ethers } from 'ethers';
 import { toBN, toFloat } from '@/utils';
 
@@ -219,8 +220,8 @@ const KpTotal = (props: any) => {
         />
 
         {/* <KpInfoList dataSource={infolistMain} /> */}
-
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+        <KpSegmented options={['10%', '25%', '50%', '75%', '100%']} />
+        <div style={{ textAlign: 'center', marginTop: '50px' }}>
           <Button
             style={{ width: '30%' }}
             disabled={!active}
