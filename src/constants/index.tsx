@@ -41,7 +41,7 @@ const networks = [
   },
 ];
 
-const defaultChainId = 80001;
+const defaultChainId = 56;
 
 export const getNetworks = () => networks;
 export const getDefaultNetwork = () =>
