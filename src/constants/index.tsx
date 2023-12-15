@@ -3,27 +3,40 @@ import { getContractAddr } from './addresses';
 // available networks
 const networks = [
   {
+    name: 'Ethereum',
+    img: '/eth.svg',
+    id: 56,
+    checked: false,
+  },
+  {
+    name: 'BNB Chain',
+    img: '/bnb.svg',
+    id: 69,
+    checked: false,
+  },
+  {
     name: 'Polygon',
     img: '/polygon.svg',
     id: 80001,
     checked: false,
   },
+
+  {
+    name: 'Arbitrum One',
+    img: '/arb.svg',
+    id: 42161,
+    checked: false,
+  },
+  {
+    name: 'Base',
+    img: '/base.svg',
+    id: 1337,
+    checked: false,
+  },
   {
     name: 'Optimism',
     img: '/optimism.png',
-    id: 69,
-    checked: false,
-  },
-  {
-    name: 'HardHat',
-    img: '/polygon.svg',
-    id: 31337,
-    checked: false,
-  },
-  {
-    name: 'Ganache',
-    img: '/polygon.svg',
-    id: 1337,
+    id: 1,
     checked: false,
   },
 ];

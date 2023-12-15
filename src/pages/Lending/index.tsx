@@ -45,7 +45,7 @@ const { TabPane } = Tabs;
 const Page = (props) => {
   let { library, deactivate, chainId, account, active, activate, error } =
     useWeb3React();
-  chainId = getNetworks()[3].id;
+  chainId = getNetworks()[2].id;
 
   const tokenList = getTokenList(chainId);
 
