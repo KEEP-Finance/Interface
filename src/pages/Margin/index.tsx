@@ -24,6 +24,7 @@ import { getTokenList } from '@/constants';
 const Page = () => {
   const { library, deactivate, chainId, account, active, activate, error } =
     useWeb3React();
+
   const [more, setMore] = useState(false);
   const [pool, setPool] = useState(false);
   const [selectedTab, setSelectedTab] = useState('Long');
@@ -136,7 +137,7 @@ const Page = () => {
                   <hr />
 
                   <div className={styles.tokenlist}>
-                    {getTokenList(chainId).map((item) => {
+                    {getTokenList(69).map((item) => {
                       if (tokenUpdated == 'future' && item.name == 'USDC')
                         return <></>;
 

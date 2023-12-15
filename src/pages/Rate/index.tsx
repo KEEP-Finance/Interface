@@ -81,7 +81,7 @@ const Page = () => {
                   <hr />
 
                   <div className={styles.tokenlist}>
-                    {getTokenList(chainId).map((item) => {
+                    {getTokenList(69).map((item) => {
                       return (
                         <div
                           className={styles.item}

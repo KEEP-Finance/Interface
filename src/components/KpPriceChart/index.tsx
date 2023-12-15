@@ -34,11 +34,15 @@ const StyledSelect = styled(Radio.Group)`
     border-color: #333333;
     background-color: #29292c !important;
   }
-  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+  .ant-radio-button-wrapper-checked:not(
+      .ant-radio-button-wrapper-disabled
+    ):hover {
     color: #ffffff;
     background-color: #29292c !important;
   }
-  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
+  .ant-radio-button-wrapper-checked:not(
+      .ant-radio-button-wrapper-disabled
+    )::before {
     background-color: #black !important;
   }
   .ant-radio-button-wrapper:not(:first-child)::before {
@@ -324,6 +328,7 @@ export default function KpPriceChart(props) {
     }
 
     const fetchPrevAndSubscribe = async () => {
+      return;
       // before subscribe to websocket, should prefill the chart with existing history, this can be fetched with normal REST request
       // SHOULD DO THIS BEFORE SUBSCRIBE, HOWEVER MOVING SUBSCRIBE TO AFTER THIS BLOCK OF CODE WILL CAUSE THE SUBSCRIPTION GOES ON FOREVER
       // REACT BUG?
